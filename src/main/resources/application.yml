@@ -11,7 +11,7 @@ spring:
     serialization:
       indent-output: true
   datasource:
-    url: jdbc:mysql://localhost:3306/easytodo?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
+    url: jdbc:mysql://localhost:3306/easytodo?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: dlatl#00
     driver-class-name: com.mysql.cj.jdbc.Driver
