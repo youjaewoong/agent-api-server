@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.api.server.dao.MemoDAO">
+	
+	<resultMap id="memoResponse" type="com.api.server.model.memo.MemoResponse" autoMapping="true"/>
+	
+	<select id="testMemos" resultMap="memoResponse">
+ 		SELECT * FROM MEMO
+	</select>
+	
+</mapper>

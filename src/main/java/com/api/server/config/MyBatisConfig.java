@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import com.github.pagehelper.PageInterceptor;
 
 @Configuration
-@MapperScan(value = {"com.api.server.*"})
+@MapperScan(value = {"com.api.server.dao"})
 public class MyBatisConfig {
 
   /**

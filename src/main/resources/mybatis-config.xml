@@ -13,6 +13,7 @@
 		
 		<!-- Enables automatic from classic database column names -->
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="callSettersOnNulls" value="true"/>
 		
 		<setting name="localCacheScope" value="SESSION"/>
   		<setting name="jdbcTypeForNull" value="OTHER"/>

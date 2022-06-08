@@ -11,9 +11,10 @@ spring:
     serialization:
       indent-output: true
   datasource:
-    url: jdbc:mysql://localhost:3306/kcc
+    url: jdbc:mysql://localhost:3306/easytodo?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
     username: root
     password: dlatl#00
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -58,18 +59,17 @@ logging:
       max-file-size: 100MB
       max-history: 365
 
-
 ############################################################################
 # Mybatis propperties
 mybatis:
-  config-location: classpath:mybatis/mybatis-config.xml
+  config-location: classpath:mybatis-config.xml
   check-config-location: true
-  mapper-locations : classpath*:mapper/**/*.xml
+  mapper-locations: classpath:mapper/*.xml
 
 ############################################################################
 # Pagehelper propperties
 pagehelper:
-  helperDialect: MysqlSQL
+  helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql

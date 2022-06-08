@@ -18,8 +18,7 @@ public class CORSFilterConfig {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.addAllowedOriginPattern("*");
-    config.setAllowedMethods(
-        new ArrayList<String>(Arrays.asList("PUT", "POST", "GET", "DELETE", "OPTION")));
+    config.setAllowedMethods(new ArrayList<String>(Arrays.asList("PUT", "POST", "GET", "DELETE", "OPTION")));
     config.setAllowedHeaders(new ArrayList<String>(
         Arrays.asList("Content-Type", "Accept", "Authorization", "x-http-method-override",
             "protocol_version", "protocol_type", "protocol_id", "x-requested-with",
