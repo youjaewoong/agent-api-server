@@ -1,5 +1,17 @@
 package com.api.server.model.memogroup;
 
-public class MemoGroupResponse {
+import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class MemoGroupResponse {
+	private String id;
+	private String name;
+	private Date createDt;
+	private String createUserId;
+	private Date updateDt;
+	private String updateUserId;
 }

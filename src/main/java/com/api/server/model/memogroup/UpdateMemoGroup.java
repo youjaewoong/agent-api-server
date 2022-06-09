@@ -7,11 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateMemoGroup {
+public class UpdateMemoGroup {
 	@JsonIgnore
 	private String id;
-	private String userId;
 	private String name;
- 	private String createUserId;
-	private String updateUserId;
 }

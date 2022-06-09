@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.api.server.dao.MemoGroupMapper">
+	
+	<resultMap id="memoGroupResponse" type="com.api.server.model.memogroup.MemoGroupResponse" autoMapping="true"/>
+	
+	<select id="selectMemoGroups" resultMap="memoGroupResponse">
+ 		SELECT * FROM MEMO_GROUP
+	</select>
+	
+	<select id="selectMemoGroupById" resultMap="memoGroupResponse">
+ 		SELECT * FROM MEMO_GROUP
+ 		WHERE ID = #{id}
+ 		ORDER BY CREATE_DT DESC
+	</select>
+	
+	<update id="updateMemoGroup">
+ 		UPDATE MEMO_GROUP SET
+ 		  NAME = #{name}
+ 		 ,UPDATE_DT = NOW()
+ 		WHERE ID = #{id}
+	</update>
+	
+	<insert id="createMemoGroup">
+ 		INSERT INTO MEMO_GROUP (
+ 			 ID
+ 			,USER_ID
+ 			,NAME
+ 			,CREATE_DT
+ 			,CREATE_USER_ID
+ 			,UPDATE_DT
+ 			,UPDATE_USER_ID
+ 		) VALUES (
+ 			 #{id}
+ 			,#{userId}
+ 			,#{name}
+ 			,NOW()
+ 			,#{createUserId}
+ 			,NOW()
+ 			,#{updateUserId}
+ 		)
+	</insert>
+	
+	<delete id="deleteMemoGroup">
+ 		DELETE FROM MEMO_GROUP
+ 		WHERE ID = #{id}
+	</delete>
+	
+	<delete id="deleteMemoGroups">
+ 		DELETE FROM MEMO_GROUP
+	</delete>
+	
+	<select id="checkMemoGroupByName" resultType="int">
+ 		SELECT 
+ 			COUNT(*) 
+ 		FROM MEMO_GROUP
+ 		WHERE NAME = #{name}
+	</select>
+</mapper>

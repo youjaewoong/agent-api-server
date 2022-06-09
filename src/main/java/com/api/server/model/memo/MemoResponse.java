@@ -10,6 +10,7 @@ import lombok.Setter;
 public class MemoResponse {
 	private String id;
 	private String userId;
+	private String title;
 	private String contents;
 	private String groupId;
 	private String groupName;

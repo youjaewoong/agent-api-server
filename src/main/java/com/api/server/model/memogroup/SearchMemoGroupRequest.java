@@ -1,17 +1,16 @@
 package com.api.server.model.memogroup;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateMemoGroup {
-	@JsonIgnore
+public class SearchMemoGroupRequest {
 	private String id;
 	private String userId;
 	private String name;
- 	private String createUserId;
-	private String updateUserId;
+	private Date createDt;
+	private String createUserId;
 }

@@ -1,12 +1,12 @@
 package com.api.server.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.api.server.dao.MemoDAO;
+import com.api.server.dao.MemoMapper;
 import com.api.server.model.memo.CreateMemo;
-import com.api.server.model.memo.DeleteMemo;
 import com.api.server.model.memo.MemoResponse;
 import com.api.server.model.memo.UpdateMemo;
 
@@ -16,30 +16,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemoServiceImpl implements MemoService {
 	
-	private final MemoDAO memoMapper;
+	private final MemoMapper memoMapper;
 
 	@Override
 	public List<MemoResponse> selectMemos() {
-		return memoMapper.testMemos();
+		return memoMapper.selectMemos();
 	}
 
 	@Override
 	public void updateMemo(UpdateMemo updateMemo) {
-		// TODO Auto-generated method stub
-		
+		updateMemo.setTitle(updateMemo.getContents().substring(0, 7) + "...");
+		memoMapper.updateMemo(updateMemo);
 	}
 
 	@Override
 	public void createMemo(CreateMemo createMemo) {
-		// TODO Auto-generated method stub
-		
+		createMemo.setTitle(createMemo.getContents().substring(0, 7) + "...");
+		createMemo.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		memoMapper.createMemo(createMemo);
 	}
 
 	@Override
-	public void deleteMemo(DeleteMemo deleteMemo) {
-		// TODO Auto-generated method stub
-		
+	public void deleteMemo(String id) {
+		memoMapper.deleteMemo(id);
 	}
-
-
+	
+	@Override
+	public void deleteMemos() {
+		memoMapper.deleteMemos();
+	}
 }
