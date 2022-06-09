@@ -12,6 +12,8 @@ public class CreateMemoGroup {
 	private String id;
 	private String userId;
 	private String name;
+	@JsonIgnore
  	private String createUserId;
+	@JsonIgnore
 	private String updateUserId;
 }

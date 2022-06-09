@@ -30,6 +30,8 @@ public class MemoGroupServiceImpl implements MemoGroupService {
 
 	@Override
 	public void createMemoGroup(CreateMemoGroup createMemoGroup) {
+		createMemoGroup.setCreateUserId(createMemoGroup.getUserId());
+		createMemoGroup.setUpdateUserId(createMemoGroup.getUserId());
 		createMemoGroup.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		memoGroupMapper.createMemoGroup(createMemoGroup);
 	}
