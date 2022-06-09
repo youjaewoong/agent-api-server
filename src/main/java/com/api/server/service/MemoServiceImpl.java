@@ -31,7 +31,15 @@ public class MemoServiceImpl implements MemoService {
 
 	@Override
 	public void createMemo(CreateMemo createMemo) {
-		createMemo.setTitle(createMemo.getContents().substring(0, 7) + "...");
+		createMemo.setCreateUserId(createMemo.getUserId());
+		createMemo.setUpdateUserId(createMemo.getUserId());
+		
+		if (createMemo.getContents().length() > 10) {
+			createMemo.setTitle(createMemo.getContents().substring(0, 7) + "...");
+		} else {
+			createMemo.setTitle(createMemo.getContents());
+		}
+		
 		createMemo.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		memoMapper.createMemo(createMemo);
 	}

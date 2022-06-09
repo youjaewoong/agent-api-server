@@ -29,7 +29,7 @@ public class MemoGroupController {
     }
     
     @PostMapping("/memo-groups")
-    public void postMemoGroup(@RequestBody CreateMemoGroup createMemoGroup) {
+    public void createMemoGroup(@RequestBody CreateMemoGroup createMemoGroup) {
     	memoGroupService.createMemoGroup(createMemoGroup);
     }
     

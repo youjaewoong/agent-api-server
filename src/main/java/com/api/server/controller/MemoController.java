@@ -29,7 +29,7 @@ public class MemoController {
     }
     
     @PostMapping("/memos")
-    public void postMemo(@RequestBody CreateMemo createMemo) {
+    public void createMemo(@RequestBody CreateMemo createMemo) {
     	memoService.createMemo(createMemo);
     }
     
