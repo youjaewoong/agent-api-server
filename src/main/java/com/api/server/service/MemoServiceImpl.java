@@ -25,7 +25,11 @@ public class MemoServiceImpl implements MemoService {
 
 	@Override
 	public void updateMemo(UpdateMemo updateMemo) {
-		updateMemo.setTitle(updateMemo.getContents().substring(0, 7) + "...");
+		if (updateMemo.getContents().length() > 10) {
+			updateMemo.setTitle(updateMemo.getContents().substring(0, 7) + "...");
+		} else {
+			updateMemo.setTitle(updateMemo.getContents());
+		}
 		memoMapper.updateMemo(updateMemo);
 	}
 
