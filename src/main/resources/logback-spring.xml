@@ -42,7 +42,7 @@
 	<logger name="jdbc.resultsettable" level="OFF" />
 	
 	<springProfile name="local">
-	    <root level="INFO">
+	    <root level="DEBUG">
 	        <appender-ref ref="CONSOLE" />
 	        <appender-ref ref="FILE" />
 	    </root>

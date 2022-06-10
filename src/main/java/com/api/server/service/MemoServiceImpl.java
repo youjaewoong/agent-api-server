@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.api.server.dao.MemoMapper;
 import com.api.server.model.memo.CreateMemo;
 import com.api.server.model.memo.MemoResponse;
+import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class MemoServiceImpl implements MemoService {
 	private final MemoMapper memoMapper;
 
 	@Override
-	public List<MemoResponse> selectMemos() {
-		return memoMapper.selectMemos();
+	public List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest) {
+		return memoMapper.selectMemos(searchMemoRequest);
 	}
 
 	@Override

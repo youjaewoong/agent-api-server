@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.memo.CreateMemo;
 import com.api.server.model.memo.MemoResponse;
+import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
 import com.api.server.service.MemoService;
 
@@ -24,8 +25,8 @@ public class MemoController {
 	private final MemoService memoService;
 	
     @GetMapping("/memos")
-    public List<MemoResponse> selectMemos() {
-        return memoService.selectMemos();
+    public List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest) {
+        return memoService.selectMemos(searchMemoRequest);
     }
     
     @PostMapping("/memos")

@@ -14,9 +14,9 @@ import com.api.server.model.memo.UpdateMemo;
 @Mapper
 public interface MemoMapper {
 
-	List<MemoResponse> selectMemos();
+	List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest);
 
-	List<MemoResponse> selectByMemoId(SearchMemoRequest searchMemoReq);
+	List<MemoResponse> selectByMemoId(SearchMemoRequest searchMemoRequest);
     
     int createMemo(CreateMemo createMemo);
     

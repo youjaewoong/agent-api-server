@@ -10,4 +10,8 @@ public class SearchMemoRequest {
 	
 	@ApiModelProperty(name="이름", value="벨류", example = "zzz")
 	private String userId;
+	
+	private String sortItem;
+	
+	private String sortType;
 }

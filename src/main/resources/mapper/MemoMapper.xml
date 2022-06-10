@@ -7,6 +7,9 @@
 	
 	<select id="selectMemos" resultMap="memoResponse">
  		SELECT * FROM MEMO
+ 		<if test='sortItem != null'>
+	 		ORDER BY ${sortItem} ${sortType}
+		</if>
 	</select>
 	
 	<select id="selectMemoById" resultMap="memoResponse">
