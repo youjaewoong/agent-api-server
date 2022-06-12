@@ -14,5 +14,4 @@ public class UpdateMemo {
 	private String title;
 	private String contents;
 	private String groupId;
- 	private String groupName;
 }

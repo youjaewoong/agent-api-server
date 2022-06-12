@@ -6,7 +6,23 @@
 	<resultMap id="memoResponse" type="com.api.server.model.memo.MemoResponse" autoMapping="true"/>
 	
 	<select id="selectMemos" resultMap="memoResponse">
- 		SELECT * FROM MEMO
+		SELECT * FROM ( 
+			SELECT 
+			  A.ID
+			 ,A.USER_ID
+			 ,A.TITLE
+			 ,A.CONTENTS
+			 ,A.GROUP_ID
+			 ,B.NAME AS GROUP_NAME
+			 ,DATE_FORMAT(A.CREATE_DT, '%Y-%m-%d') AS CREATE_DT
+			FROM MEMO A
+			LEFT JOIN MEMO_GROUP B
+			ON A.GROUP_ID  = B.ID
+		) AA
+		WHERE 1=1
+		<if test='userId != null'>
+			AND A.USER_ID = #{userId}
+		</if>
  		<if test='sortItem != null'>
 	 		ORDER BY ${sortItem} ${sortType}
 		</if>
@@ -23,7 +39,6 @@
  		  TITLE = #{title}
  		 ,CONTENTS = #{contents}
  		 ,GROUP_ID = #{groupId}
- 		 ,GROUP_NAME = #{groupName}
  		 ,UPDATE_DT = NOW()
  		WHERE ID = #{id}
 	</update>
@@ -35,7 +50,6 @@
  			,TITLE
  			,CONTENTS
  			,GROUP_ID
- 			,GROUP_NAME
  			,CREATE_DT
  			,CREATE_USER_ID
  			,UPDATE_DT
@@ -46,11 +60,10 @@
  			,#{title}
  			,#{contents}
  			,#{groupId}
- 			,#{groupName}
  			,NOW()
- 			,#{createUserId}
+ 			,#{userId}
  			,NOW()
- 			,#{updateUserId}
+ 			,#{userId}
  		)
 	</insert>
 	

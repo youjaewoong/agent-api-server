@@ -6,7 +6,8 @@
 	<resultMap id="memoGroupResponse" type="com.api.server.model.memogroup.MemoGroupResponse" autoMapping="true"/>
 	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
- 		SELECT * FROM MEMO_GROUP
+ 		SELECT * FROM MEMO_GROUP 
+ 		ORDER BY CREATE_DT DESC
 	</select>
 	
 	<select id="selectMemoGroupById" resultMap="memoGroupResponse">
@@ -36,9 +37,9 @@
  			,#{userId}
  			,#{name}
  			,NOW()
- 			,#{createUserId}
+ 			,#{userId}
  			,NOW()
- 			,#{updateUserId}
+ 			,#{userId}
  		)
 	</insert>
 	

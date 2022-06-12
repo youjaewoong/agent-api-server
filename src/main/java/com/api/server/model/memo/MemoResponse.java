@@ -13,6 +13,5 @@ public class MemoResponse {
 	private String title;
 	private String contents;
 	private String groupId;
-	private String groupName;
 	private Date createDt;
 }

@@ -30,8 +30,16 @@ public class MemoGroupServiceImpl implements MemoGroupService {
 
 	@Override
 	public void createMemoGroup(CreateMemoGroup createMemoGroup) {
-		createMemoGroup.setCreateUserId(createMemoGroup.getUserId());
-		createMemoGroup.setUpdateUserId(createMemoGroup.getUserId());
+		
+		//매뉴그룹이 없을 경우 신규 생성
+		if (memoGroupMapper.selectMemoGroups().size() == 0) {
+			CreateMemoGroup basicMemoGroup = new CreateMemoGroup();
+			basicMemoGroup.setUserId(createMemoGroup.getUserId());
+			basicMemoGroup.setName("기본");
+			basicMemoGroup.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+			memoGroupMapper.createMemoGroup(basicMemoGroup);
+		}
+		
 		createMemoGroup.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		memoGroupMapper.createMemoGroup(createMemoGroup);
 	}
