@@ -51,6 +51,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+	    <dependency>
+	        <groupId>javax.validation</groupId>
+	        <artifactId>validation-api</artifactId>
+	    </dependency>
+		<dependency>
 		    <groupId>com.github.pagehelper</groupId>
 		    <artifactId>pagehelper</artifactId>
 		    <version>5.3.0</version>
@@ -66,10 +74,6 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.dataformat</groupId>
 		    <artifactId>jackson-dataformat-cbor</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>javax.validation</groupId>
-		    <artifactId>validation-api</artifactId>
 		</dependency>
         <dependency>
             <groupId>io.springfox</groupId>

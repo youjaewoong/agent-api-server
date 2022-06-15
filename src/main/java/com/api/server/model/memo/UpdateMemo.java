@@ -14,4 +14,12 @@ public class UpdateMemo {
 	private String title;
 	private String contents;
 	private String groupId;
+	
+	public void setTitle() {
+		if (this.contents.length() > 10) {
+			this.title = this.contents.substring(0, 7) + "...";
+		} else {
+			this.title = this.contents;
+		}
+	}
 }

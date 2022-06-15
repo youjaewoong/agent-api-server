@@ -12,6 +12,4 @@ public class MemoGroupResponse {
 	private String name;
 	private Date createDt;
 	private String createUserId;
-	private Date updateDt;
-	private String updateUserId;
 }

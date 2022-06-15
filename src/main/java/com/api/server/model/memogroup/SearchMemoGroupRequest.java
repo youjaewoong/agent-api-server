@@ -1,6 +1,6 @@
 package com.api.server.model.memogroup;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchMemoGroupRequest {
-	private String id;
+	
+	@NotBlank
 	private String userId;
-	private String name;
-	private Date createDt;
-	private String createUserId;
 }

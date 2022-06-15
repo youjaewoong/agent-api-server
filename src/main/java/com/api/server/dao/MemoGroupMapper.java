@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memogroup.CreateMemoGroup;
 import com.api.server.model.memogroup.MemoGroupResponse;
+import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
 
 @Repository
@@ -16,9 +16,9 @@ public interface MemoGroupMapper {
 
 	List<MemoGroupResponse> selectMemoGroups();
 
-	List<MemoGroupResponse> selectByMemoGroupById(SearchMemoRequest searchMemoReq);
-    
-    int createMemoGroup(CreateMemoGroup createMemo);
+	List<MemoGroupResponse> selectMemoGroups(SearchMemoGroupRequest searchMemoGroupRequest);
+
+	int createMemoGroup(CreateMemoGroup createMemo);
     
     int deleteMemoGroup(String id);
     
@@ -27,4 +27,5 @@ public interface MemoGroupMapper {
 	int deleteMemoGroups();
 	
 	int checkMemoGroupByName(String name);
+
 }

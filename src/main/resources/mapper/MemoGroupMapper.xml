@@ -7,12 +7,10 @@
 	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
  		SELECT * FROM MEMO_GROUP 
- 		ORDER BY CREATE_DT DESC
-	</select>
-	
-	<select id="selectMemoGroupById" resultMap="memoGroupResponse">
- 		SELECT * FROM MEMO_GROUP
- 		WHERE ID = #{id}
+ 		WHERE 1=1
+ 		<if test='userId != null'>
+ 		 AND USER_ID = #{userId} 
+ 		</if>
  		ORDER BY CREATE_DT DESC
 	</select>
 	
