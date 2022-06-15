@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.api.server.dao.BookMarkMapper">
+	
+	<resultMap id="bookMarkResponse" type="com.api.server.model.bookmark.BookMarkResponse" autoMapping="true"/>
+	
+	<select id="selectBookMarks" resultMap="bookMarkResponse">
+		SELECT * FROM ( 
+			SELECT 
+			  A.ID
+			 ,A.USER_ID
+			 ,A.TITLE
+			 ,A.CONTENTS
+			 ,A.GROUP_ID
+			 ,B.NAME AS GROUP_NAME
+			 ,DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
+			FROM BOOK_MARK A
+			LEFT JOIN MEMO_GROUP B
+			ON A.GROUP_ID  = B.ID
+		) AA
+		WHERE 1=1
+		<if test='userId != null'>
+			AND A.USER_ID = #{userId}
+		</if>
+ 		<if test='sortItem != null'>
+	 		ORDER BY ${sortItem} ${sortType}
+		</if>
+	</select>
+
+	
+	<update id="updateBookMark">
+ 		UPDATE BOOK_MARK SET
+ 		  TITLE = #{title}
+ 		 ,CONTENTS = #{contents}
+ 		 ,GROUP_ID = #{groupId}
+ 		 ,MOD_DT = NOW()
+ 		 ,MOD_ID = #{userId}
+ 		WHERE ID = #{id}
+	</update>
+	
+	
+	<insert id="createBookMark">
+ 		INSERT INTO BOOK_MARK (
+ 			 ID
+ 			,USER_ID
+ 			,TITLE
+ 			,CONTENTS
+ 			,GROUP_ID
+ 			,REG_DT
+ 			,REG_ID
+ 			,MOD_DT
+ 			,MOD_ID
+ 		) VALUES (
+ 			 #{id}
+ 			,#{userId}
+ 			,#{title}
+ 			,#{contents}
+ 			,#{groupId}
+ 			,NOW()
+ 			,#{userId}
+ 			,NOW()
+ 			,#{userId}
+ 		)
+	</insert>
+	
+	
+	<delete id="deleteBookMark">
+ 		DELETE FROM BOOK_MARK
+ 		WHERE ID = #{id}
+	</delete>
+	
+	
+	<delete id="deleteBookMarks">
+ 		DELETE FROM BOOK_MARK
+	</delete>
+</mapper>
