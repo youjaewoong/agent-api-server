@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.model.bookmark.BookMarkByGroupResponse;
 import com.api.server.model.bookmark.BookMarkResponse;
 import com.api.server.model.bookmark.CreateBookMark;
 import com.api.server.model.bookmark.SearchBookMarkRequest;
@@ -29,6 +30,12 @@ public class BookMarkController {
     @GetMapping("/bookmarks")
     public List<BookMarkResponse> getBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
         return bookMarkService.selectBookMarks(searchBookMarkRequest);
+    }
+	
+	@ApiOperation("그룹별 전체조회")
+    @GetMapping("/bookmarks/groupby")
+    public List<BookMarkByGroupResponse> getGroupBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
+        return bookMarkService.selectGroupBookMarks(searchBookMarkRequest);
     }
     
 	

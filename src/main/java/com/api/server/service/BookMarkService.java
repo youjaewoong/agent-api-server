@@ -2,6 +2,7 @@ package com.api.server.service;
 
 import java.util.List;
 
+import com.api.server.model.bookmark.BookMarkByGroupResponse;
 import com.api.server.model.bookmark.BookMarkResponse;
 import com.api.server.model.bookmark.CreateBookMark;
 import com.api.server.model.bookmark.SearchBookMarkRequest;
@@ -18,5 +19,7 @@ public interface BookMarkService {
 	public void deleteBookMark(String id);
 
 	public void deleteBookMarks();
+
+	public List<BookMarkByGroupResponse> selectGroupBookMarks(SearchBookMarkRequest searchBookMarkRequest);
 
 }

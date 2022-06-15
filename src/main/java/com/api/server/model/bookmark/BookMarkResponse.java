@@ -13,5 +13,6 @@ public class BookMarkResponse {
 	private String title;
 	private String contents;
 	private String groupId;
+	private String groupTitle;
 	private Date regDt;
 }
