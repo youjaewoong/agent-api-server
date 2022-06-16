@@ -53,7 +53,8 @@
 	
 	<delete id="deleteBookMarkGroup">
  		DELETE FROM BOOK_MARK_GROUP
- 		WHERE ID IN
+ 		WHERE USER_ID = #{userId}
+ 		AND ID IN
  		<foreach collection="id" item="item" open="(" close=")" separator=",">
 			#{item}
         </foreach>

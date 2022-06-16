@@ -14,6 +14,7 @@ import com.api.server.dao.BookMarkMapper;
 import com.api.server.model.bookmark.BookMarkByGroupResponse;
 import com.api.server.model.bookmark.BookMarkResponse;
 import com.api.server.model.bookmark.CreateBookMark;
+import com.api.server.model.bookmark.DeleteBookMark;
 import com.api.server.model.bookmark.SearchBookMarkRequest;
 import com.api.server.model.bookmark.UpdateBookMark;
 
@@ -80,8 +81,8 @@ public class BookMarkServiceImpl implements BookMarkService {
 	
 
 	@Override
-	public void deleteBookMark(String id) {
-		bookMarkMapper.deleteBookMark(id);
+	public void deleteBookMark(DeleteBookMark deleteBookMark) {
+		bookMarkMapper.deleteBookMark(deleteBookMark);
 	}
 	
 	

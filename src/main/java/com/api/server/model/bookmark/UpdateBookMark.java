@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateBookMark {
-	@JsonIgnore
 	private String id;
 	@JsonIgnore
 	private String title;

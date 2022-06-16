@@ -49,14 +49,14 @@ public class BookMarkGroupController {
     
     
 	@ApiOperation("건별삭제")
-    @PostMapping("/bookmark-groups/remove")
+	@DeleteMapping("/bookmark-groups")
     public void removeBookMarkGroup(@RequestBody DeleteBookMarkGroup deleteBookMarkGroup) {
 		bookMarkGroupService.deleteBookMarkGroup(deleteBookMarkGroup);
     }
 	
     
 	@ApiOperation("전체삭제")
-    @DeleteMapping("/bookmark-groups")
+    @DeleteMapping("/bookmark-groups/all")
     public void removeBookMarkGroups() {
 		bookMarkGroupService.deleteBookMarkGroups();
     }
