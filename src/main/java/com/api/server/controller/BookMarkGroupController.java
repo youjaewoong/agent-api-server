@@ -64,7 +64,7 @@ public class BookMarkGroupController {
     
 	@ApiOperation("수정")
     @PutMapping("/bookmark-groups")
-    public void modifyBookMarkGroup(@RequestBody UpdateBookMarkGroup updateBookMarkGroup) {
+    public void modifyBookMarkGroup(@RequestBody List<UpdateBookMarkGroup> updateBookMarkGroup) {
     	bookMarkGroupService.updateBookMarkGroup(updateBookMarkGroup);
     }
     

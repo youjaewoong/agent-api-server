@@ -29,8 +29,10 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 
 	
 	@Override
-	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup) {
-		bookMarkGroupMapper.updateBookMarkGroup(updateBookMarkGroup);
+	public void updateBookMarkGroup(List<UpdateBookMarkGroup> updateBookMarkGroup) {
+		updateBookMarkGroup.forEach(group -> {
+			bookMarkGroupMapper.updateBookMarkGroup(group);
+		});
 	}
 
 	

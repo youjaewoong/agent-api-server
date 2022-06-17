@@ -12,7 +12,7 @@ public interface BookMarkGroupService {
 	
 	public List<BookMarkGroupResponse> selectBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest);
 
-	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup);
+	public void updateBookMarkGroup(List<UpdateBookMarkGroup> updateBookMarkGroup);
 	
 	public void createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
 	
