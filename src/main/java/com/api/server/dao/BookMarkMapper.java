@@ -21,7 +21,9 @@ public interface BookMarkMapper {
     
 	public int updateBookMark(UpdateBookMark updateBookMark);
 
-	public int deleteBookMark(DeleteBookMark deleteBookMark);
-    
-	public int deleteBookMarks();
+	public int deleteBookMark(String id);
+
+	public int deleteBookMarks(DeleteBookMark deleteBookMark);
+	
+	public int deleteBookMarkByGroups(DeleteBookMark deleteBookMark);
 }

@@ -12,16 +12,12 @@ public interface BookMarkGroupService {
 	
 	public List<BookMarkGroupResponse> selectBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest);
 
-	public void updateBookMarkGroup(List<UpdateBookMarkGroup> updateBookMarkGroup);
+	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup);
 	
 	public void createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
 	
-	<T> String createBasicBookMarkGroup(T obj);
-
 	public void deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup);
 
 	public void deleteBookMarkGroups();
-
-	public int checkBookMarkGroupByName(String name);
 
 }

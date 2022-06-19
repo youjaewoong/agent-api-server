@@ -7,11 +7,8 @@
 	
 	<select id="selectBookMarkGroups" resultMap="bookMarkGroupResponse">
  		SELECT * FROM BOOK_MARK_GROUP 
- 		WHERE 1=1
- 		<if test='userId != null'>
- 		 AND USER_ID = #{userId} 
- 		</if>
- 		ORDER BY REG_DT DESC
+ 		WHERE ADV_ID = #{advId} 
+ 		ORDER BY TITLE ASC
 	</select>
 	
 	
@@ -19,41 +16,32 @@
  		UPDATE BOOK_MARK_GROUP SET
  		  TITLE = #{title}
  		 ,MOD_DT = NOW()
- 		 ,MOD_ID = #{userId}
- 		WHERE ID IN
- 		<foreach collection="id" item="item" open="(" close=")" separator=",">
-			#{item}
-        </foreach>
- 		<if test='userId != null'>
- 		 AND USER_ID = #{userId} 
- 		</if>
+ 		WHERE ID = #{id}
 	</update>
 	
 	
 	<insert id="createBookMarkGroup">
  		INSERT INTO BOOK_MARK_GROUP (
  			 ID
- 			,USER_ID
+ 			,ADV_ID
  			,TITLE
+ 			,BASIC_GROUP_YN
  			,REG_DT
- 			,REG_ID
  			,MOD_DT
- 			,MOD_ID
  		) VALUES (
  			 #{id}
- 			,#{userId}
+ 			,#{advId}
  			,#{title}
+ 			,#{basicGroupYn}
  			,NOW()
- 			,#{userId}
  			,NOW()
- 			,#{userId}
  		)
 	</insert>
 	
 	
 	<delete id="deleteBookMarkGroup">
  		DELETE FROM BOOK_MARK_GROUP
- 		WHERE USER_ID = #{userId}
+ 		WHERE ADV_ID = #{advId}
  		AND ID IN
  		<foreach collection="id" item="item" open="(" close=")" separator=",">
 			#{item}
@@ -65,11 +53,4 @@
  		DELETE FROM BOOK_MARK_GROUP
 	</delete>
 	
-	
-	<select id="checkBookMarkGroupByName" resultType="int">
- 		SELECT 
- 			COUNT(*) 
- 		FROM BOOK_MARK_GROUP
- 		WHERE TITLE = #{title}
-	</select>
 </mapper>

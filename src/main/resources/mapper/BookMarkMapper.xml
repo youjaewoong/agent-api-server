@@ -9,9 +9,10 @@
 		SELECT * FROM ( 
 			SELECT 
 			  A.ID
-			 ,A.USER_ID
+			 ,A.ADV_ID
 			 ,A.TITLE
 			 ,A.CONTENTS
+			 ,A.TYPE
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
 			 ,DATE_FORMAT(A.REG_DT, '%Y-%m-%d %T') AS REG_DT
@@ -19,13 +20,8 @@
 			LEFT JOIN BOOK_MARK_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
-		WHERE 1=1
-		<if test='userId != null'>
-			AND A.USER_ID = #{userId}
-		</if>
- 		<if test='sortItem != null'>
-	 		ORDER BY ${sortItem} ${sortType}
-		</if>
+		WHERE AA.ADV_ID = #{advId}
+		ORDER BY GROUP_TITLE ASC
 	</select>
 
 	
@@ -35,7 +31,6 @@
  		 ,CONTENTS = #{contents}
  		 ,GROUP_ID = #{groupId}
  		 ,MOD_DT = NOW()
- 		 ,MOD_ID = #{userId}
  		WHERE ID = #{id}
 	</update>
 	
@@ -43,39 +38,48 @@
 	<insert id="createBookMark">
  		INSERT INTO BOOK_MARK (
  			 ID
- 			,USER_ID
+ 			,ADV_ID
  			,TITLE
  			,CONTENTS
  			,GROUP_ID
  			,REG_DT
- 			,REG_ID
  			,MOD_DT
- 			,MOD_ID
  		) VALUES (
  			 #{id}
- 			,#{userId}
+ 			,#{advId}
  			,#{title}
  			,#{contents}
  			,#{groupId}
  			,NOW()
- 			,#{userId}
  			,NOW()
- 			,#{userId}
  		)
 	</insert>
 	
 	
 	<delete id="deleteBookMark">
  		DELETE FROM BOOK_MARK
- 		WHERE USER_ID = #{userId}
- 		AND ID IN
- 		<foreach collection="id" item="item" open="(" close=")" separator=",">
-			#{item}
-        </foreach>
+ 		WHERE ADV_ID = #{advId}
+ 		AND ID = #{id}
 	</delete>
 	
 	
 	<delete id="deleteBookMarks">
  		DELETE FROM BOOK_MARK
+ 		WHERE ADV_ID = #{advId}
+ 		AND ID IN
+ 		<foreach collection="id" item="item" open="(" close=")" separator=",">
+			#{item}
+        </foreach>
 	</delete>
+
+	
+	<delete id="deleteBookMarkByGroups">
+ 		DELETE FROM BOOK_MARK
+ 		WHERE ADV_ID = #{advId}
+ 		AND GROUP_ID IN
+	 	<foreach collection="id" item="item" open="(" close=")" separator=",">
+			#{item}
+        </foreach>
+	</delete>
+
 </mapper>

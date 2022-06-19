@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 public class BookMarkResponse {
 	private String id;
-	private String userId;
+	private String advId;
 	private String title;
 	private String contents;
+	private char type;
 	private String groupId;
 	private String groupTitle;
 	private Date regDt;

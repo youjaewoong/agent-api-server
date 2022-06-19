@@ -2,9 +2,10 @@ package com.api.server.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,28 +30,28 @@ public class BookMarkGroupController {
 	
 	@ApiOperation("조회")
     @GetMapping("/bookmark-groups")
-    public List<BookMarkGroupResponse> getBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest) {
+    public List<BookMarkGroupResponse> getBookMarkGroups(@Valid SearchBookMarkGroupRequest searchBookMarkGroupRequest) {
         return bookMarkGroupService.selectBookMarkGroups(searchBookMarkGroupRequest);
     }
     
     
 	@ApiOperation("추가")
     @PostMapping("/bookmark-groups")
-    public void addMemoGroup(@RequestBody CreateBookMarkGroup createBookMarkGroup) {
+    public void addBookMarkGroup(@Valid @RequestBody CreateBookMarkGroup createBookMarkGroup) {
 		bookMarkGroupService.createBookMarkGroup(createBookMarkGroup);
     }
     
 	
-	@ApiOperation("기본추가")
-    @PostMapping("/bookmark-groups/add/basic")
-    public boolean addBasicMemoGroup(@RequestBody SearchBookMarkGroupRequest searchBookMarkGroupRequest) {
-    	return bookMarkGroupService.createBasicBookMarkGroup(searchBookMarkGroupRequest) == null ? false : true;
+	@ApiOperation("건별수정")
+    @PutMapping("/bookmark-groups")
+    public void editBookMarkGroups(@Valid @RequestBody UpdateBookMarkGroup updateBookMarkGroup) {
+    	bookMarkGroupService.updateBookMarkGroup(updateBookMarkGroup);
     }
-    
+	
     
 	@ApiOperation("건별삭제")
 	@DeleteMapping("/bookmark-groups")
-    public void removeBookMarkGroup(@RequestBody DeleteBookMarkGroup deleteBookMarkGroup) {
+    public void removeBookMarkGroup(@Valid @RequestBody DeleteBookMarkGroup deleteBookMarkGroup) {
 		bookMarkGroupService.deleteBookMarkGroup(deleteBookMarkGroup);
     }
 	
@@ -61,17 +62,4 @@ public class BookMarkGroupController {
 		bookMarkGroupService.deleteBookMarkGroups();
     }
 	
-    
-	@ApiOperation("수정")
-    @PutMapping("/bookmark-groups")
-    public void modifyBookMarkGroup(@RequestBody List<UpdateBookMarkGroup> updateBookMarkGroup) {
-    	bookMarkGroupService.updateBookMarkGroup(updateBookMarkGroup);
-    }
-    
-	
-	@ApiOperation("그룹명 중복체크")
-    @GetMapping("/bookmark-groups/check/name/{name}")
-    public boolean checkBookMarkGroupByName(@PathVariable String name) {
-    	return bookMarkGroupService.checkBookMarkGroupByName(name) == 0 ? false : true;
-    }
 }

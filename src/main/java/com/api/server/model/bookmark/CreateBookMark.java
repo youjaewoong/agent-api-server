@@ -2,6 +2,8 @@ package com.api.server.model.bookmark;
 
 import java.util.UUID;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -17,11 +19,17 @@ public class CreateBookMark {
 	
 	@JsonIgnore
 	private String id;
-	private String userId;
+	private String advId;
 	@JsonIgnore
 	private String title;
+	@NotBlank
 	private String contents;
+	private addType type;
 	private String groupId;
+	
+    private enum addType {
+        K,S;
+    }
 	
 	public void setTitle() {
 		if (this.contents.length() > 10) {

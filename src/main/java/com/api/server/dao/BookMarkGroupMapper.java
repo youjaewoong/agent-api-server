@@ -9,7 +9,7 @@ import com.api.server.model.bookmarkgroup.BookMarkGroupResponse;
 import com.api.server.model.bookmarkgroup.CreateBookMarkGroup;
 import com.api.server.model.bookmarkgroup.DeleteBookMarkGroup;
 import com.api.server.model.bookmarkgroup.SearchBookMarkGroupRequest;
-import com.api.server.model.bookmarkgroup.UpdateBookMarkGroup;
+import com.api.server.model.bookmarkgroup.UpdateBookMarkGroup.UpdateBookMarkGroups;
 
 @Repository
 @Mapper
@@ -19,12 +19,10 @@ public interface BookMarkGroupMapper {
 
 	int createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
     
-	int updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup);
+	int updateBookMarkGroup(UpdateBookMarkGroups updateBookMarkGroups);
 
 	int deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup);
 
 	int deleteBookMarkGroups();
-	
-	int checkBookMarkGroupByName(String name);
 
 }

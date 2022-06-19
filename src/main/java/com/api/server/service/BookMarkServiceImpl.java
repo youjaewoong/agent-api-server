@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookMarkMapper;
 import com.api.server.model.bookmark.BookMarkByGroupResponse;
@@ -21,21 +22,14 @@ import com.api.server.model.bookmark.UpdateBookMark;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookMarkServiceImpl implements BookMarkService {
 	
 	private final BookMarkMapper bookMarkMapper;
-	private final BookMarkGroupService bookMarkGroupService;
-
 
 	@Override
-	public List<BookMarkResponse> selectBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
-		return bookMarkMapper.selectBookMarks(searchBookMarkRequest);
-	}
-	
-	
-	@Override
-	public List<BookMarkByGroupResponse> selectGroupBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
+	public List<BookMarkByGroupResponse> selectBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
 		
 		List<BookMarkResponse> bookMarks = bookMarkMapper.selectBookMarks(searchBookMarkRequest);
 		List<BookMarkResponse> groups = bookMarks.stream()
@@ -70,25 +64,27 @@ public class BookMarkServiceImpl implements BookMarkService {
 	@Override
 	public void createBookMark(CreateBookMark createBookMark) {
 		
-		//매뉴그룹이 없을 경우 신규 생성 및 고유ID 셋팅
-		 String createId = bookMarkGroupService.createBasicBookMarkGroup(createBookMark);
-		if (createId != null) {
-			createBookMark.setGroupId(createId);
-		}
 		createBookMark.setTitle();
 		bookMarkMapper.createBookMark(createBookMark);
 	}
 	
 
 	@Override
-	public void deleteBookMark(DeleteBookMark deleteBookMark) {
-		bookMarkMapper.deleteBookMark(deleteBookMark);
+	public void deleteBookMark(String id) {
+		bookMarkMapper.deleteBookMark(id);
 	}
 	
 	
 	@Override
-	public void deleteBookMarks() {
-		bookMarkMapper.deleteBookMarks();
+	public void deleteBookMarks(DeleteBookMark deleteBookMark) {
+		bookMarkMapper.deleteBookMarks(deleteBookMark);
+	}
+	
+
+	@Override
+	public void deleteBookMarkByGroups(DeleteBookMark deleteBookMark) {
+		bookMarkMapper.deleteBookMarkByGroups(deleteBookMark);
+		
 	}
 	
 
@@ -103,6 +99,5 @@ public class BookMarkServiceImpl implements BookMarkService {
 		Map<Object, Boolean> map = new HashMap<>();
 		return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}
-	
 
 }

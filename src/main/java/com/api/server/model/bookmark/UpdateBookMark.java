@@ -1,5 +1,7 @@
 package com.api.server.model.bookmark;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -9,12 +11,19 @@ import lombok.Setter;
 @Setter
 public class UpdateBookMark {
 	private String id;
+	private String advId;
 	@JsonIgnore
+	@NotBlank
 	private String title;
 	private String contents;
+	private updateType type;
 	private String groupId;
-	private String userId;
 	
+	
+    private enum updateType {
+        K,S;
+    }
+    
 	public void setTitle() {
 		if (this.contents.length() > 10) {
 			this.title = this.contents.substring(0, 7) + "...";

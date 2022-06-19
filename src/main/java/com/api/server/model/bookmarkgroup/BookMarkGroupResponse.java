@@ -10,6 +10,6 @@ import lombok.Setter;
 public class BookMarkGroupResponse {
 	private String id;
 	private String title;
+	private char basicGroupYn;
 	private Date regDt;
-	private String regId;
 }

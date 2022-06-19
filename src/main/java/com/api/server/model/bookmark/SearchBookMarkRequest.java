@@ -1,5 +1,7 @@
 package com.api.server.model.bookmark;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,12 +9,6 @@ import lombok.Setter;
 @Setter
 public class SearchBookMarkRequest {
 	
-    public enum sortType {
-        desc,
-        asc;
-    }
-    
-	private String userId;
-	private String sortItem;
-	private sortType sortType;
+	@NotBlank
+	private String advId;
 }
