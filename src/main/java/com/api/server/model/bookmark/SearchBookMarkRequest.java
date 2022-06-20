@@ -11,4 +11,5 @@ public class SearchBookMarkRequest {
 	
 	@NotBlank
 	private String advId;
+	private String groupId;
 }

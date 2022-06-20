@@ -39,7 +39,7 @@ public class BookMarkController {
 	
 	@ApiOperation("추가")
     @PostMapping("/bookmarks")
-    public void addBookMark(@Valid @RequestBody CreateBookMark createBookMark) {
+    public void addBookMark(@Valid @RequestBody CreateBookMark createBookMark) throws Exception {
     	bookMarkService.createBookMark(createBookMark);
     }
     

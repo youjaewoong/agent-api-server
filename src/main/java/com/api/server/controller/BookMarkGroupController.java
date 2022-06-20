@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.bookmarkgroup.BookMarkGroupResponse;
@@ -37,8 +39,9 @@ public class BookMarkGroupController {
     
 	@ApiOperation("추가")
     @PostMapping("/bookmark-groups")
-    public void addBookMarkGroup(@Valid @RequestBody CreateBookMarkGroup createBookMarkGroup) {
-		bookMarkGroupService.createBookMarkGroup(createBookMarkGroup);
+	@ResponseStatus(HttpStatus.CREATED)
+    public BookMarkGroupResponse addBookMarkGroup(@Valid @RequestBody CreateBookMarkGroup createBookMarkGroup) {
+		return bookMarkGroupService.createBookMarkGroup(createBookMarkGroup);
     }
     
 	

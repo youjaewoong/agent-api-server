@@ -1,4 +1,4 @@
-package com.api.server.model.bookmarkgroup;
+package com.api.server.model.bookmark;
 
 import java.util.Date;
 
@@ -10,6 +10,6 @@ import lombok.Setter;
 public class BookMarkGroupResponse {
 	private String id;
 	private String title;
-	private String basicGroupYn;
+	private char basicGroupYn;
 	private Date regDt;
 }

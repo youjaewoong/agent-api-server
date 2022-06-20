@@ -14,7 +14,7 @@ public interface BookMarkGroupService {
 
 	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup);
 	
-	public void createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
+	public BookMarkGroupResponse createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
 	
 	public void deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup);
 

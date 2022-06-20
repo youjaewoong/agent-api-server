@@ -12,7 +12,7 @@ public interface BookMarkService {
 	
 	public List<BookMarkByGroupResponse> selectBookMarks(SearchBookMarkRequest searchBookMarkRequest);
 
-	public void createBookMark(CreateBookMark createBookMark);
+	public void createBookMark(CreateBookMark createBookMark) throws Exception;
 
 	public void updateBookMark(UpdateBookMark updateBookMark);
 	

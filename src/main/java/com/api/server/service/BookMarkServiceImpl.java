@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookMarkMapper;
+import com.api.server.model.bookmark.BookMarkBucket;
 import com.api.server.model.bookmark.BookMarkByGroupResponse;
 import com.api.server.model.bookmark.BookMarkResponse;
 import com.api.server.model.bookmark.CreateBookMark;
 import com.api.server.model.bookmark.DeleteBookMark;
 import com.api.server.model.bookmark.SearchBookMarkRequest;
 import com.api.server.model.bookmark.UpdateBookMark;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -62,9 +65,16 @@ public class BookMarkServiceImpl implements BookMarkService {
 	
 
 	@Override
-	public void createBookMark(CreateBookMark createBookMark) {
+	public void createBookMark(CreateBookMark createBookMark) throws Exception {
+		ObjectMapper objectMapper =  new ObjectMapper();
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		BookMarkBucket bookMarkBucket = objectMapper.readValue(createBookMark.getContents(), BookMarkBucket.class);
 		
-		createBookMark.setTitle();
+		if (bookMarkBucket.getContents().getSubTitle() != null) {
+			createBookMark.setSubTitle(bookMarkBucket.getContents().getSubTitle());
+		}
+		createBookMark.setTitle(bookMarkBucket.getTitle());
+		createBookMark.setContents(bookMarkBucket.getContents().getContents());
 		bookMarkMapper.createBookMark(createBookMark);
 	}
 	

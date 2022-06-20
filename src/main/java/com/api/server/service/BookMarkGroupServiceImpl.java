@@ -2,6 +2,7 @@ package com.api.server.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,12 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 
 	
 	@Override
-	public void createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup) {
+	public BookMarkGroupResponse createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup) {
 		bookMarkGroupMapper.createBookMarkGroup(createBookMarkGroup);
+		BookMarkGroupResponse bookMarkGroupResponse = new BookMarkGroupResponse();
+		BeanUtils.copyProperties(createBookMarkGroup, bookMarkGroupResponse);
+		
+		return bookMarkGroupResponse;
 	}
 
 

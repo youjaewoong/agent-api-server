@@ -11,6 +11,7 @@
 			  A.ID
 			 ,A.ADV_ID
 			 ,A.TITLE
+			 ,A.SUB_TITLE
 			 ,A.CONTENTS
 			 ,A.TYPE
 			 ,A.GROUP_ID
@@ -21,6 +22,9 @@
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.ADV_ID = #{advId}
+		<if test="groupId != null and !groupId.equals('')">
+		  AND AA.GROUP_ID = #{groupId}
+		</if>
 		ORDER BY GROUP_TITLE ASC
 	</select>
 
@@ -40,7 +44,9 @@
  			 ID
  			,ADV_ID
  			,TITLE
+ 			,SUB_TITLE
  			,CONTENTS
+ 			,TYPE
  			,GROUP_ID
  			,REG_DT
  			,MOD_DT
@@ -48,7 +54,9 @@
  			 #{id}
  			,#{advId}
  			,#{title}
+ 			,#{subTitle}
  			,#{contents}
+ 			,#{type}
  			,#{groupId}
  			,NOW()
  			,NOW()

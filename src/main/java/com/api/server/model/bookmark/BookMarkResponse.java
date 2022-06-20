@@ -11,6 +11,7 @@ public class BookMarkResponse {
 	private String id;
 	private String advId;
 	private String title;
+	private String subTitle;
 	private String contents;
 	private char type;
 	private String groupId;
