@@ -2,24 +2,25 @@ package com.api.server.service;
 
 import java.util.List;
 
-import com.api.server.model.bookmark.BookMarkByGroupResponse;
-import com.api.server.model.bookmark.CreateBookMark;
-import com.api.server.model.bookmark.DeleteBookMark;
-import com.api.server.model.bookmark.SearchBookMarkRequest;
-import com.api.server.model.bookmark.UpdateBookMark;
+import com.api.server.model.bookmark.BookmarksResponse;
+import com.api.server.model.bookmark.CreateBookmark;
+import com.api.server.model.bookmark.DeleteBookmark;
+import com.api.server.model.bookmark.DeleteBookmarks;
+import com.api.server.model.bookmark.SearchBookmarkRequest;
+import com.api.server.model.bookmark.UpdateBookmark;
 
 public interface BookMarkService {
 	
-	public List<BookMarkByGroupResponse> selectBookMarks(SearchBookMarkRequest searchBookMarkRequest);
+	public List<BookmarksResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest);
 
-	public void createBookMark(CreateBookMark createBookMark) throws Exception;
+	public void createBookmark(CreateBookmark createBookmark) throws Exception;
 
-	public void updateBookMark(UpdateBookMark updateBookMark);
+	public void updateBookmark(UpdateBookmark updateBookmark);
 	
-	public void deleteBookMark(String id);
-	
-	public void deleteBookMarks(DeleteBookMark deleteBookMark);
+	public void deleteBookmark(DeleteBookmark deleteBookmark);
 
-	public void deleteBookMarkByGroups(DeleteBookMark deleteBookMark);
+	public void deleteBookmarkByGroup(DeleteBookmark deleteBookmark);
+
+	public void deleteBookmarkByGroups(DeleteBookmarks deleteBookmarks);
 
 }

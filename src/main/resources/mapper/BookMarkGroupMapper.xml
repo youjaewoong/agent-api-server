@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.api.server.dao.BookMarkGroupMapper">
+<mapper namespace="com.api.server.dao.BookmarkGroupMapper">
 	
-	<resultMap id="bookMarkGroupResponse" type="com.api.server.model.bookmarkgroup.BookMarkGroupResponse" autoMapping="true"/>
+	<resultMap id="bookmarkGroupResponse" type="com.api.server.model.bookmarkgroup.BookmarkGroupResponse" autoMapping="true"/>
 	
-	<select id="selectBookMarkGroups" resultMap="bookMarkGroupResponse">
+	<select id="selectBookmarkGroups" resultMap="bookmarkGroupResponse">
  		SELECT * FROM BOOK_MARK_GROUP 
  		WHERE ADV_ID = #{advId} 
  		ORDER BY TITLE ASC
 	</select>
 	
 	
-	<update id="updateBookMarkGroup">
+	<update id="updateBookmarkGroup">
  		UPDATE BOOK_MARK_GROUP SET
  		  TITLE = #{title}
  		 ,MOD_DT = NOW()
@@ -20,7 +20,7 @@
 	</update>
 	
 	
-	<insert id="createBookMarkGroup">
+	<insert id="createBookmarkGroup">
  		INSERT INTO BOOK_MARK_GROUP (
  			 ID
  			,ADV_ID
@@ -39,18 +39,13 @@
 	</insert>
 	
 	
-	<delete id="deleteBookMarkGroup">
+	<delete id="deleteBookmarkGroup">
  		DELETE FROM BOOK_MARK_GROUP
  		WHERE ADV_ID = #{advId}
  		AND ID IN
  		<foreach collection="id" item="item" open="(" close=")" separator=",">
 			#{item}
         </foreach>
-	</delete>
-	
-	
-	<delete id="deleteBookMarkGroups">
- 		DELETE FROM BOOK_MARK_GROUP
 	</delete>
 	
 </mapper>

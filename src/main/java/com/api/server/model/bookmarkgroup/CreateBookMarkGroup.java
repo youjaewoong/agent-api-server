@@ -11,9 +11,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateBookMarkGroup {
+public class CreateBookmarkGroup {
 	
-	public CreateBookMarkGroup() {
+	public CreateBookmarkGroup() {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 		this.basicGroupYn = "N";
 	}

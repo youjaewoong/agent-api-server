@@ -11,9 +11,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateBookMark {
+public class CreateBookmark {
 	
-	public CreateBookMark() {
+	public CreateBookmark() {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 	}
 	

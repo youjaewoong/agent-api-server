@@ -8,9 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookMarkByGroupResponse {
+public class BookmarksResponse {
 	
 	private String id;
 	private String title;
-	List<BookMarkResponse> bookMarkByGroups = new ArrayList<>();
+	private String basicGroupYn;
+	List<BookmarkResponse> bookMarkByGroups = new ArrayList<>();
 }

@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.model.bookmark.BookMarkByGroupResponse;
-import com.api.server.model.bookmark.CreateBookMark;
-import com.api.server.model.bookmark.DeleteBookMark;
-import com.api.server.model.bookmark.SearchBookMarkRequest;
-import com.api.server.model.bookmark.UpdateBookMark;
+import com.api.server.model.bookmark.BookmarksResponse;
+import com.api.server.model.bookmark.CreateBookmark;
+import com.api.server.model.bookmark.DeleteBookmark;
+import com.api.server.model.bookmark.DeleteBookmarks;
+import com.api.server.model.bookmark.SearchBookmarkRequest;
+import com.api.server.model.bookmark.UpdateBookmark;
 import com.api.server.service.BookMarkService;
 
 import io.swagger.annotations.ApiOperation;
@@ -25,50 +26,53 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-public class BookMarkController {
+public class BookmarkController {
 
 	private final BookMarkService bookMarkService;
 	
 
 	@ApiOperation("조회")
     @GetMapping("/bookmarks")
-    public List<BookMarkByGroupResponse> getBookMarks(@Valid SearchBookMarkRequest searchBookMarkRequest) {
-        return bookMarkService.selectBookMarks(searchBookMarkRequest);
+    public List<BookmarksResponse> getBookmarks(@Valid SearchBookmarkRequest searchBookmarkRequest) {
+        return bookMarkService.selectBookmarks(searchBookmarkRequest);
     }
     
 	
 	@ApiOperation("추가")
     @PostMapping("/bookmarks")
-    public void addBookMark(@Valid @RequestBody CreateBookMark createBookMark) throws Exception {
-    	bookMarkService.createBookMark(createBookMark);
+    public void addBookmark(@Valid @RequestBody CreateBookmark createBookmark) throws Exception {
+    	bookMarkService.createBookmark(createBookmark);
     }
     
 	
 	@ApiOperation("수정")
     @PutMapping("/bookmarks")
-    public void editBookMark(@Valid @RequestBody UpdateBookMark updateBookMark) {
-    	bookMarkService.updateBookMark(updateBookMark);
+    public void editBookmark(@Valid @RequestBody UpdateBookmark updateBookmark) {
+    	bookMarkService.updateBookmark(updateBookmark);
     }
 	
 	
 	@ApiOperation("단건삭제")
     @DeleteMapping("/bookmarks/{id}")
-    public void removeBookMark(@Valid @NotEmpty @PathVariable String id) {
-    	bookMarkService.deleteBookMark(id);
-    }
-	
-	
-	@ApiOperation("건별삭제")
-    @DeleteMapping("/bookmarks")
-    public void removeBookMarks(@Valid @RequestBody DeleteBookMark deleteBookMark) {
-    	bookMarkService.deleteBookMarks(deleteBookMark);
+    public void removeBookmark(@Valid @NotEmpty @PathVariable String id, 
+    						   @Valid DeleteBookmark deleteBookmark) {
+		deleteBookmark.setId(id);
+    	bookMarkService.deleteBookmark(deleteBookmark);
     }
 	
 	
 	@ApiOperation("그룹별삭제")
-    @DeleteMapping("/bookmarks/groups")
-    public void removeBookMarkByGroups(@Valid @RequestBody DeleteBookMark deleteBookMark) {
-    	bookMarkService.deleteBookMarkByGroups(deleteBookMark);
+	@DeleteMapping("/bookmarks/groups")
+	public void removeBookmarkByGroups(@Valid @RequestBody DeleteBookmarks deleteBookmark) {
+		bookMarkService.deleteBookmarkByGroups(deleteBookmark);
+	}
+	
+	
+	@ApiOperation("그룹삭제")
+    @DeleteMapping("/bookmarks/group/{id}")
+    public void removeBookmarkByGroup(@Valid @NotEmpty @PathVariable String id, 
+    								  @Valid DeleteBookmark deleteBookmark) {
+		deleteBookmark.setId(id);
+    	bookMarkService.deleteBookmarkByGroup(deleteBookmark);
     }
-
 }

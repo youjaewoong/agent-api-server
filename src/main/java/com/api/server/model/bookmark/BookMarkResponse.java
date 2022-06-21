@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookMarkResponse {
+public class BookmarkResponse {
 	private String id;
 	private String advId;
 	private String title;
@@ -16,5 +16,6 @@ public class BookMarkResponse {
 	private char type;
 	private String groupId;
 	private String groupTitle;
+	private String basicGroupYn;
 	private Date regDt;
 }

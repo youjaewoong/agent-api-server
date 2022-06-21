@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookMarkGroupResponse {
+public class BookmarkGroupResponse {
 	private String id;
 	private String title;
 	private String basicGroupYn;

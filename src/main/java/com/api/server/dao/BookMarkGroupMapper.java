@@ -5,24 +5,22 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.api.server.model.bookmarkgroup.BookMarkGroupResponse;
-import com.api.server.model.bookmarkgroup.CreateBookMarkGroup;
-import com.api.server.model.bookmarkgroup.DeleteBookMarkGroup;
-import com.api.server.model.bookmarkgroup.SearchBookMarkGroupRequest;
-import com.api.server.model.bookmarkgroup.UpdateBookMarkGroup.UpdateBookMarkGroups;
+import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
+import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 
 @Repository
 @Mapper
-public interface BookMarkGroupMapper {
+public interface BookmarkGroupMapper {
 
-	List<BookMarkGroupResponse> selectBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest);
+	List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest);
 
-	int createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
+	int createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup);
     
-	int updateBookMarkGroup(UpdateBookMarkGroups updateBookMarkGroups);
+	int updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup);
 
-	int deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup);
-
-	int deleteBookMarkGroups();
+	int deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup);
 
 }

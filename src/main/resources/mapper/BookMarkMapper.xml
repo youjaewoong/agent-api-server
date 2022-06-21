@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.api.server.dao.BookMarkMapper">
+<mapper namespace="com.api.server.dao.BookmarkMapper">
 	
-	<resultMap id="bookMarkResponse" type="com.api.server.model.bookmark.BookMarkResponse" autoMapping="true"/>
+	<resultMap id="bookmarkResponse" type="com.api.server.model.bookmark.BookmarkResponse" autoMapping="true"/>
 	
-	<select id="selectBookMarks" resultMap="bookMarkResponse">
+	<select id="selectBookmarks" resultMap="bookmarkResponse">
 		SELECT * FROM ( 
 			SELECT 
 			  A.ID
@@ -16,6 +16,7 @@
 			 ,A.TYPE
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
+			 ,B.BASIC_GROUP_YN
 			 ,DATE_FORMAT(A.REG_DT, '%Y-%m-%d %T') AS REG_DT
 			FROM BOOK_MARK A
 			LEFT JOIN BOOK_MARK_GROUP B
@@ -29,7 +30,7 @@
 	</select>
 
 	
-	<update id="updateBookMark">
+	<update id="updateBookmark">
  		UPDATE BOOK_MARK SET
  		  TITLE = #{title}
  		 ,CONTENTS = #{contents}
@@ -39,7 +40,7 @@
 	</update>
 	
 	
-	<insert id="createBookMark">
+	<insert id="createBookmark">
  		INSERT INTO BOOK_MARK (
  			 ID
  			,ADV_ID
@@ -64,30 +65,27 @@
 	</insert>
 	
 	
-	<delete id="deleteBookMark">
+	<delete id="deleteBookmark">
  		DELETE FROM BOOK_MARK
- 		WHERE ADV_ID = #{advId}
- 		AND ID = #{id}
+ 		WHERE ID = #{id}
+ 		AND ADV_ID = #{advId}
 	</delete>
 	
 	
-	<delete id="deleteBookMarks">
- 		DELETE FROM BOOK_MARK
- 		WHERE ADV_ID = #{advId}
- 		AND ID IN
- 		<foreach collection="id" item="item" open="(" close=")" separator=",">
-			#{item}
+    <delete id="deleteBookmarkByGroups">
+         DELETE FROM BOOK_MARK
+         WHERE ADV_ID = #{advId}
+         AND GROUP_ID IN
+         <foreach collection="id" item="item" open="(" close=")" separator=",">
+            #{item}
         </foreach>
 	</delete>
-
 	
-	<delete id="deleteBookMarkByGroups">
+		
+	<delete id="deleteBookmarkByGroup">
  		DELETE FROM BOOK_MARK
- 		WHERE ADV_ID = #{advId}
- 		AND GROUP_ID IN
-	 	<foreach collection="id" item="item" open="(" close=")" separator=",">
-			#{item}
-        </foreach>
+ 		WHERE GROUP_ID = #{id}
+ 		AND ADV_ID = #{advId}
 	</delete>
 
 </mapper>

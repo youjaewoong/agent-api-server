@@ -11,14 +11,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.server.dao.BookMarkMapper;
-import com.api.server.model.bookmark.BookMarkBucket;
-import com.api.server.model.bookmark.BookMarkByGroupResponse;
-import com.api.server.model.bookmark.BookMarkResponse;
-import com.api.server.model.bookmark.CreateBookMark;
-import com.api.server.model.bookmark.DeleteBookMark;
-import com.api.server.model.bookmark.SearchBookMarkRequest;
-import com.api.server.model.bookmark.UpdateBookMark;
+import com.api.server.dao.BookmarkMapper;
+import com.api.server.model.bookmark.BookmarkBucket;
+import com.api.server.model.bookmark.BookmarksResponse;
+import com.api.server.model.bookmark.BookmarkResponse;
+import com.api.server.model.bookmark.CreateBookmark;
+import com.api.server.model.bookmark.DeleteBookmark;
+import com.api.server.model.bookmark.DeleteBookmarks;
+import com.api.server.model.bookmark.SearchBookmarkRequest;
+import com.api.server.model.bookmark.UpdateBookmark;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,22 +30,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookMarkServiceImpl implements BookMarkService {
 	
-	private final BookMarkMapper bookMarkMapper;
+	private final BookmarkMapper bookMarkMapper;
 
 	@Override
-	public List<BookMarkByGroupResponse> selectBookMarks(SearchBookMarkRequest searchBookMarkRequest) {
+	public List<BookmarksResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest) {
 		
-		List<BookMarkResponse> bookMarks = bookMarkMapper.selectBookMarks(searchBookMarkRequest);
-		List<BookMarkResponse> groups = bookMarks.stream()
+		List<BookmarkResponse> bookMarks = bookMarkMapper.selectBookmarks(searchBookmarkRequest);
+		List<BookmarkResponse> groups = bookMarks.stream()
 				.filter(distinctByKey(m -> m.getGroupId()))
 				.collect(Collectors.toList());
 
 		
-		List<BookMarkByGroupResponse> BookMarkByGroups = new ArrayList<BookMarkByGroupResponse>();
+		List<BookmarksResponse> BookMarkByGroups = new ArrayList<BookmarksResponse>();
 		groups.forEach(group -> {
-			BookMarkByGroupResponse bookMarkByGroup = new BookMarkByGroupResponse();
+			BookmarksResponse bookMarkByGroup = new BookmarksResponse();
 			bookMarkByGroup.setId(group.getGroupId());
 			bookMarkByGroup.setTitle(group.getGroupTitle());
+			bookMarkByGroup.setBasicGroupYn(group.getBasicGroupYn());
 			
 			bookMarks.forEach(bookmark -> {
 				if (group.getGroupId().equals(bookmark.getGroupId())) {
@@ -58,43 +60,42 @@ public class BookMarkServiceImpl implements BookMarkService {
 
 
 	@Override
-	public void updateBookMark(UpdateBookMark updateBookMark) {
-		updateBookMark.setTitle();
-		bookMarkMapper.updateBookMark(updateBookMark);
+	public void updateBookmark(UpdateBookmark updateBookmark) {
+		updateBookmark.setTitle();
+		bookMarkMapper.updateBookmark(updateBookmark);
 	}
 	
 
 	@Override
-	public void createBookMark(CreateBookMark createBookMark) throws Exception {
+	public void createBookmark(CreateBookmark createBookmark) throws Exception {
 		ObjectMapper objectMapper =  new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		BookMarkBucket bookMarkBucket = objectMapper.readValue(createBookMark.getContents(), BookMarkBucket.class);
+		BookmarkBucket bookMarkBucket = objectMapper.readValue(createBookmark.getContents(), BookmarkBucket.class);
 		
 		if (bookMarkBucket.getContents().getSubTitle() != null) {
-			createBookMark.setSubTitle(bookMarkBucket.getContents().getSubTitle());
+			createBookmark.setSubTitle(bookMarkBucket.getContents().getSubTitle());
 		}
-		createBookMark.setTitle(bookMarkBucket.getTitle());
-		createBookMark.setContents(bookMarkBucket.getContents().getContents());
-		bookMarkMapper.createBookMark(createBookMark);
+		createBookmark.setTitle(bookMarkBucket.getTitle());
+		createBookmark.setContents(bookMarkBucket.getContents().getContents());
+		bookMarkMapper.createBookmark(createBookmark);
 	}
 	
 
 	@Override
-	public void deleteBookMark(String id) {
-		bookMarkMapper.deleteBookMark(id);
+	public void deleteBookmark(DeleteBookmark deleteBookmark) {
+		bookMarkMapper.deleteBookmark(deleteBookmark);
 	}
 	
 	
 	@Override
-	public void deleteBookMarks(DeleteBookMark deleteBookMark) {
-		bookMarkMapper.deleteBookMarks(deleteBookMark);
+	public void deleteBookmarkByGroups(DeleteBookmarks deleteBookmarks) {
+		bookMarkMapper.deleteBookmarkByGroups(deleteBookmarks);
 	}
 	
 
 	@Override
-	public void deleteBookMarkByGroups(DeleteBookMark deleteBookMark) {
-		bookMarkMapper.deleteBookMarkByGroups(deleteBookMark);
-		
+	public void deleteBookmarkByGroup(DeleteBookmark deleteBookmark) {
+		bookMarkMapper.deleteBookmarkByGroup(deleteBookmark);
 	}
 	
 

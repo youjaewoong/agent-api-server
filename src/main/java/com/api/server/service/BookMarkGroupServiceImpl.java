@@ -6,12 +6,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.server.dao.BookMarkGroupMapper;
-import com.api.server.model.bookmarkgroup.BookMarkGroupResponse;
-import com.api.server.model.bookmarkgroup.CreateBookMarkGroup;
-import com.api.server.model.bookmarkgroup.DeleteBookMarkGroup;
-import com.api.server.model.bookmarkgroup.SearchBookMarkGroupRequest;
-import com.api.server.model.bookmarkgroup.UpdateBookMarkGroup;
+import com.api.server.dao.BookmarkGroupMapper;
+import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
+import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,41 +21,51 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 	
-	private final BookMarkGroupMapper bookMarkGroupMapper;
+	private final BookmarkGroupMapper bookMarkGroupMapper;
 	
 	@Override
-	public List<BookMarkGroupResponse> selectBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest) {
-		return bookMarkGroupMapper.selectBookMarkGroups(searchBookMarkGroupRequest);
+	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest) {
+		return bookMarkGroupMapper.selectBookmarkGroups(searchBookmarkGroupRequest);
 	}
 
 	
 	@Override
-	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup) {
-		updateBookMarkGroup.getEditGroups().forEach(group -> {
-			bookMarkGroupMapper.updateBookMarkGroup(group);
+	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
+		
+		int groupsSize = updateBookmarkGroups.getEditGroups().size();
+		long distinctSize = updateBookmarkGroups.getEditGroups().stream().map(group -> {
+			return group.getTitle();
+		}).distinct().count();
+		
+		if (groupsSize != distinctSize) {
+			throw new Exception();
+		}
+		
+		updateBookmarkGroups.getEditGroups().forEach(group -> {
+			bookMarkGroupMapper.updateBookmarkGroup(group);
 		});
 	}
-
+	
 	
 	@Override
-	public BookMarkGroupResponse createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup) {
-		bookMarkGroupMapper.createBookMarkGroup(createBookMarkGroup);
-		BookMarkGroupResponse bookMarkGroupResponse = new BookMarkGroupResponse();
-		BeanUtils.copyProperties(createBookMarkGroup, bookMarkGroupResponse);
+	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup) {
+		bookMarkGroupMapper.updateBookmarkGroup(updateBookmarkGroup);
+	}
+	
+	
+	@Override
+	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup) {
+		bookMarkGroupMapper.createBookmarkGroup(createBookmarkGroup);
+		BookmarkGroupResponse bookMarkGroupResponse = new BookmarkGroupResponse();
+		BeanUtils.copyProperties(createBookmarkGroup, bookMarkGroupResponse);
 		
 		return bookMarkGroupResponse;
 	}
 
 
 	@Override
-	public void deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup) {
-		bookMarkGroupMapper.deleteBookMarkGroup(deleteBookMarkGroup);
-	}
-
-	
-	@Override
-	public void deleteBookMarkGroups() {
-		bookMarkGroupMapper.deleteBookMarkGroups();
+	public void deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup) {
+		bookMarkGroupMapper.deleteBookmarkGroup(deleteBookmarkGroup);
 	}
 
 }

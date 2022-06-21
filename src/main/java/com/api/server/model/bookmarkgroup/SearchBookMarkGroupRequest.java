@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SearchBookMarkGroupRequest {
+public class SearchBookmarkGroupRequest {
 	
 	@NotBlank
 	private String advId;

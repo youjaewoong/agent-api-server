@@ -2,22 +2,23 @@ package com.api.server.service;
 
 import java.util.List;
 
-import com.api.server.model.bookmarkgroup.BookMarkGroupResponse;
-import com.api.server.model.bookmarkgroup.CreateBookMarkGroup;
-import com.api.server.model.bookmarkgroup.DeleteBookMarkGroup;
-import com.api.server.model.bookmarkgroup.SearchBookMarkGroupRequest;
-import com.api.server.model.bookmarkgroup.UpdateBookMarkGroup;
+import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
+import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 
 public interface BookMarkGroupService {
 	
-	public List<BookMarkGroupResponse> selectBookMarkGroups(SearchBookMarkGroupRequest searchBookMarkGroupRequest);
+	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest);
 
-	public void updateBookMarkGroup(UpdateBookMarkGroup updateBookMarkGroup);
-	
-	public BookMarkGroupResponse createBookMarkGroup(CreateBookMarkGroup createBookMarkGroup);
-	
-	public void deleteBookMarkGroup(DeleteBookMarkGroup deleteBookMarkGroup);
+	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup);
 
-	public void deleteBookMarkGroups();
+	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception;
+	
+	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup);
+	
+	public void deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup);
 
 }

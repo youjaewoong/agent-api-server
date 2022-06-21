@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateBookMark {
+public class UpdateBookmark {
 	private String id;
 	private String advId;
 	@JsonIgnore
