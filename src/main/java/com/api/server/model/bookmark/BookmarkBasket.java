@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookmarkBucket {
+public class BookmarkBasket {
 	
 	private String title;
 	private Contents contents;
