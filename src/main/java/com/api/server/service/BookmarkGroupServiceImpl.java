@@ -25,8 +25,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	
+	
 	private final BookmarkGroupMapper bookMarkGroupMapper;
 	private final BookmarkService bookMarkService;
+	
 	
 	@Override
 	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest) {
@@ -38,10 +40,12 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
 		
         int groupsSize = updateBookmarkGroups.getGroups().size();
-        long distinctSize = updateBookmarkGroups.getGroups().stream().map(group -> {
-            return group.getTitle();
-        }).distinct().count();
-        if (groupsSize != distinctSize) {
+        long deduplicationSize = updateBookmarkGroups.getGroups().stream()
+        		.map(group -> {
+        				return group.getTitle();
+        			})
+        		.distinct().count();
+        if (groupsSize != deduplicationSize) {
             throw new Exception();
         }
 		

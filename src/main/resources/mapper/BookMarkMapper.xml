@@ -23,6 +23,9 @@
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.ADV_ID = #{advId}
+        <if test="groupId != null and !groupId.equals('')">
+          AND AA.GROUP_ID = #{groupId}
+        </if>
 		ORDER BY GROUP_TITLE ASC
 	</select>
 

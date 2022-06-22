@@ -13,5 +13,5 @@ public class BookmarksResponse {
 	private String id;
 	private String title;
 	private String basicGroupYn;
-	List<BookmarkResponse> bookMarkByGroups = new ArrayList<>();
+	List<BookmarkResponse> bookmarks = new ArrayList<>();
 }

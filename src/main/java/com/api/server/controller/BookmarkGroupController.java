@@ -1,9 +1,9 @@
 package com.api.server.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.model.bookmark.SearchBookmarkRequest;
 import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
 import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
@@ -22,7 +21,6 @@ import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 import com.api.server.service.BookmarkGroupService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +34,9 @@ public class BookmarkGroupController {
 	
 	@ApiOperation("조회")
     @GetMapping("/bookmark-groups")
-    public List<BookmarkGroupResponse> getBookmarkGroups(@RequestParam Map<String, String> params) {
-		SearchBookmarkGroupRequest searchBookmarkGroupRequest = 
-				new ObjectMapper().convertValue(params, SearchBookmarkGroupRequest.class);
+    public List<BookmarkGroupResponse> getBookmarkGroups(@NotBlank @RequestParam("adv_id") String advId) {
+		SearchBookmarkGroupRequest searchBookmarkGroupRequest = new SearchBookmarkGroupRequest();
+		searchBookmarkGroupRequest.setAdvId(advId);
 		return bookMarkGroupService.selectBookmarkGroups(searchBookmarkGroupRequest);
     }
     

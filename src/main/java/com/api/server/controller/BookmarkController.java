@@ -1,11 +1,12 @@
 package com.api.server.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,6 @@ import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
 import com.api.server.model.bookmark.UpdateBookmark;
 import com.api.server.service.BookmarkService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +34,14 @@ public class BookmarkController {
 	private final BookmarkService bookMarkService;
 	
 
-	@ApiOperation("조회")
     @GetMapping("/bookmarks")
-    public List<BookmarksResponse> getBookmarks(@RequestParam Map<String, String> params) {
+	@ApiOperation(value = "조회")
+    public List<BookmarksResponse> getBookmarks(@NotBlank @RequestParam("adv_id") String advId,
+    											@Nullable @RequestParam("group_id") String groupId) {
 		
-		SearchBookmarkRequest searchBookmarkRequest = 
-				new ObjectMapper().convertValue(params, SearchBookmarkRequest.class);
+		SearchBookmarkRequest searchBookmarkRequest = new SearchBookmarkRequest();
+		searchBookmarkRequest.setAdvId(advId);
+		searchBookmarkRequest.setGroupId(groupId);
 		
         return bookMarkService.selectBookmarks(searchBookmarkRequest);
     }
@@ -61,9 +63,7 @@ public class BookmarkController {
 	
 	@ApiOperation("단건삭제")
     @DeleteMapping("/bookmarks/{id}")
-    public void removeBookmark(@Valid @NotEmpty @PathVariable String id, 
-    						   @Valid DeleteBookmark deleteBookmark) {
-		deleteBookmark.setId(id);
+    public void removeBookmark(@Valid @RequestBody DeleteBookmark deleteBookmark) {
     	bookMarkService.deleteBookmark(deleteBookmark);
     }
 	

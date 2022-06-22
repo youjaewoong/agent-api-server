@@ -35,22 +35,21 @@ public class BookmarkServiceImpl implements BookmarkService {
 	@Override
 	public List<BookmarksResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest) {
 		
-		List<BookmarkResponse> bookMarks = bookMarkMapper.selectBookmarks(searchBookmarkRequest);
-		List<BookmarkResponse> groups = bookMarks.stream()
-				.filter(distinctByKey(m -> m.getGroupId()))
+		List<BookmarkResponse> bookmarks = bookMarkMapper.selectBookmarks(searchBookmarkRequest);
+		List<BookmarkResponse> groupIds = bookmarks.stream()
+				.filter(distinctByKey(v -> v.getGroupId()))
 				.collect(Collectors.toList());
-
 		
 		List<BookmarksResponse> BookMarkByGroups = new ArrayList<BookmarksResponse>();
-		groups.forEach(group -> {
+		groupIds.forEach(group -> {
 			BookmarksResponse bookMarkByGroup = new BookmarksResponse();
 			bookMarkByGroup.setId(group.getGroupId());
 			bookMarkByGroup.setTitle(group.getGroupTitle());
 			bookMarkByGroup.setBasicGroupYn(group.getBasicGroupYn());
 			
-			bookMarks.forEach(bookmark -> {
+			bookmarks.forEach(bookmark -> {
 				if (group.getGroupId().equals(bookmark.getGroupId())) {
-					bookMarkByGroup.getBookMarkByGroups().add(bookmark);
+					bookMarkByGroup.getBookmarks().add(bookmark);
 				}
 			});
 			BookMarkByGroups.add(bookMarkByGroup);
