@@ -1,6 +1,7 @@
 package com.api.server.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.bookmark.BookmarksResponse;
@@ -20,6 +22,7 @@ import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
 import com.api.server.model.bookmark.UpdateBookmark;
 import com.api.server.service.BookmarkService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +36,11 @@ public class BookmarkController {
 
 	@ApiOperation("조회")
     @GetMapping("/bookmarks")
-    public List<BookmarksResponse> getBookmarks(@Valid SearchBookmarkRequest searchBookmarkRequest) {
+    public List<BookmarksResponse> getBookmarks(@RequestParam Map<String, String> params) {
+		
+		SearchBookmarkRequest searchBookmarkRequest = 
+				new ObjectMapper().convertValue(params, SearchBookmarkRequest.class);
+		
         return bookMarkService.selectBookmarks(searchBookmarkRequest);
     }
     

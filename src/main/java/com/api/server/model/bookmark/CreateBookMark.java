@@ -5,12 +5,15 @@ import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateBookmark {
 	
 	public CreateBookmark() {

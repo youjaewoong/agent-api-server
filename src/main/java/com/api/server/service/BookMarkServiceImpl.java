@@ -61,7 +61,6 @@ public class BookmarkServiceImpl implements BookmarkService {
 
 	@Override
 	public void updateBookmark(UpdateBookmark updateBookmark) {
-		updateBookmark.setTitle();
 		bookMarkMapper.updateBookmark(updateBookmark);
 	}
 	

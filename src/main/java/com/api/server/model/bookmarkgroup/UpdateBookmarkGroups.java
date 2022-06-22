@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class UpdateBookmarkGroups {
 	
-	private List<@Valid UpdateBookmarkGroup> editGroups;
+	private List<@Valid UpdateBookmarkGroup> groups;
 
 }

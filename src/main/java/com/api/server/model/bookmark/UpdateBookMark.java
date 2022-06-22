@@ -3,12 +3,15 @@ package com.api.server.model.bookmark;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateBookmark {
 	private String id;
 	private String advId;
@@ -23,12 +26,4 @@ public class UpdateBookmark {
     private enum updateType {
         K,S;
     }
-    
-	public void setTitle() {
-		if (this.contents.length() > 10) {
-			this.title = this.contents.substring(0, 7) + "...";
-		} else {
-			this.title = this.contents;
-		}
-	}
 }

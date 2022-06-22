@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	
@@ -38,15 +37,15 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	@Override
 	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
 		
-        int groupsSize = updateBookmarkGroups.getEditGroups().size();
-        long distinctSize = updateBookmarkGroups.getEditGroups().stream().map(group -> {
+        int groupsSize = updateBookmarkGroups.getGroups().size();
+        long distinctSize = updateBookmarkGroups.getGroups().stream().map(group -> {
             return group.getTitle();
         }).distinct().count();
         if (groupsSize != distinctSize) {
             throw new Exception();
         }
 		
-		updateBookmarkGroups.getEditGroups().forEach(group -> {
+		updateBookmarkGroups.getGroups().forEach(group -> {
 			bookMarkGroupMapper.updateBookmarkGroup(group);
 		});
 	}
@@ -69,7 +68,6 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 		bookMarkGroupMapper.createBookmarkGroup(createBookmarkGroup);
 		BookmarkGroupResponse bookMarkGroupResponse = new BookmarkGroupResponse();
 		BeanUtils.copyProperties(createBookmarkGroup, bookMarkGroupResponse);
-		
 		return bookMarkGroupResponse;
 	}
 
