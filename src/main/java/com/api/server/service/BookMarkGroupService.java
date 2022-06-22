@@ -10,15 +10,15 @@ import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 
-public interface BookMarkGroupService {
+public interface BookmarkGroupService {
 	
 	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest);
 
-	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup);
+	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup) throws Exception;
 
 	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception;
 	
-	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup);
+	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup) throws Exception;
 	
 	public void deleteBookmarkGroups(DeleteBookmarkGroups deleteBookmarkGroups);
 

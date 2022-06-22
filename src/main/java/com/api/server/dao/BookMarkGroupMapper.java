@@ -26,4 +26,6 @@ public interface BookmarkGroupMapper {
 	
 	int deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup);
 
+	int checkBookmarkGroupTitle(SearchBookmarkGroupRequest searchBookmarkGroupRequest);
+
 }

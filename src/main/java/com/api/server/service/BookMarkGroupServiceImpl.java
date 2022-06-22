@@ -1,5 +1,6 @@
 package com.api.server.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -23,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BookMarkGroupServiceImpl implements BookMarkGroupService {
+public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	
 	private final BookmarkGroupMapper bookMarkGroupMapper;
-	private final BookMarkService bookMarkService;
+	private final BookmarkService bookMarkService;
 	
 	@Override
 	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest) {
@@ -37,14 +38,13 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 	@Override
 	public void updateBookmarkGroups(UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
 		
-		int groupsSize = updateBookmarkGroups.getEditGroups().size();
-		long distinctSize = updateBookmarkGroups.getEditGroups().stream().map(group -> {
-			return group.getTitle();
-		}).distinct().count();
-		
-		if (groupsSize != distinctSize) {
-			throw new Exception();
-		}
+        int groupsSize = updateBookmarkGroups.getEditGroups().size();
+        long distinctSize = updateBookmarkGroups.getEditGroups().stream().map(group -> {
+            return group.getTitle();
+        }).distinct().count();
+        if (groupsSize != distinctSize) {
+            throw new Exception();
+        }
 		
 		updateBookmarkGroups.getEditGroups().forEach(group -> {
 			bookMarkGroupMapper.updateBookmarkGroup(group);
@@ -53,13 +53,19 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 	
 	
 	@Override
-	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup) {
+	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup) throws Exception {
+		
+		this.checkBookmarkGroupTitle(Arrays.asList(updateBookmarkGroup.getTitle()), updateBookmarkGroup.getAdvId());
+		
 		bookMarkGroupMapper.updateBookmarkGroup(updateBookmarkGroup);
 	}
 	
 	
 	@Override
-	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup) {
+	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup) throws Exception {
+		
+		this.checkBookmarkGroupTitle(Arrays.asList(createBookmarkGroup.getTitle()), createBookmarkGroup.getAdvId());
+		
 		bookMarkGroupMapper.createBookmarkGroup(createBookmarkGroup);
 		BookmarkGroupResponse bookMarkGroupResponse = new BookmarkGroupResponse();
 		BeanUtils.copyProperties(createBookmarkGroup, bookMarkGroupResponse);
@@ -90,6 +96,24 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 		deleteBookmark.setAdvId(deleteBookmarkGroup.getAdvId());
 		deleteBookmark.setId(deleteBookmarkGroup.getId());
 		bookMarkService.deleteBookmarkByGroup(deleteBookmark);
+	}
+	
+
+	/**
+	 * 타이틀 중복 체크
+	 * @param titls
+	 * @throws Exception
+	 */
+	private void checkBookmarkGroupTitle(List<String> titls, String advId) throws Exception {
+        
+		SearchBookmarkGroupRequest searchBookmarkGroupRequest = new SearchBookmarkGroupRequest();
+		searchBookmarkGroupRequest.setAdvId(advId);
+		searchBookmarkGroupRequest.setTitles(titls);
+		
+		int foundCnt = bookMarkGroupMapper.checkBookmarkGroupTitle(searchBookmarkGroupRequest);
+		if (foundCnt > 0) {
+			throw new Exception();
+		}
 	}
 
 }

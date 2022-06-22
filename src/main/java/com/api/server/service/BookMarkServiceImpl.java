@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BookMarkServiceImpl implements BookMarkService {
+public class BookmarkServiceImpl implements BookmarkService {
 	
 	private final BookmarkMapper bookMarkMapper;
 

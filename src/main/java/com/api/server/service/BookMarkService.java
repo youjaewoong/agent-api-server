@@ -9,7 +9,7 @@ import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
 import com.api.server.model.bookmark.UpdateBookmark;
 
-public interface BookMarkService {
+public interface BookmarkService {
 	
 	public List<BookmarksResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest);
 

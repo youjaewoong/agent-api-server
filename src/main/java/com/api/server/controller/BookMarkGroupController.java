@@ -18,7 +18,7 @@ import com.api.server.model.bookmarkgroup.DeleteBookmarkGroups;
 import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
-import com.api.server.service.BookMarkGroupService;
+import com.api.server.service.BookmarkGroupService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class BookmarkGroupController {
 
-	private final BookMarkGroupService bookMarkGroupService;
+	private final BookmarkGroupService bookMarkGroupService;
 	
 	
 	@ApiOperation("조회")
@@ -39,7 +39,7 @@ public class BookmarkGroupController {
     
 	@ApiOperation("추가")
     @PostMapping("/bookmark-groups")
-    public BookmarkGroupResponse addBookmarkGroup(@Valid @RequestBody CreateBookmarkGroup createBookmarkGroup) {
+    public BookmarkGroupResponse addBookmarkGroup(@Valid @RequestBody CreateBookmarkGroup createBookmarkGroup) throws Exception {
 		return bookMarkGroupService.createBookmarkGroup(createBookmarkGroup);
     }
     
@@ -53,7 +53,7 @@ public class BookmarkGroupController {
 	
 	@ApiOperation("단건수정")
 	@PutMapping("/bookmark-groups/{id}")
-	public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroup updateBookmarkGroup) {
+	public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroup updateBookmarkGroup) throws Exception {
 		bookMarkGroupService.updateBookmarkGroup(updateBookmarkGroup);
 	}
 	
@@ -70,5 +70,5 @@ public class BookmarkGroupController {
     public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroup deleteBookmarkGroup) {
 		bookMarkGroupService.deleteBookmarkGroup(deleteBookmarkGroup);
     }
-    
+	
 }

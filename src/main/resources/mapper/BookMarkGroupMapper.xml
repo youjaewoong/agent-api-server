@@ -12,6 +12,18 @@
 	</select>
 	
 	
+	<select id="checkBookmarkGroupTitle" resultType="int">
+ 		SELECT COUNT(*) FROM BOOK_MARK_GROUP 
+ 		WHERE ADV_ID = #{advId}
+ 		<if test="titles != null and !titles.equals('')">
+ 		  AND TITLE IN
+ 		<foreach collection="titles" item="item" open="(" close=")" separator=",">
+		  #{item}
+        </foreach>
+        </if>
+	</select>
+	
+	
 	<update id="updateBookmarkGroup">
  		UPDATE BOOK_MARK_GROUP SET
  		  TITLE = #{title}

@@ -19,7 +19,7 @@ import com.api.server.model.bookmark.DeleteBookmark;
 import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
 import com.api.server.model.bookmark.UpdateBookmark;
-import com.api.server.service.BookMarkService;
+import com.api.server.service.BookmarkService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class BookmarkController {
 
-	private final BookMarkService bookMarkService;
+	private final BookmarkService bookMarkService;
 	
 
 	@ApiOperation("조회")
