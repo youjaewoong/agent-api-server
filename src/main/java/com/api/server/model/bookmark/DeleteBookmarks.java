@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class DeleteBookmarks {
 	
-    private List<@NotNull String> id;
+    private List<@NotNull String> ids;
 	@NotBlank
 	private String advId;
 }

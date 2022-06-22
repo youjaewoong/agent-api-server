@@ -5,6 +5,7 @@ import java.util.List;
 import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
 import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroups;
 import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
@@ -19,6 +20,8 @@ public interface BookMarkGroupService {
 	
 	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup);
 	
+	public void deleteBookmarkGroups(DeleteBookmarkGroups deleteBookmarkGroups);
+
 	public void deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup);
 
 }

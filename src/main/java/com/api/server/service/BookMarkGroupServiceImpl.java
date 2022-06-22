@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookmarkGroupMapper;
+import com.api.server.model.bookmark.DeleteBookmark;
+import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
 import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroups;
 import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 	
 	private final BookmarkGroupMapper bookMarkGroupMapper;
+	private final BookMarkService bookMarkService;
 	
 	@Override
 	public List<BookmarkGroupResponse> selectBookmarkGroups(SearchBookmarkGroupRequest searchBookmarkGroupRequest) {
@@ -64,8 +69,27 @@ public class BookMarkGroupServiceImpl implements BookMarkGroupService {
 
 
 	@Override
+	@Transactional
+	public void deleteBookmarkGroups(DeleteBookmarkGroups deleteBookmarkGroups) {
+		
+		bookMarkGroupMapper.deleteBookmarkGroups(deleteBookmarkGroups);
+		DeleteBookmarks deleteBookmarks = 
+				new ObjectMapper().convertValue(deleteBookmarkGroups, DeleteBookmarks.class);
+		bookMarkService.deleteBookmarkByGroups(deleteBookmarks);
+		
+	}
+	
+	
+	@Override
+	@Transactional
 	public void deleteBookmarkGroup(DeleteBookmarkGroup deleteBookmarkGroup) {
+		
 		bookMarkGroupMapper.deleteBookmarkGroup(deleteBookmarkGroup);
+		
+		DeleteBookmark deleteBookmark = new DeleteBookmark();
+		deleteBookmark.setAdvId(deleteBookmarkGroup.getAdvId());
+		deleteBookmark.setId(deleteBookmarkGroup.getId());
+		bookMarkService.deleteBookmarkByGroup(deleteBookmark);
 	}
 
 }

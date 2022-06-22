@@ -17,6 +17,7 @@
  		  TITLE = #{title}
  		 ,MOD_DT = NOW()
  		WHERE ID = #{id}
+ 		AND ADV_ID = #{advId}
 	</update>
 	
 	
@@ -39,13 +40,19 @@
 	</insert>
 	
 	
-	<delete id="deleteBookmarkGroup">
+	<delete id="deleteBookmarkGroups">
  		DELETE FROM BOOK_MARK_GROUP
  		WHERE ADV_ID = #{advId}
  		AND ID IN
- 		<foreach collection="id" item="item" open="(" close=")" separator=",">
+ 		<foreach collection="ids" item="item" open="(" close=")" separator=",">
 			#{item}
         </foreach>
 	</delete>
 	
+	
+	<delete id="deleteBookmarkGroup">
+ 		DELETE FROM BOOK_MARK_GROUP
+ 		WHERE ADV_ID = #{advId}
+ 		AND ID = #{id}
+	</delete>
 </mapper>

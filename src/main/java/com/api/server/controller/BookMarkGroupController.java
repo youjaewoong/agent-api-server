@@ -4,19 +4,17 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
 import com.api.server.model.bookmarkgroup.CreateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.DeleteBookmarkGroup;
+import com.api.server.model.bookmarkgroup.DeleteBookmarkGroups;
 import com.api.server.model.bookmarkgroup.SearchBookmarkGroupRequest;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroup;
 import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
@@ -41,7 +39,6 @@ public class BookmarkGroupController {
     
 	@ApiOperation("추가")
     @PostMapping("/bookmark-groups")
-	@ResponseStatus(HttpStatus.CREATED)
     public BookmarkGroupResponse addBookmarkGroup(@Valid @RequestBody CreateBookmarkGroup createBookmarkGroup) {
 		return bookMarkGroupService.createBookmarkGroup(createBookmarkGroup);
     }
@@ -56,15 +53,20 @@ public class BookmarkGroupController {
 	
 	@ApiOperation("단건수정")
 	@PutMapping("/bookmark-groups/{id}")
-	public void editBookmarkGroups(@PathVariable @Valid String id, 
-								   @Valid UpdateBookmarkGroup updateBookmarkGroup) {
-		updateBookmarkGroup.setId(id);
+	public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroup updateBookmarkGroup) {
 		bookMarkGroupService.updateBookmarkGroup(updateBookmarkGroup);
 	}
 	
     
 	@ApiOperation("건별삭제")
 	@DeleteMapping("/bookmark-groups")
+    public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroups deleteBookmarkGroups) {
+		bookMarkGroupService.deleteBookmarkGroups(deleteBookmarkGroups);
+    }
+	
+	
+	@ApiOperation("단건삭제")
+	@DeleteMapping("/bookmark-groups/{id}")
     public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroup deleteBookmarkGroup) {
 		bookMarkGroupService.deleteBookmarkGroup(deleteBookmarkGroup);
     }

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookmarkGroupResponse {
+	
 	private String id;
 	private String title;
 	private String basicGroupYn;

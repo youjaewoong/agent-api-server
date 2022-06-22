@@ -76,7 +76,7 @@
          DELETE FROM BOOK_MARK
          WHERE ADV_ID = #{advId}
          AND GROUP_ID IN
-         <foreach collection="id" item="item" open="(" close=")" separator=",">
+         <foreach collection="ids" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
 	</delete>
