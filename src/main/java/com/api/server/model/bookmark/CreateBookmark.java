@@ -20,7 +20,7 @@ public class CreateBookmark {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 	}
 	
-	private enum addType {
+	private enum CategoryType {
         K,S;
     }
 	
@@ -31,11 +31,11 @@ public class CreateBookmark {
 	@NotBlank
 	private String groupId;
 	@NotBlank
-	private String contents;
+	private String content;
 	@JsonIgnore
 	private String title;
 	@JsonIgnore
 	private String subTitle;
-	private addType type;
+	private CategoryType category;
 	
 }

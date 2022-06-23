@@ -18,12 +18,11 @@ public class UpdateBookmark {
 	@JsonIgnore
 	@NotBlank
 	private String title;
-	private String contents;
-	private updateType type;
+	private String content;
+	private CategoryType type;
 	private String groupId;
 	
-	
-    private enum updateType {
+    private enum CategoryType {
         K,S;
     }
 }

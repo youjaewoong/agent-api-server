@@ -41,7 +41,7 @@ CREATE TABLE `book_mark` (
   `ADV_ID` varchar(20) NOT NULL COMMENT '상담사ID',
   `TITLE` varchar(20) NOT NULL COMMENT '제목',
   `SUB_TITLE` varchar(20) COMMENT '부제목',
-  `CONTENTS` text NOT NULL COMMENT '내용',
+  `CONTENT` text NOT NULL COMMENT '내용',
   `TYPE` char(1) not null COMMENT 'K:지식저장소 S:스크립트',
   `GROUP_ID` varchar(32) DEFAULT NULL COMMENT 'BOOK_MARK_GROUP 고유ID',
   `REG_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',

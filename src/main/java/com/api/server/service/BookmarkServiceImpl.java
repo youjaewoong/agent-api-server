@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookmarkMapper;
-import com.api.server.model.bookmark.BookmarkBasket;
+import com.api.server.model.bookmark.Bookmark;
 import com.api.server.model.bookmark.BookmarksResponse;
 import com.api.server.model.bookmark.BookmarkResponse;
 import com.api.server.model.bookmark.CreateBookmark;
@@ -68,13 +68,13 @@ public class BookmarkServiceImpl implements BookmarkService {
 	public void createBookmark(CreateBookmark createBookmark) throws Exception {
 		ObjectMapper objectMapper =  new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		BookmarkBasket bookMarkBucket = objectMapper.readValue(createBookmark.getContents(), BookmarkBasket.class);
+		Bookmark bookMarkBucket = objectMapper.readValue(createBookmark.getContent(), Bookmark.class);
 		
-		if (bookMarkBucket.getContents().getSubTitle() != null) {
-			createBookmark.setSubTitle(bookMarkBucket.getContents().getSubTitle());
+		if (bookMarkBucket.getContent().getSubTitle() != null) {
+			createBookmark.setSubTitle(bookMarkBucket.getContent().getSubTitle());
 		}
 		createBookmark.setTitle(bookMarkBucket.getTitle());
-		createBookmark.setContents(bookMarkBucket.getContents().getContents());
+		createBookmark.setContent(bookMarkBucket.getContent().getContent());
 		bookMarkMapper.createBookmark(createBookmark);
 	}
 	

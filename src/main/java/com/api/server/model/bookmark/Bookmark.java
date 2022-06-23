@@ -5,15 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookmarkBucket {
+public class Bookmark {
 	
 	private String title;
-	private Contents contents;
+	private Content content;
 	
 	@Getter
 	@Setter
-	public static class Contents {
+	public static class Content{
 		private String subTitle;
-		private String contents;
+		private String content;
 	}
 }

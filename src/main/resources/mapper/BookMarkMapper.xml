@@ -12,14 +12,19 @@
 			 ,A.ADV_ID
 			 ,A.TITLE
 			 ,A.SUB_TITLE
-			 ,A.CONTENTS
-			 ,A.TYPE
+			 ,A.CONTENT
+			 ,A.CATEGORY
+			 ,CASE
+			 	WHEN A.CATEGORY = 'K' THEN '지식정보'
+			 	WHEN A.CATEGORY = 'S' THEN '스크립트'
+			  ELSE '기본'
+			  END AS CATEGORY_NAME
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
 			 ,B.BASIC_GROUP_YN
 			 ,DATE_FORMAT(A.REG_DT, '%Y-%m-%d %T') AS REG_DT
-			FROM BOOK_MARK A
-			LEFT JOIN BOOK_MARK_GROUP B
+			FROM BOOKMARK A
+			LEFT JOIN BOOKMARK_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.ADV_ID = #{advId}
@@ -31,9 +36,9 @@
 
 	
 	<update id="updateBookmark">
- 		UPDATE BOOK_MARK SET
+ 		UPDATE BOOKMARK SET
  		  TITLE = #{title}
- 		 ,CONTENTS = #{contents}
+ 		 ,CONTENT = #{content}
  		 ,GROUP_ID = #{groupId}
  		 ,MOD_DT = NOW()
  		WHERE ID = #{id}
@@ -41,13 +46,13 @@
 	
 	
 	<insert id="createBookmark">
- 		INSERT INTO BOOK_MARK (
+ 		INSERT INTO BOOKMARK (
  			 ID
  			,ADV_ID
  			,TITLE
  			,SUB_TITLE
- 			,CONTENTS
- 			,TYPE
+ 			,CONTENT
+ 			,CATEGORY
  			,GROUP_ID
  			,REG_DT
  			,MOD_DT
@@ -56,8 +61,8 @@
  			,#{advId}
  			,#{title}
  			,#{subTitle}
- 			,#{contents}
- 			,#{type}
+ 			,#{content}
+ 			,#{category}
  			,#{groupId}
  			,NOW()
  			,NOW()
@@ -66,14 +71,14 @@
 	
 	
 	<delete id="deleteBookmark">
- 		DELETE FROM BOOK_MARK
+ 		DELETE FROM BOOKMARK
  		WHERE ID = #{id}
  		AND ADV_ID = #{advId}
 	</delete>
 	
 	
     <delete id="deleteBookmarkByGroups">
-         DELETE FROM BOOK_MARK
+         DELETE FROM BOOKMARK
          WHERE ADV_ID = #{advId}
          AND GROUP_ID IN
          <foreach collection="ids" item="item" open="(" close=")" separator=",">
@@ -83,7 +88,7 @@
 	
 		
 	<delete id="deleteBookmarkByGroup">
- 		DELETE FROM BOOK_MARK
+ 		DELETE FROM BOOKMARK
  		WHERE GROUP_ID = #{id}
  		AND ADV_ID = #{advId}
 	</delete>

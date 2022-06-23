@@ -12,8 +12,9 @@ public class BookmarkResponse {
 	private String advId;
 	private String title;
 	private String subTitle;
-	private String contents;
-	private char type;
+	private String content;
+	private char category;
+	private String categoryName;
 	private String groupId;
 	private String groupTitle;
 	private String basicGroupYn;

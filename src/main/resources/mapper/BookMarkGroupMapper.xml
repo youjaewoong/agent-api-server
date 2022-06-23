@@ -6,14 +6,14 @@
 	<resultMap id="bookmarkGroupResponse" type="com.api.server.model.bookmarkgroup.BookmarkGroupResponse" autoMapping="true"/>
 	
 	<select id="selectBookmarkGroups" resultMap="bookmarkGroupResponse">
- 		SELECT * FROM BOOK_MARK_GROUP 
+ 		SELECT * FROM BOOKMARK_GROUP 
  		WHERE ADV_ID = #{advId} 
  		ORDER BY TITLE ASC
 	</select>
 	
 	
 	<select id="checkBookmarkGroupTitle" resultType="int">
- 		SELECT COUNT(*) FROM BOOK_MARK_GROUP 
+ 		SELECT COUNT(*) FROM BOOKMARK_GROUP 
  		WHERE ADV_ID = #{advId}
  		<if test="titles != null and !titles.equals('')">
  		  AND TITLE IN
@@ -25,7 +25,7 @@
 	
 	
 	<update id="updateBookmarkGroup">
- 		UPDATE BOOK_MARK_GROUP SET
+ 		UPDATE BOOKMARK_GROUP SET
  		  TITLE = #{title}
  		 ,MOD_DT = NOW()
  		WHERE ID = #{id}
@@ -34,7 +34,7 @@
 	
 	
 	<insert id="createBookmarkGroup">
- 		INSERT INTO BOOK_MARK_GROUP (
+ 		INSERT INTO BOOKMARK_GROUP (
  			 ID
  			,ADV_ID
  			,TITLE
@@ -53,7 +53,7 @@
 	
 	
 	<delete id="deleteBookmarkGroups">
- 		DELETE FROM BOOK_MARK_GROUP
+ 		DELETE FROM BOOKMARK_GROUP
  		WHERE ADV_ID = #{advId}
  		AND ID IN
  		<foreach collection="ids" item="item" open="(" close=")" separator=",">
@@ -63,7 +63,7 @@
 	
 	
 	<delete id="deleteBookmarkGroup">
- 		DELETE FROM BOOK_MARK_GROUP
+ 		DELETE FROM BOOKMARK_GROUP
  		WHERE ADV_ID = #{advId}
  		AND ID = #{id}
 	</delete>
