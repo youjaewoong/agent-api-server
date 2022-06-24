@@ -14,5 +14,6 @@ public class SearchBookmarkRequest {
 	@JsonProperty("adv_id")
 	@NotBlank
 	private String advId;
+	@JsonProperty("group_id")
 	private String groupId;
 }
