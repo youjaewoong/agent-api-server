@@ -36,13 +36,13 @@ CREATE TABLE `memo_group` (
 ```
 
 ```
-CREATE TABLE `book_mark` (
+CREATE TABLE `bookmark` (
   `ID` varchar(32) NOT NULL COMMENT '고유ID',
-  `ADV_ID` varchar(20) NOT NULL COMMENT '상담사ID',
+  `AGENT_ID` varchar(20) NOT NULL COMMENT '상담사ID',
   `TITLE` varchar(20) NOT NULL COMMENT '제목',
   `SUB_TITLE` varchar(20) COMMENT '부제목',
   `CONTENT` text NOT NULL COMMENT '내용',
-  `TYPE` char(1) not null COMMENT 'K:지식저장소 S:스크립트',
+  `CATEGORY` char(1) not null COMMENT 'K:지식저장소 S:스크립트',
   `GROUP_ID` varchar(32) DEFAULT NULL COMMENT 'BOOK_MARK_GROUP 고유ID',
   `REG_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
   `MOD_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
@@ -50,15 +50,17 @@ CREATE TABLE `book_mark` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='책갈피';
 
 
-CREATE TABLE `book_mark_group` (
+
+CREATE TABLE `bookmark_group` (
   `ID` varchar(32) NOT NULL COMMENT '고유ID',
-  `ADV_ID` varchar(20) NOT NULL COMMENT '상담사ID',
+  `AGENT_ID` varchar(20) NOT NULL COMMENT '상담사ID',
   `TITLE` varchar(200) NOT NULL COMMENT '제목',
   `BASIC_GROUP_YN` CHAR(1) NOT NULL DEFAULT 'N' COMMENT '기본그룹여부',
   `REG_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
   `MOD_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='책갈피 그룹';
+
 ```
 
 ```

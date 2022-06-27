@@ -16,6 +16,7 @@ import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
 import com.api.server.service.MemoService;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,16 +25,19 @@ public class MemoController {
 
 	private final MemoService memoService;
 	
+	@ApiOperation("조회")
     @GetMapping("/memos")
     public List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest) {
         return memoService.selectMemos(searchMemoRequest);
     }
-    
+	
+	@ApiOperation("생성")
     @PostMapping("/memos")
     public void createMemo(@RequestBody CreateMemo createMemo) {
     	memoService.createMemo(createMemo);
     }
     
+	@ApiOperation("삭제")
     @DeleteMapping("/memos/{id}")
     public void deleteMemo(@PathVariable String id) {
     	memoService.deleteMemo(id);
@@ -44,6 +48,7 @@ public class MemoController {
     	memoService.deleteMemos();
     }
     
+    @ApiOperation("단건 수정")
     @PutMapping("/memos/{id}")
     public void putMemo(@PathVariable String id, @RequestBody UpdateMemo updateMemo) {
     	updateMemo.setId(id);

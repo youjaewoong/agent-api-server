@@ -34,6 +34,7 @@ public class MemoGroupController {
         return memoGroupService.selectMemoGroups();
     }
     
+	
 	@ApiOperation("유저ID로 조회")
     @GetMapping("/memo-groups/{userId}")
     public List<MemoGroupResponse> getMemoGroup(@PathVariable @NotBlank String userId) {
@@ -65,12 +66,14 @@ public class MemoGroupController {
     	memoGroupService.deleteMemoGroup(id);
     }
     
+	
 	@ApiOperation("전체삭제")
     @DeleteMapping("/memos-groups")
     public void removeMemoGroups() {
     	memoGroupService.deleteMemoGroups();
     }
     
+	
 	@ApiOperation("단건수정")
     @PutMapping("/memo-groups/{id}")
     public void modifyMemoGroup(@PathVariable String id, @RequestBody UpdateMemoGroup updateMemoGroup) {
@@ -78,6 +81,7 @@ public class MemoGroupController {
     	memoGroupService.updateMemoGroup(updateMemoGroup);
     }
     
+	
 	@ApiOperation("그룹명 중복체크")
     @GetMapping("/memo-groups/check/name/{name}")
     public int checkMemoGroupByName(@PathVariable String name) {
