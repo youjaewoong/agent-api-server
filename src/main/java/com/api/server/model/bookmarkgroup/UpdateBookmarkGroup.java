@@ -16,6 +16,6 @@ public class UpdateBookmarkGroup {
 	@NotBlank
 	private String title;
 	@NotBlank
-	@JsonProperty("adv_id")
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 }

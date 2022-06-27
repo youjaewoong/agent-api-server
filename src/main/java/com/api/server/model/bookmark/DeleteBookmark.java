@@ -12,6 +12,6 @@ import lombok.Setter;
 public class DeleteBookmark {
 	private String id;
 	@NotBlank
-	@JsonProperty("adv_id")
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 }

@@ -16,6 +16,6 @@ public class DeleteBookmarks {
 	
     private List<@NotNull String> ids;
 	@NotBlank
-	@JsonProperty("adv_id")
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 }

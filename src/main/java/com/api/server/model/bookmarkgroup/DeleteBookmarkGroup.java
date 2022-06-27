@@ -14,6 +14,6 @@ public class DeleteBookmarkGroup {
 	@NotBlank
 	private String id;
 	@NotBlank
-	@JsonProperty("adv_id")
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 }

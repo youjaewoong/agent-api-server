@@ -7,14 +7,14 @@
 	
 	<select id="selectBookmarkGroups" resultMap="bookmarkGroupResponse">
  		SELECT * FROM BOOKMARK_GROUP 
- 		WHERE ADV_ID = #{advId} 
+ 		WHERE AGENT_ID = #{agentId} 
  		ORDER BY TITLE ASC
 	</select>
 	
 	
 	<select id="checkBookmarkGroupTitle" resultType="int">
  		SELECT COUNT(*) FROM BOOKMARK_GROUP 
- 		WHERE ADV_ID = #{advId}
+ 		WHERE AGENT_ID = #{agentId}
  		<if test="titles != null and !titles.equals('')">
  		  AND TITLE IN
  		<foreach collection="titles" item="item" open="(" close=")" separator=",">
@@ -29,21 +29,21 @@
  		  TITLE = #{title}
  		 ,MOD_DT = NOW()
  		WHERE ID = #{id}
- 		AND ADV_ID = #{advId}
+ 		AND AGENT_ID = #{agentId}
 	</update>
 	
 	
 	<insert id="createBookmarkGroup">
  		INSERT INTO BOOKMARK_GROUP (
  			 ID
- 			,ADV_ID
+ 			,AGENT_ID
  			,TITLE
  			,BASIC_GROUP_YN
  			,REG_DT
  			,MOD_DT
  		) VALUES (
  			 #{id}
- 			,#{advId}
+ 			,#{agentId}
  			,#{title}
  			,#{basicGroupYn}
  			,NOW()
@@ -54,7 +54,7 @@
 	
 	<delete id="deleteBookmarkGroups">
  		DELETE FROM BOOKMARK_GROUP
- 		WHERE ADV_ID = #{advId}
+ 		WHERE AGENT_ID = #{agentId}
  		AND ID IN
  		<foreach collection="ids" item="item" open="(" close=")" separator=",">
 			#{item}
@@ -64,7 +64,7 @@
 	
 	<delete id="deleteBookmarkGroup">
  		DELETE FROM BOOKMARK_GROUP
- 		WHERE ADV_ID = #{advId}
+ 		WHERE AGENT_ID = #{agentId}
  		AND ID = #{id}
 	</delete>
 </mapper>

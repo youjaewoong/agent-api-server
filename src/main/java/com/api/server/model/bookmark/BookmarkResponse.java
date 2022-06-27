@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class BookmarkResponse {
 	private String id;
-	private String advId;
+	private String agentId;
 	private String title;
 	private String subTitle;
 	private String content;

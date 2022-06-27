@@ -9,7 +9,7 @@
 		SELECT * FROM ( 
 			SELECT 
 			  A.ID
-			 ,A.ADV_ID
+			 ,A.AGENT_ID
 			 ,A.TITLE
 			 ,A.SUB_TITLE
 			 ,A.CONTENT
@@ -27,7 +27,7 @@
 			LEFT JOIN BOOKMARK_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
-		WHERE AA.ADV_ID = #{advId}
+		WHERE AA.AGENT_ID = #{agentId}
         <if test="groupId != null and !groupId.equals('')">
           AND AA.GROUP_ID = #{groupId}
         </if>
@@ -48,7 +48,7 @@
 	<insert id="createBookmark">
  		INSERT INTO BOOKMARK (
  			 ID
- 			,ADV_ID
+ 			,AGENT_ID
  			,TITLE
  			,SUB_TITLE
  			,CONTENT
@@ -58,7 +58,7 @@
  			,MOD_DT
  		) VALUES (
  			 #{id}
- 			,#{advId}
+ 			,#{agentId}
  			,#{title}
  			,#{subTitle}
  			,#{content}
@@ -73,13 +73,13 @@
 	<delete id="deleteBookmark">
  		DELETE FROM BOOKMARK
  		WHERE ID = #{id}
- 		AND ADV_ID = #{advId}
+ 		AND AGENT_ID = #{agentId}
 	</delete>
 	
 	
     <delete id="deleteBookmarkByGroups">
          DELETE FROM BOOKMARK
-         WHERE ADV_ID = #{advId}
+         WHERE AGENT_ID = #{agentId}
          AND GROUP_ID IN
          <foreach collection="ids" item="item" open="(" close=")" separator=",">
             #{item}
@@ -90,7 +90,7 @@
 	<delete id="deleteBookmarkByGroup">
  		DELETE FROM BOOKMARK
  		WHERE GROUP_ID = #{id}
- 		AND ADV_ID = #{advId}
+ 		AND AGENT_ID = #{agentId}
 	</delete>
 
 </mapper>

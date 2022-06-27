@@ -40,11 +40,11 @@ public class BookmarkController {
 
     @GetMapping("/bookmarks")
 	@ApiOperation(value = "조회")
-    public List<BookmarksResponse> getBookmarks(@NotBlank @RequestParam("adv_id") String advId,
+    public List<BookmarksResponse> getBookmarks(@NotBlank @RequestParam("agent_id") String agentId,
     											@Nullable @RequestParam("group_id") String groupId) {
 		
 		SearchBookmarkRequest searchBookmarkRequest = new SearchBookmarkRequest();
-		searchBookmarkRequest.setAdvId(advId);
+		searchBookmarkRequest.setAgentId(agentId);
 		searchBookmarkRequest.setGroupId(groupId);
 		
         return bookMarkService.selectBookmarks(searchBookmarkRequest);

@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -27,14 +28,17 @@ public class CreateBookmark {
 	@JsonIgnore
 	private String id;
 	@NotBlank
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 	@NotBlank
+	@JsonProperty("group_id")
 	private String groupId;
 	@NotBlank
 	private String content;
 	@JsonIgnore
 	private String title;
 	@JsonIgnore
+	@JsonProperty("sub_title")
 	private String subTitle;
 	private CategoryType category;
 	

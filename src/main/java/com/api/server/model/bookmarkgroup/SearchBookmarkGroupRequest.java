@@ -15,8 +15,8 @@ import lombok.Setter;
 public class SearchBookmarkGroupRequest {
 	
 	@NotBlank
-	@JsonProperty("adv_id")
-	private String advId;
+	@JsonProperty("agent_id")
+	private String agentId;
 	
 	@JsonIgnore
 	private List<String> titles;

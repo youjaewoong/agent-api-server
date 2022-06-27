@@ -1,5 +1,7 @@
 package com.api.server.model.bookmark;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,8 @@ public class Bookmark {
 	@Getter
 	@Setter
 	public static class Content{
+		
+		@JsonProperty("sub_title")
 		private String subTitle;
 		private String content;
 	}

@@ -14,7 +14,7 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateBookmark {
 	private String id;
-	private String advId;
+	private String agentId;
 	@JsonIgnore
 	@NotBlank
 	private String title;

@@ -38,9 +38,9 @@ public class BookmarkGroupController {
 	
 	@ApiOperation("조회")
     @GetMapping("/bookmark-groups")
-    public List<BookmarkGroupResponse> getBookmarkGroups(@NotBlank @RequestParam("adv_id") String advId) {
+    public List<BookmarkGroupResponse> getBookmarkGroups(@NotBlank @RequestParam("agent_id") String agentId) {
 		SearchBookmarkGroupRequest searchBookmarkGroupRequest = new SearchBookmarkGroupRequest();
-		searchBookmarkGroupRequest.setAdvId(advId);
+		searchBookmarkGroupRequest.setAgentId(agentId);
 		return bookMarkGroupService.selectBookmarkGroups(searchBookmarkGroupRequest);
     }
     

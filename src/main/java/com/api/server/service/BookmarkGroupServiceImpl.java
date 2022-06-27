@@ -58,7 +58,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	@Override
 	public void updateBookmarkGroup(UpdateBookmarkGroup updateBookmarkGroup) throws Exception {
 		
-		this.checkBookmarkGroupTitle(Arrays.asList(updateBookmarkGroup.getTitle()), updateBookmarkGroup.getAdvId());
+		this.checkBookmarkGroupTitle(Arrays.asList(updateBookmarkGroup.getTitle()), updateBookmarkGroup.getAgentId());
 		
 		bookMarkGroupMapper.updateBookmarkGroup(updateBookmarkGroup);
 	}
@@ -67,7 +67,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	@Override
 	public BookmarkGroupResponse createBookmarkGroup(CreateBookmarkGroup createBookmarkGroup) throws Exception {
 		
-		this.checkBookmarkGroupTitle(Arrays.asList(createBookmarkGroup.getTitle()), createBookmarkGroup.getAdvId());
+		this.checkBookmarkGroupTitle(Arrays.asList(createBookmarkGroup.getTitle()), createBookmarkGroup.getAgentId());
 		
 		bookMarkGroupMapper.createBookmarkGroup(createBookmarkGroup);
 		BookmarkGroupResponse bookMarkGroupResponse = new BookmarkGroupResponse();
@@ -95,7 +95,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 		bookMarkGroupMapper.deleteBookmarkGroup(deleteBookmarkGroup);
 		
 		DeleteBookmark deleteBookmark = new DeleteBookmark();
-		deleteBookmark.setAdvId(deleteBookmarkGroup.getAdvId());
+		deleteBookmark.setAgentId(deleteBookmarkGroup.getAgentId());
 		deleteBookmark.setId(deleteBookmarkGroup.getId());
 		bookMarkService.deleteBookmarkByGroup(deleteBookmark);
 	}
@@ -106,10 +106,10 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	 * @param titls
 	 * @throws Exception
 	 */
-	private void checkBookmarkGroupTitle(List<String> titls, String advId) throws Exception {
+	private void checkBookmarkGroupTitle(List<String> titls, String agentId) throws Exception {
         
 		SearchBookmarkGroupRequest searchBookmarkGroupRequest = new SearchBookmarkGroupRequest();
-		searchBookmarkGroupRequest.setAdvId(advId);
+		searchBookmarkGroupRequest.setAgentId(agentId);
 		searchBookmarkGroupRequest.setTitles(titls);
 		
 		int foundCnt = bookMarkGroupMapper.checkBookmarkGroupTitle(searchBookmarkGroupRequest);

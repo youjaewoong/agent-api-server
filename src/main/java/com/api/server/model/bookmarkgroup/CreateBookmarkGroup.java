@@ -24,7 +24,7 @@ public class CreateBookmarkGroup {
 	@JsonIgnore
 	private String id;
 	@NotBlank
-	private String advId;
+	private String agentId;
 	@NotBlank
 	private String title;
 	private String basicGroupYn;
