@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 import com.api.server.model.memogroup.CreateMemoGroup;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
+import com.api.server.model.memogroup.UpdateMemoGroups;
 import com.api.server.service.MemoGroupService;
 
 import io.swagger.annotations.ApiOperation;
@@ -45,18 +47,10 @@ public class MemoGroupController {
     }
     
     
-	@ApiOperation("생성")
+	@ApiOperation("추가")
     @PostMapping("/memo-groups")
-    public void addMemoGroup(@RequestBody CreateMemoGroup createMemoGroup) {
-    	memoGroupService.createMemoGroup(createMemoGroup);
-    }
-    
-	
-	@ApiOperation("기본생성")
-    @PostMapping("/memo-groups/add/basic")
-    public boolean addBasicMemoGroup(@RequestBody @Valid SearchMemoGroupRequest searchMemoGroupRequest) {
-     	String result = memoGroupService.createBasicMemoGroup(searchMemoGroupRequest);
-    	return result == null ? false : true;
+    public MemoGroupResponse addMemoGroup(@RequestBody CreateMemoGroup createMemoGroup) throws Exception {
+    	return memoGroupService.createMemoGroup(createMemoGroup);
     }
     
     
@@ -74,17 +68,19 @@ public class MemoGroupController {
     }
     
 	
+	
+	@ApiOperation("건별수정")
+    @PutMapping("/memo-groups")
+    public void modifyMemoGroups(@Valid @RequestBody UpdateMemoGroups updateMemoGroups) throws Exception {
+		memoGroupService.updateMemoGroups(updateMemoGroups);
+    }
+	
+	
 	@ApiOperation("단건수정")
     @PutMapping("/memo-groups/{id}")
     public void modifyMemoGroup(@PathVariable String id, @RequestBody UpdateMemoGroup updateMemoGroup) {
     	updateMemoGroup.setId(id);
     	memoGroupService.updateMemoGroup(updateMemoGroup);
     }
-    
-	
-	@ApiOperation("그룹명 중복체크")
-    @GetMapping("/memo-groups/check/name/{name}")
-    public int checkMemoGroupByName(@PathVariable String name) {
-    	return memoGroupService.checkMemoGroupByName(name);
-    }
+
 }

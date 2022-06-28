@@ -7,11 +7,11 @@
 	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
  		SELECT * FROM MEMO_GROUP 
- 		WHERE 1=1
- 		<if test='userId != null'>
- 		 AND USER_ID = #{userId} 
- 		</if>
- 		ORDER BY CREATE_DT DESC
+        WHERE 1=1
+        <if test='userId != null'>
+          AND USER_ID = #{userId} 
+        </if>
+ 		ORDER BY NAME ASC
 	</select>
 	
 	<update id="updateMemoGroup">
@@ -32,12 +32,12 @@
  			,UPDATE_USER_ID
  		) VALUES (
  			 #{id}
- 			,#{userId}
- 			,#{name}
+ 			,#{agentId}
+ 			,#{title}
  			,NOW()
- 			,#{userId}
+ 			,#{agentId}
  			,NOW()
- 			,#{userId}
+ 			,#{agentId}
  		)
 	</insert>
 	
@@ -50,10 +50,10 @@
  		DELETE FROM MEMO_GROUP
 	</delete>
 	
-	<select id="checkMemoGroupByName" resultType="int">
+	<select id="checkMemoGroupTitle" resultType="int">
  		SELECT 
  			COUNT(*) 
  		FROM MEMO_GROUP
- 		WHERE NAME = #{name}
+ 		WHERE NAME = #{title}
 	</select>
 </mapper>

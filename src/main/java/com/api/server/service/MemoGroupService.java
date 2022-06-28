@@ -6,6 +6,7 @@ import com.api.server.model.memogroup.CreateMemoGroup;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
+import com.api.server.model.memogroup.UpdateMemoGroups;
 
 public interface MemoGroupService {
 	
@@ -15,14 +16,14 @@ public interface MemoGroupService {
 
 	public void updateMemoGroup(UpdateMemoGroup updateMemoGroup);
 	
-	public void createMemoGroup(CreateMemoGroup createMemoGroup);
+	public MemoGroupResponse createMemoGroup(CreateMemoGroup createMemoGroup) throws Exception;
 	
-	<T> String createBasicMemoGroup(T obj);
-
 	public void deleteMemoGroup(String id);
 
 	public void deleteMemoGroups();
 
-	public int checkMemoGroupByName(String name);
+	public void checkMemoGroupTitle(String title) throws Exception;
+
+	public void updateMemoGroups(UpdateMemoGroups updateMemoGroups) throws Exception;
 
 }

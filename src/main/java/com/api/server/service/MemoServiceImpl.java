@@ -9,6 +9,7 @@ import com.api.server.model.memo.CreateMemo;
 import com.api.server.model.memo.MemoResponse;
 import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
+import com.api.server.model.memogroup.MemoGroupResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,15 @@ public class MemoServiceImpl implements MemoService {
 
 	@Override
 	public List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest) {
-		return memoMapper.selectMemos(searchMemoRequest);
+		
+		List<MemoResponse> memos = memoMapper.selectMemos(searchMemoRequest);
+		List<MemoGroupResponse> memoGroups = memoGroupService.selectMemoGroups();
+		if (memoGroups != null) {
+			memos.forEach(memo -> {
+				memo.setMemoGroups(memoGroups);
+			});
+		}
+		return memos;
 	}
 
 	@Override
@@ -33,13 +42,6 @@ public class MemoServiceImpl implements MemoService {
 
 	@Override
 	public void createMemo(CreateMemo createMemo) {
-		
-		//매뉴그룹이 없을 경우 신규 생성 및 고유ID 셋팅
-		 String createId = memoGroupService.createBasicMemoGroup(createMemo);
-		if (createId != null) {
-			createMemo.setGroupId(createId);
-		}
-
 		createMemo.setTitle();
 		memoMapper.createMemo(createMemo);
 	}

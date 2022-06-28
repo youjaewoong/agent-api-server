@@ -26,6 +26,6 @@ public interface MemoGroupMapper {
 
 	int deleteMemoGroups();
 	
-	int checkMemoGroupByName(String name);
+	int checkMemoGroupTitle(String name);
 
 }
