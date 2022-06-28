@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.api.server.model.memogroup.CreateMemoGroup;
+import com.api.server.model.memogroup.DeleteMemoGroups;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
@@ -20,12 +21,12 @@ public interface MemoGroupMapper {
 
 	int createMemoGroup(CreateMemoGroup createMemo);
     
-    int deleteMemoGroup(String id);
-    
     int updateMemoGroup(UpdateMemoGroup updateMemo);
-
-	int deleteMemoGroups();
 	
 	int checkMemoGroupTitle(String name);
+
+	int deleteMemoGroup(String id);
+
+	int deleteMemoGroups(DeleteMemoGroups deleteMemoGroups);
 
 }

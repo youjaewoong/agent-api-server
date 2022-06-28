@@ -5,6 +5,7 @@
 	
 	<resultMap id="memoGroupResponse" type="com.api.server.model.memogroup.MemoGroupResponse" autoMapping="true"/>
 	
+	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
  		SELECT * FROM MEMO_GROUP 
         WHERE 1=1
@@ -14,12 +15,14 @@
  		ORDER BY NAME ASC
 	</select>
 	
+	
 	<update id="updateMemoGroup">
  		UPDATE MEMO_GROUP SET
  		  NAME = #{name}
  		 ,UPDATE_DT = NOW()
  		WHERE ID = #{id}
 	</update>
+	
 	
 	<insert id="createMemoGroup">
  		INSERT INTO MEMO_GROUP (
@@ -41,14 +44,22 @@
  		)
 	</insert>
 	
+	
 	<delete id="deleteMemoGroup">
  		DELETE FROM MEMO_GROUP
  		WHERE ID = #{id}
 	</delete>
 	
+	
 	<delete id="deleteMemoGroups">
  		DELETE FROM MEMO_GROUP
+		WHERE USER_ID = #{agentId}
+ 		AND ID IN
+ 		<foreach collection="ids" item="item" open="(" close=")" separator=",">
+			#{item}
+        </foreach>
 	</delete>
+	
 	
 	<select id="checkMemoGroupTitle" resultType="int">
  		SELECT 

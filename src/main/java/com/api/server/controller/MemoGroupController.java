@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.model.bookmarkgroup.UpdateBookmarkGroups;
 import com.api.server.model.memogroup.CreateMemoGroup;
+import com.api.server.model.memogroup.DeleteMemoGroups;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
@@ -53,6 +53,21 @@ public class MemoGroupController {
     	return memoGroupService.createMemoGroup(createMemoGroup);
     }
     
+	
+	@ApiOperation("단건수정")
+    @PutMapping("/memo-groups/{id}")
+    public void editMemoGroup(@PathVariable String id, @RequestBody UpdateMemoGroup updateMemoGroup) {
+    	updateMemoGroup.setId(id);
+    	memoGroupService.updateMemoGroup(updateMemoGroup);
+    }
+	
+	
+	@ApiOperation("건별수정")
+    @PutMapping("/memo-groups")
+    public void editMemoGroups(@Valid @RequestBody UpdateMemoGroups updateMemoGroups) throws Exception {
+		memoGroupService.updateMemoGroups(updateMemoGroups);
+    }
+	
     
 	@ApiOperation("단건삭제")
     @DeleteMapping("/memo-groups/{id}")
@@ -61,26 +76,10 @@ public class MemoGroupController {
     }
     
 	
-	@ApiOperation("전체삭제")
-    @DeleteMapping("/memos-groups")
-    public void removeMemoGroups() {
-    	memoGroupService.deleteMemoGroups();
-    }
-    
-	
-	
-	@ApiOperation("건별수정")
-    @PutMapping("/memo-groups")
-    public void modifyMemoGroups(@Valid @RequestBody UpdateMemoGroups updateMemoGroups) throws Exception {
-		memoGroupService.updateMemoGroups(updateMemoGroups);
-    }
-	
-	
-	@ApiOperation("단건수정")
-    @PutMapping("/memo-groups/{id}")
-    public void modifyMemoGroup(@PathVariable String id, @RequestBody UpdateMemoGroup updateMemoGroup) {
-    	updateMemoGroup.setId(id);
-    	memoGroupService.updateMemoGroup(updateMemoGroup);
+	@ApiOperation("건별삭제")
+	@DeleteMapping("/memo-groups")
+    public void removeMemoGroups(@Valid @RequestBody DeleteMemoGroups deleteMemoGroups) {
+		memoGroupService.deleteMemoGroups(deleteMemoGroups);
     }
 
 }

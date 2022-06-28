@@ -53,31 +53,31 @@ public class BookmarkGroupController {
     }
     
 	
-	@ApiOperation("건별수정")
-    @PutMapping("/bookmark-groups")
-    public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
-    	bookMarkGroupService.updateBookmarkGroups(updateBookmarkGroups);
-    }
-	
-	
 	@ApiOperation("단건수정")
 	@PutMapping("/bookmark-groups/{id}")
 	public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroup updateBookmarkGroup) throws Exception {
 		bookMarkGroupService.updateBookmarkGroup(updateBookmarkGroup);
 	}
 	
-    
-	@ApiOperation("건별삭제")
-	@DeleteMapping("/bookmark-groups")
-    public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroups deleteBookmarkGroups) {
-		bookMarkGroupService.deleteBookmarkGroups(deleteBookmarkGroups);
+	
+	@ApiOperation("건별수정")
+    @PutMapping("/bookmark-groups")
+    public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
+    	bookMarkGroupService.updateBookmarkGroups(updateBookmarkGroups);
     }
 	
-	
+    
 	@ApiOperation("단건삭제")
 	@DeleteMapping("/bookmark-groups/{id}")
     public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroup deleteBookmarkGroup) {
 		bookMarkGroupService.deleteBookmarkGroup(deleteBookmarkGroup);
+    }
+	
+	
+	@ApiOperation("건별삭제")
+	@DeleteMapping("/bookmark-groups")
+    public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroups deleteBookmarkGroups) {
+		bookMarkGroupService.deleteBookmarkGroups(deleteBookmarkGroups);
     }
 	
 }

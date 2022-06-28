@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.server.dao.MemoGroupMapper;
 import com.api.server.model.memogroup.CreateMemoGroup;
+import com.api.server.model.memogroup.DeleteMemoGroups;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
@@ -78,8 +79,8 @@ public class MemoGroupServiceImpl implements MemoGroupService {
 
 	
 	@Override
-	public void deleteMemoGroups() {
-		memoGroupMapper.deleteMemoGroups();
+	public void deleteMemoGroups(DeleteMemoGroups deleteMemoGroups) {
+		memoGroupMapper.deleteMemoGroups(deleteMemoGroups);
 	}
 
 	
