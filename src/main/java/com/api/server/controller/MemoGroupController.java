@@ -5,12 +5,14 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.memogroup.CreateMemoGroup;
@@ -26,23 +28,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@Validated
 public class MemoGroupController {
 
 	private final MemoGroupService memoGroupService;
 	
-	@ApiOperation("전체조회")
+
+	@ApiOperation("조회")
     @GetMapping("/memo-groups")
-    public List<MemoGroupResponse> getMemoGroups() {
-        return memoGroupService.selectMemoGroups();
-    }
-    
-	
-	@ApiOperation("유저ID로 조회")
-    @GetMapping("/memo-groups/{userId}")
-    public List<MemoGroupResponse> getMemoGroup(@PathVariable @NotBlank String userId) {
-    	
+    public List<MemoGroupResponse> getMemoGroups(@NotBlank @RequestParam("agent_id") String agentId) {
     	SearchMemoGroupRequest searchMemoGroupRequest = new SearchMemoGroupRequest();
-    	searchMemoGroupRequest.setUserId(userId);
+    	searchMemoGroupRequest.setAgentId(agentId);
         return memoGroupService.selectMemoGroups(searchMemoGroupRequest);
     }
     
@@ -68,12 +64,6 @@ public class MemoGroupController {
 		memoGroupService.updateMemoGroups(updateMemoGroups);
     }
 	
-    
-	@ApiOperation("단건삭제")
-    @DeleteMapping("/memo-groups/{id}")
-    public void removeMemoGroup(@PathVariable String id) {
-    	memoGroupService.deleteMemoGroup(id);
-    }
     
 	
 	@ApiOperation("건별삭제")

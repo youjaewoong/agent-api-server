@@ -6,12 +6,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.api.server.dao.MemoGroupMapper;
+import com.api.server.dao.MemoMapper;
+import com.api.server.model.memo.DeleteMemos;
 import com.api.server.model.memogroup.CreateMemoGroup;
 import com.api.server.model.memogroup.DeleteMemoGroups;
 import com.api.server.model.memogroup.MemoGroupResponse;
 import com.api.server.model.memogroup.SearchMemoGroupRequest;
 import com.api.server.model.memogroup.UpdateMemoGroup;
 import com.api.server.model.memogroup.UpdateMemoGroups;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,12 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class MemoGroupServiceImpl implements MemoGroupService {
 	
 	private final MemoGroupMapper memoGroupMapper;
-
-	
-	@Override
-	public List<MemoGroupResponse> selectMemoGroups() {
-		return memoGroupMapper.selectMemoGroups();
-	}
+	private final MemoMapper memoMapper;
 	
 	
 	@Override
@@ -45,7 +43,7 @@ public class MemoGroupServiceImpl implements MemoGroupService {
         int groupsSize = updateMemoGroups.getGroups().size();
         long deduplicationSize = updateMemoGroups.getGroups().stream()
         		.map(group -> {
-        				return group.getName();
+        				return group.getTitle();
         			})
         		.distinct().count();
         if (groupsSize != deduplicationSize) {
@@ -67,20 +65,17 @@ public class MemoGroupServiceImpl implements MemoGroupService {
 		memoGroupMapper.createMemoGroup(createMemoGroup);
 		MemoGroupResponse memoGroupResponse = new MemoGroupResponse();
 		BeanUtils.copyProperties(createMemoGroup, memoGroupResponse);
-		memoGroupResponse.setName(createMemoGroup.getTitle());
 		return memoGroupResponse;
-	}
-
-
-	@Override
-	public void deleteMemoGroup(String id) {
-		memoGroupMapper.deleteMemoGroup(id);
 	}
 
 	
 	@Override
 	public void deleteMemoGroups(DeleteMemoGroups deleteMemoGroups) {
 		memoGroupMapper.deleteMemoGroups(deleteMemoGroups);
+		
+		DeleteMemos deleteMemos = 
+				new ObjectMapper().convertValue(deleteMemoGroups, DeleteMemos.class);
+		memoMapper.deleteMemoByGroups(deleteMemos);
 	}
 
 	

@@ -12,7 +12,7 @@ public class SearchMemoRequest {
         asc;
     }
 	
-	private String userId;
+	private String agentId;
 	
 	private String sortItem;
 	

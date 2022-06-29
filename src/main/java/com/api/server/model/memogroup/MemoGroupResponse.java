@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class MemoGroupResponse {
 	private String id;
-	private String name;
-	private Date createDt;
-	private String createUserId;
+	private String title;
+	private String basicGroupYn;
+	private Date createdIlsi;
 }

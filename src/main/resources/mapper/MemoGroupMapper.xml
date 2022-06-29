@@ -8,39 +8,35 @@
 	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
  		SELECT * FROM MEMO_GROUP 
-        WHERE 1=1
-        <if test='userId != null'>
-          AND USER_ID = #{userId} 
-        </if>
- 		ORDER BY NAME ASC
+        WHERE AGENT_ID = #{agentId} 
+ 		ORDER BY TITLE ASC
 	</select>
 	
 	
 	<update id="updateMemoGroup">
  		UPDATE MEMO_GROUP SET
- 		  NAME = #{name}
- 		 ,UPDATE_DT = NOW()
+ 		  TITLE = #{title}
+ 		 ,UPDATED_ILSI = NOW()
  		WHERE ID = #{id}
+ 		AND AGENT_ID = #{agentId}
 	</update>
 	
 	
 	<insert id="createMemoGroup">
  		INSERT INTO MEMO_GROUP (
  			 ID
- 			,USER_ID
- 			,NAME
- 			,CREATE_DT
- 			,CREATE_USER_ID
- 			,UPDATE_DT
- 			,UPDATE_USER_ID
+ 			,AGENT_ID
+ 			,TITLE
+ 			,BASIC_GROUP_YN
+ 			,CREATED_ILSI
+ 			,UPDATED_ILSI
  		) VALUES (
  			 #{id}
  			,#{agentId}
  			,#{title}
+ 			,#{basicGroupYn}
  			,NOW()
- 			,#{agentId}
  			,NOW()
- 			,#{agentId}
  		)
 	</insert>
 	
@@ -48,12 +44,13 @@
 	<delete id="deleteMemoGroup">
  		DELETE FROM MEMO_GROUP
  		WHERE ID = #{id}
+ 		AND AGENT_ID = #{agentId}
 	</delete>
 	
 	
 	<delete id="deleteMemoGroups">
  		DELETE FROM MEMO_GROUP
-		WHERE USER_ID = #{agentId}
+		WHERE AGENT_ID = #{agentId}
  		AND ID IN
  		<foreach collection="ids" item="item" open="(" close=")" separator=",">
 			#{item}
@@ -65,6 +62,6 @@
  		SELECT 
  			COUNT(*) 
  		FROM MEMO_GROUP
- 		WHERE NAME = #{title}
+ 		WHERE TITLE = #{title}
 	</select>
 </mapper>

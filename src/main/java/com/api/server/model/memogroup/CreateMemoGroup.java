@@ -16,6 +16,7 @@ public class CreateMemoGroup {
 	
 	public CreateMemoGroup() {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
+		this.basicGroupYn = "N";
 	}
 	
 	@JsonIgnore
@@ -25,4 +26,6 @@ public class CreateMemoGroup {
 	private String agentId;
 	@NotBlank
 	private String title;
+	@JsonProperty("basic_group_yn")
+	private String basicGroupYn;
 }

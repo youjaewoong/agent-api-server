@@ -11,20 +11,17 @@ import com.api.server.model.memogroup.UpdateMemoGroups;
 
 public interface MemoGroupService {
 	
-	public List<MemoGroupResponse> selectMemoGroups();
-
 	public List<MemoGroupResponse> selectMemoGroups(SearchMemoGroupRequest searchMemoGroupRequest);
 
 	public void updateMemoGroup(UpdateMemoGroup updateMemoGroup);
 	
 	public MemoGroupResponse createMemoGroup(CreateMemoGroup createMemoGroup) throws Exception;
 	
-	public void deleteMemoGroup(String id);
-
 	public void deleteMemoGroups(DeleteMemoGroups deleteMemoGroups);
 
 	public void checkMemoGroupTitle(String title) throws Exception;
 
 	public void updateMemoGroups(UpdateMemoGroups updateMemoGroups) throws Exception;
+
 
 }

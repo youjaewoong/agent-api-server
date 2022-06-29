@@ -5,75 +5,76 @@
 	
 	<resultMap id="memoResponse" type="com.api.server.model.memo.MemoResponse" autoMapping="true"/>
 	
+	
 	<select id="selectMemos" resultMap="memoResponse">
 		SELECT * FROM ( 
-			SELECT 
+			SELECT
 			  A.ID
-			 ,A.USER_ID
+			 ,A.AGENT_ID
 			 ,A.TITLE
 			 ,A.CONTENTS
 			 ,A.GROUP_ID
-			 ,B.NAME AS GROUP_NAME
-			 ,DATE_FORMAT(A.CREATE_DT, '%Y-%m-%d') AS CREATE_FORMAT_DT
-			 ,A.CREATE_DT
+			 ,B.TITLE AS GROUP_TITLE
+			 ,DATE_FORMAT(A.CREATED_ILSI, '%Y-%m-%d') AS CREATE_CONVERSION_ILSI
+			 ,A.CREATED_ILSI
 			FROM MEMO A
 			LEFT JOIN MEMO_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
-		WHERE 1=1
-		<if test='userId != null'>
-			AND A.USER_ID = #{userId}
-		</if>
+		WHERE AA.AGENT_ID = #{agentId}
  		<if test='sortItem != null'>
 	 		ORDER BY ${sortItem} ${sortType}
 		</if>
 	</select>
 	
-	<select id="selectMemoById" resultMap="memoResponse">
- 		SELECT * FROM MEMO
- 		WHERE ID = #{id}
- 		ORDER BY CREATE_DT DESC
-	</select>
+	
+	<insert id="createMemo">
+ 		INSERT INTO MEMO (
+ 			 ID
+ 			,AGENT_ID
+ 			,TITLE
+ 			,CONTENTS
+ 			,GROUP_ID
+ 			,CREATED_ILSI
+ 			,UPDATED_ILSI
+ 		) VALUES (
+ 			 #{id}
+ 			,#{agentId}
+ 			,#{title}
+ 			,#{contents}
+ 			,#{groupId}
+ 			,NOW()
+ 			,NOW()
+ 		)
+	</insert>
+	
 	
 	<update id="updateMemo">
  		UPDATE MEMO SET
  		  TITLE = #{title}
  		 ,CONTENTS = #{contents}
  		 ,GROUP_ID = #{groupId}
- 		 ,UPDATE_DT = NOW()
+ 		 ,UPDATED_ILSI = NOW()
  		WHERE ID = #{id}
+ 		AND AGENT_ID = #{agentId}
 	</update>
 	
-	<insert id="createMemo">
- 		INSERT INTO MEMO (
- 			 ID
- 			,USER_ID
- 			,TITLE
- 			,CONTENTS
- 			,GROUP_ID
- 			,CREATE_DT
- 			,CREATE_USER_ID
- 			,UPDATE_DT
- 			,UPDATE_USER_ID
- 		) VALUES (
- 			 #{id}
- 			,#{userId}
- 			,#{title}
- 			,#{contents}
- 			,#{groupId}
- 			,NOW()
- 			,#{userId}
- 			,NOW()
- 			,#{userId}
- 		)
-	</insert>
 	
 	<delete id="deleteMemo">
  		DELETE FROM MEMO
  		WHERE ID = #{id}
+ 		AND AGENT_ID = #{agentId}
 	</delete>
 	
-	<delete id="deleteMemos">
- 		DELETE FROM MEMO
+	
+    <delete id="deleteMemoByGroups">
+    	DELETE FROM MEMO
+        WHERE AGENT_ID = #{agentId}
+        AND GROUP_ID IN
+         <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
 	</delete>
+	
+
 </mapper>

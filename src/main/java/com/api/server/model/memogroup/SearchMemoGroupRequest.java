@@ -10,5 +10,5 @@ import lombok.Setter;
 public class SearchMemoGroupRequest {
 	
 	@NotBlank
-	private String userId;
+	private String agentId;
 }

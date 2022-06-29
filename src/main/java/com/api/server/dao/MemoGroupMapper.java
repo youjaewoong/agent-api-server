@@ -15,8 +15,6 @@ import com.api.server.model.memogroup.UpdateMemoGroup;
 @Mapper
 public interface MemoGroupMapper {
 
-	List<MemoGroupResponse> selectMemoGroups();
-
 	List<MemoGroupResponse> selectMemoGroups(SearchMemoGroupRequest searchMemoGroupRequest);
 
 	int createMemoGroup(CreateMemoGroup createMemo);

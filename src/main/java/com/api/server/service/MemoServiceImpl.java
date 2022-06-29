@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.api.server.dao.MemoMapper;
 import com.api.server.model.memo.CreateMemo;
+import com.api.server.model.memo.DeleteMemo;
 import com.api.server.model.memo.MemoResponse;
 import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
 import com.api.server.model.memogroup.MemoGroupResponse;
+import com.api.server.model.memogroup.SearchMemoGroupRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,16 +20,33 @@ import lombok.RequiredArgsConstructor;
 public class MemoServiceImpl implements MemoService {
 	
 	private final MemoMapper memoMapper;
-	private final MemoGroupService memoGroupService;
+	private final MemoGroupService memoGroupMapper;
 
 
 	@Override
 	public List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest) {
 		
 		List<MemoResponse> memos = memoMapper.selectMemos(searchMemoRequest);
-		List<MemoGroupResponse> memoGroups = memoGroupService.selectMemoGroups();
+		
+		SearchMemoGroupRequest searchMemoGroupRequest = new SearchMemoGroupRequest();
+		searchMemoGroupRequest.setAgentId(searchMemoRequest.getAgentId());
+		List<MemoGroupResponse> memoGroups = memoGroupMapper.selectMemoGroups(searchMemoGroupRequest);
+		
 		if (memoGroups != null) {
+			
+			//기본그룹ID추출
+			String basicGroupId = memoGroups.stream()
+					.filter(group -> group.getBasicGroupYn().equals("Y"))
+					.map(group -> {
+						return group.getId();
+					})
+					.findAny().get();
+			
 			memos.forEach(memo -> {
+				
+				if (memo.getGroupId() == null) {
+					memo.setGroupId(basicGroupId);
+				}
 				memo.setMemoGroups(memoGroups);
 			});
 		}
@@ -47,12 +66,8 @@ public class MemoServiceImpl implements MemoService {
 	}
 
 	@Override
-	public void deleteMemo(String id) {
-		memoMapper.deleteMemo(id);
+	public void deleteMemo(DeleteMemo deleteMemo) {
+		memoMapper.deleteMemo(deleteMemo);
 	}
 	
-	@Override
-	public void deleteMemos() {
-		memoMapper.deleteMemos();
-	}
 }

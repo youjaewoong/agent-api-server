@@ -1,4 +1,4 @@
-package com.api.server.model.memogroup;
+package com.api.server.model.memo;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,10 +9,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateMemoGroup {
-	@NotBlank
+public class DeleteMemo {
 	private String id;
-	private String title;
+	private String groupId;
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;

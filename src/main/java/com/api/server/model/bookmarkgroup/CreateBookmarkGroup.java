@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -27,5 +28,6 @@ public class CreateBookmarkGroup {
 	private String agentId;
 	@NotBlank
 	private String title;
+	@JsonProperty("basic_group_yn")
 	private String basicGroupYn;
 }

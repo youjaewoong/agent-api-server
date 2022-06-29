@@ -2,7 +2,10 @@ package com.api.server.model.memo;
 
 import java.util.UUID;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +20,16 @@ public class CreateMemo {
 	
 	@JsonIgnore
 	private String id;
-	private String userId;
-	private String title;
-	private String contents;
+	@NotBlank
+	@JsonProperty("agent_id")
+	private String agentId;
+	@NotBlank
+	@JsonProperty("group_id")
 	private String groupId;
+	@JsonIgnore
+	private String title;
+	@NotBlank
+	private String contents;
 	
 	public void setTitle() {
 		if (this.contents.length() > 10) {

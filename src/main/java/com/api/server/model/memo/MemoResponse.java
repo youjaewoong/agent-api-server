@@ -12,11 +12,11 @@ import lombok.Setter;
 @Setter
 public class MemoResponse {
 	private String id;
-	private String userId;
+	private String agentId;
 	private String title;
 	private String contents;
 	private List<MemoGroupResponse> memoGroups;
 	private String groupId;
-	private Date createFormatDt;
-	private Date createDt;
+	private Date createdIlsi;
+	private Date createdConversionIlsi;
 }
