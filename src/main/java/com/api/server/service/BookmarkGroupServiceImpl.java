@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookmarkGroupMapper;
+import com.api.server.dao.BookmarkMapper;
 import com.api.server.model.bookmark.DeleteBookmark;
 import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmarkgroup.BookmarkGroupResponse;
@@ -27,7 +28,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 	
 	
 	private final BookmarkGroupMapper bookMarkGroupMapper;
-	private final BookmarkService bookMarkService;
+	private final BookmarkMapper bookmarkMapper;
 	
 	
 	@Override
@@ -83,7 +84,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 		bookMarkGroupMapper.deleteBookmarkGroups(deleteBookmarkGroups);
 		DeleteBookmarks deleteBookmarks = 
 				new ObjectMapper().convertValue(deleteBookmarkGroups, DeleteBookmarks.class);
-		bookMarkService.deleteBookmarkByGroups(deleteBookmarks);
+		bookmarkMapper.deleteBookmarkByGroups(deleteBookmarks);
 		
 	}
 	
@@ -97,7 +98,7 @@ public class BookmarkGroupServiceImpl implements BookmarkGroupService {
 		DeleteBookmark deleteBookmark = new DeleteBookmark();
 		deleteBookmark.setAgentId(deleteBookmarkGroup.getAgentId());
 		deleteBookmark.setId(deleteBookmarkGroup.getId());
-		bookMarkService.deleteBookmarkByGroup(deleteBookmark);
+		bookmarkMapper.deleteBookmarkByGroup(deleteBookmark);
 	}
 	
 

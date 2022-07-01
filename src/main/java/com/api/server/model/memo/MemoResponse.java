@@ -18,5 +18,5 @@ public class MemoResponse {
 	private List<MemoGroupResponse> memoGroups;
 	private String groupId;
 	private Date createdIlsi;
-	private String updatedConversionIlsi;
+	private String conversionUpdatedIlsi;
 }

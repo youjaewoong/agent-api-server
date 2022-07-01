@@ -1,7 +1,5 @@
 package com.api.server.model.bookmark;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +16,6 @@ public class BookmarkResponse {
 	private String groupId;
 	private String groupTitle;
 	private String basicGroupYn;
-	private Date regDt;
+	private String createdIlsi;
+	private String conversionUpdatedIlsi;
 }

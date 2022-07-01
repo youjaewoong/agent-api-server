@@ -27,7 +27,7 @@
 	<update id="updateBookmarkGroup">
  		UPDATE BOOKMARK_GROUP SET
  		  TITLE = #{title}
- 		 ,MOD_DT = NOW()
+ 		 ,UPDATED_ILSI = NOW()
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</update>
@@ -39,8 +39,8 @@
  			,AGENT_ID
  			,TITLE
  			,BASIC_GROUP_YN
- 			,REG_DT
- 			,MOD_DT
+ 			,CREATED_ILSI
+ 			,UPDATED_ILSI
  		) VALUES (
  			 #{id}
  			,#{agentId}

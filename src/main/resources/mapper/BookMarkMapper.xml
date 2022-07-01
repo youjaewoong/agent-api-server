@@ -22,7 +22,8 @@
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
 			 ,B.BASIC_GROUP_YN
-			 ,DATE_FORMAT(A.REG_DT, '%Y-%m-%d %T') AS REG_DT
+			 ,A.CREATED_ILSI
+			 ,REPLACE(REPLACE(DATE_FORMAT(A.UPDATED_ILSI, '%p %h:%i %m-%d-%Y'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_ILSI
 			FROM BOOKMARK A
 			LEFT JOIN BOOKMARK_GROUP B
 			ON A.GROUP_ID  = B.ID
@@ -40,7 +41,7 @@
  		  TITLE = #{title}
  		 ,CONTENT = #{content}
  		 ,GROUP_ID = #{groupId}
- 		 ,MOD_DT = NOW()
+ 		 ,UPDATED_ILSI = NOW()
  		WHERE ID = #{id}
 	</update>
 	
@@ -54,8 +55,8 @@
  			,CONTENT
  			,CATEGORY
  			,GROUP_ID
- 			,REG_DT
- 			,MOD_DT
+ 			,CREATED_ILSI
+ 			,UPDATED_ILSI
  		) VALUES (
  			 #{id}
  			,#{agentId}

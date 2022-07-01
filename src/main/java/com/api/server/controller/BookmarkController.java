@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,13 +33,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/bookmarks")
 @Validated
 public class BookmarkController {
 
 	private final BookmarkService bookMarkService;
 	
 
-    @GetMapping("/bookmarks")
+    @GetMapping
 	@ApiOperation(value = "조회")
     public List<BookmarksResponse> getBookmarks(@NotBlank @RequestParam("agent_id") String agentId,
     											@Nullable @RequestParam("group_id") String groupId) {
@@ -52,7 +54,7 @@ public class BookmarkController {
     
 	
 	@ApiOperation("추가")
-    @PostMapping("/bookmarks")
+    @PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
     public void addBookmark(@Valid @RequestBody CreateBookmark createBookmark) throws Exception {
     	bookMarkService.createBookmark(createBookmark);
@@ -60,21 +62,21 @@ public class BookmarkController {
     
 	
 	@ApiOperation("수정")
-    @PutMapping("/bookmarks")
+    @PutMapping
     public void editBookmark(@Valid @RequestBody UpdateBookmark updateBookmark) {
     	bookMarkService.updateBookmark(updateBookmark);
     }
 	
 	
 	@ApiOperation("단건삭제")
-    @DeleteMapping("/bookmarks/{id}")
+    @DeleteMapping("{id}")
     public void removeBookmark(@Valid @RequestBody DeleteBookmark deleteBookmark) {
     	bookMarkService.deleteBookmark(deleteBookmark);
     }
 	
 	
 	@ApiOperation("그룹별삭제")
-	@DeleteMapping("/bookmarks/groups")
+	@DeleteMapping("groups")
 	public void removeBookmarkByGroups(@Valid @RequestBody DeleteBookmarks deleteBookmark) {
 		bookMarkService.deleteBookmarkByGroups(deleteBookmark);
 	}
