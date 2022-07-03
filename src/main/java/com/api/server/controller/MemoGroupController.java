@@ -41,7 +41,7 @@ public class MemoGroupController {
     	searchMemoGroupRequest.setAgentId(agentId);
         return memoGroupService.selectMemoGroups(searchMemoGroupRequest);
     }
-    
+	
     
 	@ApiOperation("추가")
     @PostMapping("/memo-groups")

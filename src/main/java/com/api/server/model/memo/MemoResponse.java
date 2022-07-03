@@ -15,8 +15,11 @@ public class MemoResponse {
 	private String agentId;
 	private String title;
 	private String contents;
-	private List<MemoGroupResponse> memoGroups;
 	private String groupId;
+	private String groupTitle;
+	private String basicGroupYn;
 	private Date createdIlsi;
+	private String updatedIlsi;
 	private String conversionUpdatedIlsi;
+	private List<MemoGroupResponse> memoGroups;
 }

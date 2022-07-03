@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.server.model.memo.CreateMemo;
 import com.api.server.model.memo.DeleteMemo;
 import com.api.server.model.memo.MemoResponse;
+import com.api.server.model.memo.MemosResponse;
 import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
 import com.api.server.service.MemoService;
@@ -35,9 +36,9 @@ public class MemoController {
 	
 	@ApiOperation("조회")
     @GetMapping("/memos")
-    public List<MemoResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId,
-    									  @Nullable @RequestParam("sort_item") String sortItem,
-    									  @RequestParam("sort_type") SearchMemoRequest.sortType sortType) {
+    public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId,
+    									   @Nullable @RequestParam("sort_item") String sortItem,
+    									   @RequestParam("sort_type") SearchMemoRequest.sortType sortType) {
 		
 		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
 		searchMemoRequest.setAgentId(agentId);
@@ -47,6 +48,21 @@ public class MemoController {
         return memoService.selectMemos(searchMemoRequest);
     }
 	
+	
+	@ApiOperation("더보기 조회")
+    @GetMapping("/memos/view-mores")
+    public List<MemoResponse> getViewMoreMemos(@NotBlank @RequestParam("agent_id") String agentId,
+    										   @NotBlank @RequestParam("group_id") String groupId,
+    										  @NotBlank @RequestParam("updated_ilsi") String updatedIlsi) {
+		
+		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
+		searchMemoRequest.setAgentId(agentId);
+		searchMemoRequest.setGroupId(groupId);
+		searchMemoRequest.setUpdatedIlsi(updatedIlsi);
+		
+        return memoService.selectViewMoreMemos(searchMemoRequest);
+    }
+    
 	
 	@ApiOperation("추가")
     @PostMapping("/memos")
