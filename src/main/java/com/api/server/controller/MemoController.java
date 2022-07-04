@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,15 +35,10 @@ public class MemoController {
 	
 	@ApiOperation("조회")
     @GetMapping("/memos")
-    public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId,
-    									   @Nullable @RequestParam("sort_item") String sortItem,
-    									   @RequestParam("sort_type") SearchMemoRequest.sortType sortType) {
+    public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId) {
 		
 		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
 		searchMemoRequest.setAgentId(agentId);
-		searchMemoRequest.setSortItem(sortItem);
-		searchMemoRequest.setSortType(sortType);
-		
         return memoService.selectMemos(searchMemoRequest);
     }
 	
@@ -53,7 +47,7 @@ public class MemoController {
     @GetMapping("/memos/view-mores")
     public List<MemoResponse> getViewMoreMemos(@NotBlank @RequestParam("agent_id") String agentId,
     										   @NotBlank @RequestParam("group_id") String groupId,
-    										  @NotBlank @RequestParam("updated_ilsi") String updatedIlsi) {
+    										   @NotBlank @RequestParam("updated_ilsi") String updatedIlsi) {
 		
 		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
 		searchMemoRequest.setAgentId(agentId);

@@ -11,16 +11,10 @@ import lombok.Setter;
 @Setter
 public class SearchMemoRequest {
 	
-    public enum sortType {
-        desc,
-        asc;
-    }
     @NotBlank
     @JsonProperty("agent_id")
 	private String agentId;
-	private String sortItem;
-    private sortType sortType;
-    private int limit = 10;
+    private int limit = 5;
     
 	@NotBlank
 	@JsonProperty("group_id")
