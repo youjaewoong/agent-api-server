@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.api.server.dao.AgentStatusMapper">
+	
+	<resultMap id="agentStatusCategoryResponse" type="com.api.server.model.agentstatus.AgentStatusCategoryResponse" autoMapping="true"/>
+	
+	<select id="searchAgentStatusCategorys" resultMap="agentStatusCategoryResponse">
+		SELECT 
+		    CD_TYPE
+		   ,CD
+		   ,PARENT_CD
+		   ,CD_NAME 
+		FROM DP_COMMON_CODE 
+		WHERE DEL_YN = 'N'
+		<if test="parentCd != null and !parentCd.equals('')">
+		  AND PARENT_CD = #{parentCd}
+		</if>
+		<if test="cdType != null and !cdType.equals('')">
+		  AND CD_TYPE = #{cdType}
+		</if>
+		ORDER BY CD_NAME
+	</select>
+
+</mapper>
