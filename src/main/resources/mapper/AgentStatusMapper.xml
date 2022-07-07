@@ -3,9 +3,9 @@
 
 <mapper namespace="com.api.server.dao.AgentStatusMapper">
 	
-	<resultMap id="agentStatusCategoryResponse" type="com.api.server.model.agentstatus.AgentStatusCategoryResponse" autoMapping="true"/>
+	<resultMap id="agentStatusCategoriesResponse" type="com.api.server.model.agentstatus.AgentStatusCategoriesResponse" autoMapping="true"/>
 	
-	<select id="searchAgentStatusCategorys" resultMap="agentStatusCategoryResponse">
+	<select id="searchAgentStatusCategories" resultMap="agentStatusCategoriesResponse">
 		SELECT 
 		    CD_TYPE
 		   ,CD

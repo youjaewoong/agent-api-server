@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.model.agentstatus.AgentStatusCategoryResponse;
-import com.api.server.model.agentstatus.SearchAgentStatusCategory;
+import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
+import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 import com.api.server.service.AgentStatusService;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,17 +28,17 @@ public class AgentStatusController {
 	private final AgentStatusService agentStatusService;
 
 	
-    @GetMapping("categorys")
+    @GetMapping("categories")
 	@ApiOperation(value = "조회")
-    public List<AgentStatusCategoryResponse> getAgentStatusCategorys(
+    public List<AgentStatusCategoriesResponse> getAgentStatusCategories(
     											@RequestParam(value = "parent_cd", required = false) String parentCd,
     											@RequestParam(value = "cd_type", required = false) String cdType) {
 		
-		SearchAgentStatusCategory searchAgentStatusCategory = new SearchAgentStatusCategory();
-		searchAgentStatusCategory.setParentCd(parentCd);
-		searchAgentStatusCategory.setCdType(cdType);
+		SearchAgentStatusCategories searchAgentStatusCategories = new SearchAgentStatusCategories();
+		searchAgentStatusCategories.setParentCd(parentCd);
+		searchAgentStatusCategories.setCdType(cdType);
 		
-        return agentStatusService.searchAgentStatusCategorys(searchAgentStatusCategory);
+        return agentStatusService.searchAgentStatusCategories(searchAgentStatusCategories);
     }
 	
 	

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SearchAgentStatusCategory {
+public class SearchAgentStatusCategories {
 	
 	private String parentCd;
 	private String cdType;

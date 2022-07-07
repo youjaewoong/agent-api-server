@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AgentStatusCategoryResponse {
+public class AgentStatusCategoriesResponse {
 	
 	private String cdType;
 	private String cd;

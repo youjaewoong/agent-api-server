@@ -5,13 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.api.server.model.agentstatus.AgentStatusCategoryResponse;
-import com.api.server.model.agentstatus.SearchAgentStatusCategory;
+import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
+import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 
 @Repository
 @Mapper
 public interface AgentStatusMapper {
 
-	List<AgentStatusCategoryResponse> searchAgentStatusCategorys(SearchAgentStatusCategory searchAgentStatusCategory);
+	List<AgentStatusCategoriesResponse> searchAgentStatusCategories(SearchAgentStatusCategories searchAgentStatusCategory);
 
 }
