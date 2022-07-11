@@ -4,6 +4,7 @@
 <mapper namespace="com.api.server.dao.AgentStatusMapper">
 	
 	<resultMap id="agentStatusCategoriesResponse" type="com.api.server.model.agentstatus.AgentStatusCategoriesResponse" autoMapping="true"/>
+	<resultMap id="agentStatusResponse" type="com.api.server.model.agentstatus.AgentStatusResponse" autoMapping="true"/>
 	
 	<select id="searchAgentStatusCategories" resultMap="agentStatusCategoriesResponse">
 		SELECT 
@@ -21,5 +22,59 @@
 		</if>
 		ORDER BY CD_NAME
 	</select>
+
+
+	<select id="searchAgentStatusCustomCategories" resultMap="agentStatusCategoriesResponse">
+		SELECT 
+		    CD_TYPE
+		   ,CD
+		   ,PARENT_CD
+		   ,CD_NAME 
+		FROM DP_COMMON_CODE 
+		WHERE DEL_YN = 'N'
+		<if test="parentCd != null and !parentCd.equals('')">
+		  AND PARENT_CD = #{parentCd}
+		</if>
+		<if test="cdType != null and !cdType.equals('')">
+		  AND CD_TYPE = #{cdType}
+		</if>
+		<if test="cdName != null and !cdName.equals('')">
+		  AND CD_NAME LIKE #{cdName} ||'%'
+		</if>
+		ORDER BY CD_NAME
+	</select>
+	
+	
+	<insert id="createAgentStatus">
+ 		INSERT INTO DP_AGENT_STATUS (
+ 			 ID
+ 			,AGENT_ID
+ 			,CALL_ID
+ 			,CATEGORIES
+ 			,SENTENCES
+ 			,ETC
+ 			,DETAIL
+ 			,CREATED_ILSI
+ 			,UPDATED_ILSI
+ 		) VALUES (
+ 			 #{id}
+ 			,#{agentId}
+ 			,#{callId}
+ 			,#{categories}
+ 			,#{sentences}
+ 			,#{etc}
+ 			,#{detail}
+ 			,NOW()
+ 			,NOW()
+ 		)
+	</insert>
+	
+	
+	<select id="searchAgentStatus" resultMap="agentStatusResponse">
+		SELECT * FROM DP_AGENT_STATUS
+		WHERE AGENT_ID = #{agentId}
+		AND CALL_ID = #{callId}
+	</select>
+
 
 </mapper>
