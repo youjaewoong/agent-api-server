@@ -12,7 +12,7 @@ public class AgentStatusSentences {
 	
 	@Getter
 	@Setter
-	private static class SentencesDetail {
+	public static class SentencesDetail {
 		private String letter;
 		private String rank;
 		private String value;

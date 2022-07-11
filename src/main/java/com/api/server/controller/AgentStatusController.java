@@ -24,8 +24,10 @@ import org.springframework.web.client.RestTemplate;
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
 import com.api.server.model.agentstatus.AgentStatusRedisCategories;
 import com.api.server.model.agentstatus.CreateAgentStatus;
+import com.api.server.model.agentstatus.CreateRedisAgentStatus;
 import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 import com.api.server.service.AgentStatusService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
@@ -59,10 +61,24 @@ public class AgentStatusController {
 	@ApiOperation("추가")
     @PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-    public void addBookmark(@Valid @RequestBody CreateAgentStatus createAgentStatus) {
+    public void addAgentStatus(@Valid @RequestBody CreateAgentStatus createAgentStatus) {
 		agentStatusService.createAgentStatus(createAgentStatus);
 	}
     
+	
+	@ApiOperation("레디스 추가")
+    @PostMapping("/redis/add/{key}")
+	@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> addRedisAgentStatus(@NotNull @RequestBody CreateRedisAgentStatus obj, @PathVariable String key) throws JsonProcessingException {
+	    String url = WEBSOCKET_URL + "/redis/strings/set?key={key}&obj={obj}";
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("key", key);
+	    params.put("obj", new ObjectMapper().writeValueAsString(obj));
+		
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, params);
+		return response;
+	}
+	
 	
 	@ApiOperation("레디스 상담유형 카테고리")
     @GetMapping(value = "/categories/{key}")
@@ -70,7 +86,7 @@ public class AgentStatusController {
 		
 		ResponseEntity<String> redisResponse = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
 		
-		List<List<AgentStatusCategoriesResponse>> responseCategories = new ArrayList<>();
+		List<List<AgentStatusCategoriesResponse>> categories = new ArrayList<>();
 		
 		if (redisResponse.getBody() != null) {
 			
@@ -115,10 +131,10 @@ public class AgentStatusController {
 					}
 		
 				}
-				responseCategories.add(categoriesSet);
+				categories.add(categoriesSet);
 			}
 		}
-		return responseCategories;
+		return categories;
     }
 	
 	

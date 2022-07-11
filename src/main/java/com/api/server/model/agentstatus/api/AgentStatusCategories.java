@@ -13,7 +13,7 @@ public class AgentStatusCategories {
 	
 	@Getter
 	@Setter
-	private static class CategoryDetail {
+	public static class CategoryDetail {
 		private String code;
 		private String name;
 		private String level;
