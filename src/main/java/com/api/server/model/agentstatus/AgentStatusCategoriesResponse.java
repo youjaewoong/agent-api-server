@@ -8,7 +8,7 @@ import lombok.Setter;
 public class AgentStatusCategoriesResponse {
 	
 	private String cdType;
-	private String cd;
+	private String code;
 	private String parentCd;
-	private String cdName;
+	private String name;
 }

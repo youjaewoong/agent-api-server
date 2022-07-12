@@ -82,59 +82,13 @@ public class AgentStatusController {
 	
 	@ApiOperation("레디스 상담유형 카테고리")
     @GetMapping(value = "/categories/{key}")
-    public List<List<AgentStatusCategoriesResponse>> getAgentCategory(@NotNull @PathVariable String key) throws Exception {
+    public String getAgentCategory(@NotNull @PathVariable String key) throws NullPointerException {
 		
 		ResponseEntity<String> redisResponse = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
-		
-		List<List<AgentStatusCategoriesResponse>> categories = new ArrayList<>();
-		
-		if (redisResponse.getBody() != null) {
-			
-			String body = redisResponse.getBody();
-			AgentStatusRedisCategories redisCategories = new ObjectMapper().readValue(body, AgentStatusRedisCategories.class);
-			
-			for (AgentStatusRedisCategories.Cetegories agentStatus :  redisCategories.getAgentStatus()) {
-				
-				List<AgentStatusCategoriesResponse> categoriesSet = new ArrayList<>();
-				AgentStatusCategoriesResponse category = null;
-				for (AgentStatusRedisCategories.Category cetegories : agentStatus.getCategories()) {
-					
-					//대 중 소 세 확인
-					SearchAgentStatusCategories searchAgentStatusCategories = new SearchAgentStatusCategories();
-					
-					if ("L".equals(cetegories.getLevel())) {
-						searchAgentStatusCategories.setCdName(cetegories.getName());
-						searchAgentStatusCategories.setCdType("CATEGORY_" + cetegories.getLevel());
-						category = agentStatusService.searchAgentStatusCustomCategories(searchAgentStatusCategories);
-						categoriesSet.add(category);
-					}
-					if ("M".equals(cetegories.getLevel())) {
-						searchAgentStatusCategories.setParentCd(category.getCd());
-						searchAgentStatusCategories.setCdName(cetegories.getName());
-						searchAgentStatusCategories.setCdType("CATEGORY_" + cetegories.getLevel());
-						category = agentStatusService.searchAgentStatusCustomCategories(searchAgentStatusCategories);
-						categoriesSet.add(category);
-					}
-					if ("S".equals(cetegories.getLevel())) {
-						searchAgentStatusCategories.setParentCd(category.getCd());
-						searchAgentStatusCategories.setCdName(cetegories.getName());
-						searchAgentStatusCategories.setCdType("CATEGORY_" + cetegories.getLevel());
-						category = agentStatusService.searchAgentStatusCustomCategories(searchAgentStatusCategories);
-						categoriesSet.add(category);
-					}
-					if ("SS".equals(cetegories.getLevel())) {
-						searchAgentStatusCategories.setParentCd(category.getCd());
-						searchAgentStatusCategories.setCdName(cetegories.getName());
-						searchAgentStatusCategories.setCdType("CATEGORY_" + cetegories.getLevel());
-						category = agentStatusService.searchAgentStatusCustomCategories(searchAgentStatusCategories);
-						categoriesSet.add(category);
-					}
-		
-				}
-				categories.add(categoriesSet);
-			}
+		if (redisResponse.getBody() == null) {
+			throw new NullPointerException("redis categories is null");
 		}
-		return categories;
+		return redisResponse.getBody();
     }
 	
 	

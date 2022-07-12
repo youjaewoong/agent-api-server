@@ -9,9 +9,9 @@
 	<select id="searchAgentStatusCategories" resultMap="agentStatusCategoriesResponse">
 		SELECT 
 		    CD_TYPE
-		   ,CD
+		   ,CD AS CODE
 		   ,PARENT_CD
-		   ,CD_NAME 
+		   ,CD_NAME AS NAME
 		FROM DP_COMMON_CODE 
 		WHERE DEL_YN = 'N'
 		<if test="parentCd != null and !parentCd.equals('')">
