@@ -1,11 +1,9 @@
 package com.api.server.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpStatus;
@@ -22,13 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
-import com.api.server.model.agentstatus.AgentStatusRedisCategories;
 import com.api.server.model.agentstatus.CreateAgentStatus;
-import com.api.server.model.agentstatus.CreateRedisAgentStatus;
 import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 import com.api.server.service.AgentStatusService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -58,25 +53,19 @@ public class AgentStatusController {
     }
 	
 	
-	@ApiOperation("추가")
-    @PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-    public void addAgentStatus(@Valid @RequestBody CreateAgentStatus createAgentStatus) {
-		agentStatusService.createAgentStatus(createAgentStatus);
-	}
-    
-	
 	@ApiOperation("레디스 추가")
-    @PostMapping("/redis/add/{key}")
+    @PostMapping("{key}")
 	@ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> addRedisAgentStatus(@NotNull @RequestBody CreateRedisAgentStatus obj, @PathVariable String key) throws JsonProcessingException {
-	    String url = WEBSOCKET_URL + "/redis/strings/set?key={key}&obj={obj}";
-	    Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("key", key);
-	    params.put("obj", new ObjectMapper().writeValueAsString(obj));
+    public ResponseEntity<String> addRedisAgentStatus(@NotNull @RequestBody CreateAgentStatus obj, 
+    												  @PathVariable String key) {
 		
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, params);
-		return response;
+		for(Map<String, Object> category : obj.getCategories() ) {
+			for ( String mayKey : category.keySet() ) {
+			    System.out.println(mayKey);
+			    System.out.println(category.get(mayKey));
+			}
+		}
+		return null;
 	}
 	
 	
@@ -95,13 +84,13 @@ public class AgentStatusController {
 	@ApiOperation("레디스 핵심문장 추출")
 	@GetMapping(value = "/sentences", produces = "application/text; charset=utf8")
     public ResponseEntity<String> getAgentSentence(
-    								@NotNull @RequestParam String key1, 
-    							    @NotNull @RequestParam String key2) {
+    								@NotNull @RequestParam String key, 
+    							    @NotNull @RequestParam String hashKey) {
 		
-	    String url = WEBSOCKET_URL + "/redis/hash?key1={key1}&key2={key2}";
+	    String url = WEBSOCKET_URL + "/redis/hash?key={key}&hashKey={hashKey}";
 	    Map<String, String> params = new HashMap<String, String>();
-	    params.put("key1", key1);
-	    params.put("key2", key2);
+	    params.put("key", key);
+	    params.put("hashKey", hashKey);
 		
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, params);
 		return response;

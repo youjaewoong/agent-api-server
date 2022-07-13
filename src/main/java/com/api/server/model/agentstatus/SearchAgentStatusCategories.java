@@ -9,5 +9,4 @@ public class SearchAgentStatusCategories {
 	
 	private String parentCd;
 	private String cdType;
-	private String cdName;
 }
