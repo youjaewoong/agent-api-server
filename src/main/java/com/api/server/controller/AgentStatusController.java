@@ -23,7 +23,6 @@ import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
 import com.api.server.model.agentstatus.CreateAgentStatus;
 import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 import com.api.server.service.AgentStatusService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -65,25 +64,41 @@ public class AgentStatusController {
 			    System.out.println(category.get(mayKey));
 			}
 		}
+		
+		
+//		if (!RedisUtil.getHashAll(key).isEmpty()) {
+//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//		}
+//		
+//		for(Map<String, Object> category : obj.getCategories() ) {
+//			for (String mayKey : category.keySet() ) {
+//			    System.out.println(mayKey.toString());
+//			    ObjectUtil.ObjectToRedisHash(key, mayKey, category.get(mayKey).toString());
+//			}
+//		}
+//		ObjectUtil.ObjectToRedisHash(key, "adviceSentence", obj.getSentences());
+//		ObjectUtil.ObjectToRedisHash(key, "adviceMemo", obj.getMemo());
+//		
+//		return new ResponseEntity<>(HttpStatus.CREATED);
 		return null;
 	}
 	
 	
 	@ApiOperation("레디스 상담유형 카테고리")
     @GetMapping(value = "/categories/{key}")
-    public String getAgentCategory(@NotNull @PathVariable String key) throws NullPointerException {
+    public ResponseEntity<String> getAgentCategories(@NotNull @PathVariable String key) throws NullPointerException {
 		
-		ResponseEntity<String> redisResponse = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
-		if (redisResponse.getBody() == null) {
-			throw new NullPointerException("redis categories is null");
+		ResponseEntity<String> categories = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
+		if (categories.getBody() == null) {
+			new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return redisResponse.getBody();
+		return new ResponseEntity<>(categories.getBody(), HttpStatus.OK);
     }
 	
 	
 	@ApiOperation("레디스 핵심문장 추출")
 	@GetMapping(value = "/sentences", produces = "application/text; charset=utf8")
-    public ResponseEntity<String> getAgentSentence(
+    public ResponseEntity<String> getAgentSentences(
     								@NotNull @RequestParam String key, 
     							    @NotNull @RequestParam String hashKey) {
 		
@@ -92,15 +107,25 @@ public class AgentStatusController {
 	    params.put("key", key);
 	    params.put("hashKey", hashKey);
 		
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, params);
-		return response;
+		ResponseEntity<String> sentences = restTemplate.getForEntity(url, String.class, params);
+		
+		if (sentences == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(sentences.getBody(), HttpStatus.OK);
     }
 	
 	
 	@ApiOperation("레디스 상담정보")
-	@GetMapping(value = "/informations", produces = "application/text; charset=utf8")
-    public void getAgentInformation() throws Exception {
-		//TODO
+	@GetMapping(value = "/information/{key}", produces = "application/text; charset=utf8")
+    public ResponseEntity<String> getAgentInformation(@NotNull @PathVariable String key) throws Exception {
+		ResponseEntity<String> info = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
+		
+		if (info.getBody() == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(info.getBody(), HttpStatus.OK);
     }
 	
 }
