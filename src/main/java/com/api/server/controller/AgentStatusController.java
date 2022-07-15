@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/advisor/agent/status")
+@RequestMapping("/advisor/agent-status")
 @Validated
 public class AgentStatusController {
 
