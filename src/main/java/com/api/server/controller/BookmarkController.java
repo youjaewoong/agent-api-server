@@ -25,7 +25,7 @@ import com.api.server.model.bookmark.CreateBookmark;
 import com.api.server.model.bookmark.DeleteBookmark;
 import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
-import com.api.server.model.bookmark.UpdateBookmark;
+import com.api.server.model.bookmark.UpdateBookmarks;
 import com.api.server.service.BookmarkService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bookmarks")
+@RequestMapping("/advisor/bookmarks")
 @Validated
 public class BookmarkController {
 
@@ -52,6 +52,20 @@ public class BookmarkController {
         return bookMarkService.selectBookmarks(searchBookmarkRequest);
     }
     
+    
+	@ApiOperation("대상ID 확인")
+	@GetMapping("check/{targetId}")
+    public boolean checkBookmarkTargetId(@NotBlank @RequestParam("agent_id") String agentId,
+										 @PathVariable String targetId) {
+		
+		SearchBookmarkRequest searchBookmarkRequest = new SearchBookmarkRequest();
+		searchBookmarkRequest.setAgentId(agentId);
+		searchBookmarkRequest.setTargetId(targetId);
+		
+    	return bookMarkService.checkBookmarkTargetId(searchBookmarkRequest);
+    }
+	
+    
 	
 	@ApiOperation("추가")
     @PostMapping
@@ -63,15 +77,15 @@ public class BookmarkController {
 	
 	@ApiOperation("수정")
     @PutMapping
-    public void editBookmark(@Valid @RequestBody UpdateBookmark updateBookmark) {
+    public void editBookmark(@Valid @RequestBody UpdateBookmarks updateBookmark) {
     	bookMarkService.updateBookmark(updateBookmark);
     }
 	
 	
 	@ApiOperation("단건삭제")
-    @DeleteMapping("{id}")
-    public void removeBookmark(@Valid @RequestBody DeleteBookmark deleteBookmark) {
-    	bookMarkService.deleteBookmark(deleteBookmark);
+    @DeleteMapping
+    public boolean removeBookmark(@Valid @RequestBody DeleteBookmark deleteBookmark) {
+    	return bookMarkService.deleteBookmark(deleteBookmark);
     }
 	
 	

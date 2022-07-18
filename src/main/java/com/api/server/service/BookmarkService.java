@@ -9,16 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.BookmarkMapper;
-import com.api.server.model.bookmark.Bookmark;
 import com.api.server.model.bookmark.BookmarkResponse;
 import com.api.server.model.bookmark.BookmarksResponse;
 import com.api.server.model.bookmark.CreateBookmark;
 import com.api.server.model.bookmark.DeleteBookmark;
 import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
-import com.api.server.model.bookmark.UpdateBookmark;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.api.server.model.bookmark.UpdateBookmarks;
+import com.api.server.model.bookmark.UpdateBookmarks.UpdateBookmark;
 
 import lombok.RequiredArgsConstructor;
 
@@ -62,28 +60,30 @@ public class BookmarkService {
 		return BookMarkByGroups;
 	}
 
+	
+	public boolean checkBookmarkTargetId(SearchBookmarkRequest searchBookmarkRequest) {
+		if (bookMarkMapper.checkBookmarkTargetId(searchBookmarkRequest) > 0) return true;
+		return false;
+	}
+	
 
-	public void updateBookmark(UpdateBookmark updateBookmark) {
-		bookMarkMapper.updateBookmark(updateBookmark);
+	public void updateBookmark(UpdateBookmarks updateBookmarks) {
+		for (UpdateBookmark updateBookmark : updateBookmarks.getIds()) {
+			bookMarkMapper.updateBookmark(updateBookmark);
+		}
 	}
 	
 
 	public void createBookmark(CreateBookmark createBookmark) throws Exception {
-		ObjectMapper objectMapper =  new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		Bookmark bookMarkBucket = objectMapper.readValue(createBookmark.getContent(), Bookmark.class);
 		
-		if (bookMarkBucket.getContent().getSubTitle() != null) {
-			createBookmark.setSubTitle(bookMarkBucket.getContent().getSubTitle());
-		}
-		createBookmark.setTitle(bookMarkBucket.getTitle());
-		createBookmark.setContent(bookMarkBucket.getContent().getContent());
 		bookMarkMapper.createBookmark(createBookmark);
 	}
 	
 
-	public void deleteBookmark(DeleteBookmark deleteBookmark) {
-		bookMarkMapper.deleteBookmark(deleteBookmark);
+	public boolean deleteBookmark(DeleteBookmark deleteBookmark) {
+		if (bookMarkMapper.deleteBookmark(deleteBookmark) > 0) return true;
+		
+		return false;
 	}
 	
 	
@@ -95,5 +95,6 @@ public class BookmarkService {
 	public void deleteBookmarkByGroup(DeleteBookmark deleteBookmark) {
 		bookMarkMapper.deleteBookmarkByGroup(deleteBookmark);
 	}
+
 	
 }

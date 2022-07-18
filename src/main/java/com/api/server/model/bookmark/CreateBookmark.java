@@ -24,19 +24,27 @@ public class CreateBookmark {
 	
 	@JsonIgnore
 	private String id;
+	
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;
+	
+	@NotBlank
+	@JsonProperty("target_id")
+	private String targetId;
+	
 	@NotBlank
 	@JsonProperty("group_id")
 	private String groupId;
-	@NotBlank
+	
 	private String content;
-	@JsonIgnore
-	private String title;
-	@JsonIgnore
+	
 	@JsonProperty("sub_title")
 	private String subTitle;
+	
+	@NotBlank
+	private String title;
+	
 	private CategoryType category;
 	
 }

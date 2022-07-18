@@ -10,13 +10,15 @@ import com.api.server.model.bookmark.CreateBookmark;
 import com.api.server.model.bookmark.DeleteBookmark;
 import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.model.bookmark.SearchBookmarkRequest;
-import com.api.server.model.bookmark.UpdateBookmark;
+import com.api.server.model.bookmark.UpdateBookmarks.UpdateBookmark;
 
 @Repository
 @Mapper
 public interface BookmarkMapper {
 
 	public List<BookmarkResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest);
+
+	public int checkBookmarkTargetId(SearchBookmarkRequest searchBookmarkRequest);
 
 	public int createBookmark(CreateBookmark createBookmark);
     

@@ -35,12 +35,19 @@
 		ORDER BY GROUP_TITLE ASC
 	</select>
 
+
+	<select id="checkBookmarkTargetId" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM BOOKMARK
+		WHERE AGENT_ID = #{agentId}
+ 		AND TARGET_ID = #{targetId}
+	</select>
+
 	
 	<update id="updateBookmark">
  		UPDATE BOOKMARK SET
- 		  TITLE = #{title}
- 		 ,CONTENT = #{content}
- 		 ,GROUP_ID = #{groupId}
+ 		  GROUP_ID = #{groupId}
  		 ,UPDATED_ILSI = NOW()
  		WHERE ID = #{id}
 	</update>
@@ -50,6 +57,7 @@
  		INSERT INTO BOOKMARK (
  			 ID
  			,AGENT_ID
+ 			,TARGET_ID
  			,TITLE
  			,SUB_TITLE
  			,CONTENT
@@ -60,6 +68,7 @@
  		) VALUES (
  			 #{id}
  			,#{agentId}
+ 			,#{targetId}
  			,#{title}
  			,#{subTitle}
  			,#{content}
@@ -73,8 +82,13 @@
 	
 	<delete id="deleteBookmark">
  		DELETE FROM BOOKMARK
- 		WHERE ID = #{id}
- 		AND AGENT_ID = #{agentId}
+ 		WHERE AGENT_ID = #{agentId}
+ 		<if test="id != null and !id.equals('')">
+ 		  AND ID = #{id}
+ 		</if>
+ 		<if test="targetId != null and !targetId.equals('')">
+ 		  AND TARGET_ID = #{targetId}
+ 		</if>
 	</delete>
 	
 	
