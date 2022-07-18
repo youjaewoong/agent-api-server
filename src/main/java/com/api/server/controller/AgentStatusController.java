@@ -1,5 +1,6 @@
 package com.api.server.controller;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
 import com.api.server.model.agentstatus.CreateAgentStatus;
@@ -58,29 +60,37 @@ public class AgentStatusController {
     public ResponseEntity<String> addRedisAgentStatus(@NotNull @RequestBody CreateAgentStatus obj, 
     												  @PathVariable String key) {
 		
+		
+		URI uri = UriComponentsBuilder
+				.fromUriString(WEBSOCKET_URL)
+				.path("/redis/hash/push/{key}")
+				.build()
+				.expand(key)
+				.toUri();
+		
 		for(Map<String, Object> category : obj.getCategories() ) {
-			for ( String mayKey : category.keySet() ) {
-			    System.out.println(mayKey);
-			    System.out.println(category.get(mayKey));
+			for (String mayKey : category.keySet() ) {
+				
+			    Map<String, String> params = new HashMap<String, String>();
+			    params.put("hashKey", mayKey);
+			    params.put("obj", category.get(mayKey).toString());
+			    
+			    restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params);
 			}
 		}
 		
+	    Map<String, String> params1 = new HashMap<String, String>();
+	    params1.put("hashKey", "adviceSentence");
+	    params1.put("obj", obj.getSentences());
+		restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params1);
 		
-//		if (!RedisUtil.getHashAll(key).isEmpty()) {
-//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//		}
-//		
-//		for(Map<String, Object> category : obj.getCategories() ) {
-//			for (String mayKey : category.keySet() ) {
-//			    System.out.println(mayKey.toString());
-//			    ObjectUtil.ObjectToRedisHash(key, mayKey, category.get(mayKey).toString());
-//			}
-//		}
-//		ObjectUtil.ObjectToRedisHash(key, "adviceSentence", obj.getSentences());
-//		ObjectUtil.ObjectToRedisHash(key, "adviceMemo", obj.getMemo());
-//		
-//		return new ResponseEntity<>(HttpStatus.CREATED);
-		return null;
+		
+	    Map<String, String> params2 = new HashMap<String, String>();
+	    params2.put("hashKey", "adviceMemo");
+	    params2.put("obj", obj.getMemo());
+		restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params2);
+		
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	
@@ -88,7 +98,7 @@ public class AgentStatusController {
     @GetMapping(value = "/categories/{key}")
     public ResponseEntity<String> getAgentCategories(@NotNull @PathVariable String key) throws NullPointerException {
 		
-		ResponseEntity<String> categories = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
+		ResponseEntity<String> categories = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{key}", String.class, key);
 		if (categories.getBody() == null) {
 			new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
