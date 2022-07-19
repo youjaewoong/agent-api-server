@@ -69,11 +69,11 @@ public class AgentStatusController {
 				.toUri();
 		
 		for(Map<String, Object> category : obj.getCategories() ) {
-			for (String mayKey : category.keySet() ) {
+			for (String hashKey : category.keySet() ) {
 				
 			    Map<String, String> params = new HashMap<String, String>();
-			    params.put("hashKey", mayKey);
-			    params.put("obj", category.get(mayKey).toString());
+			    params.put("hashKey", hashKey);
+			    params.put("obj", category.get(hashKey).toString());
 			    
 			    restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params);
 			}
@@ -99,9 +99,7 @@ public class AgentStatusController {
     public ResponseEntity<String> getAgentCategories(@NotNull @PathVariable String key) throws NullPointerException {
 		
 		ResponseEntity<String> categories = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{key}", String.class, key);
-		if (categories.getBody() == null) {
-			new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+
 		return new ResponseEntity<>(categories.getBody(), HttpStatus.OK);
     }
 	
@@ -119,9 +117,6 @@ public class AgentStatusController {
 		
 		ResponseEntity<String> sentences = restTemplate.getForEntity(url, String.class, params);
 		
-		if (sentences == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
 		return new ResponseEntity<>(sentences.getBody(), HttpStatus.OK);
     }
 	
@@ -131,9 +126,6 @@ public class AgentStatusController {
     public ResponseEntity<String> getAgentInformation(@NotNull @PathVariable String key) throws Exception {
 		ResponseEntity<String> info = restTemplate.getForEntity(WEBSOCKET_URL+"/redis/strings/{id}", String.class, key);
 		
-		if (info.getBody() == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
 		
 		return new ResponseEntity<>(info.getBody(), HttpStatus.OK);
     }

@@ -20,6 +20,10 @@ public class CreateAgentStatus {
 	@NotEmpty
 	@JsonProperty("rec_key")
 	private String recKey;
+	
+	@JsonProperty("ap_id")
+	private String apId;
+	
 	private List<Map<String, Object>> categories; //상담유형
 	private String sentences; //핵심문장추출
 	private String ext; //내선번호
