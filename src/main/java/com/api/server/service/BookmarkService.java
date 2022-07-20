@@ -74,7 +74,7 @@ public class BookmarkService {
 	}
 	
 
-	public void createBookmark(CreateBookmark createBookmark) throws Exception {
+	public void createBookmark(CreateBookmark createBookmark) {
 		
 		bookMarkMapper.createBookmark(createBookmark);
 	}
