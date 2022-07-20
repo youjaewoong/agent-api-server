@@ -9,6 +9,7 @@
 		SELECT * FROM ( 
 			SELECT 
 			  A.ID
+			 ,A.COMPANY_CODE
 			 ,A.AGENT_ID
 			 ,A.TITLE
 			 ,A.SUB_TITLE
@@ -22,8 +23,8 @@
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
 			 ,B.BASIC_GROUP_YN
-			 ,A.CREATED_ILSI
-			 ,REPLACE(REPLACE(DATE_FORMAT(A.UPDATED_ILSI, '%p %h:%i %m-%d-%Y'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_ILSI
+			 ,A.CREATED_DATETIME
+			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
 			FROM BOOKMARK A
 			LEFT JOIN BOOKMARK_GROUP B
 			ON A.GROUP_ID  = B.ID
@@ -48,7 +49,7 @@
 	<update id="updateBookmark">
  		UPDATE BOOKMARK SET
  		  GROUP_ID = #{groupId}
- 		 ,UPDATED_ILSI = NOW()
+ 		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
 	</update>
 	
@@ -56,6 +57,7 @@
 	<insert id="createBookmark">
  		INSERT INTO BOOKMARK (
  			 ID
+ 			,COMPANY_CODE
  			,AGENT_ID
  			,TARGET_ID
  			,TITLE
@@ -63,10 +65,11 @@
  			,CONTENT
  			,CATEGORY
  			,GROUP_ID
- 			,CREATED_ILSI
- 			,UPDATED_ILSI
+ 			,CREATED_DATETIME
+ 			,UPDATED_DATETIME
  		) VALUES (
  			 #{id}
+ 			,#{companyCode}
  			,#{agentId}
  			,#{targetId}
  			,#{title}

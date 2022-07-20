@@ -12,5 +12,5 @@ public class BookmarkGroupResponse {
 	private String id;
 	private String title;
 	private String basicGroupYn;
-	private Date createdIlsi;
+	private Date createdDatetime;
 }

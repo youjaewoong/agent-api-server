@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class BookmarkResponse {
 	private String id;
+	private String companyCode;
 	private String agentId;
 	private String title;
 	private String subTitle;
@@ -16,6 +17,6 @@ public class BookmarkResponse {
 	private String groupId;
 	private String groupTitle;
 	private String basicGroupYn;
-	private String createdIlsi;
-	private String conversionUpdatedIlsi;
+	private String createdDatetime;
+	private String conversionUpdatedDatetime;
 }

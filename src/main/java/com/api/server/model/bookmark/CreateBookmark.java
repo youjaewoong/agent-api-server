@@ -25,6 +25,9 @@ public class CreateBookmark {
 	@JsonIgnore
 	private String id;
 	
+	@JsonProperty("company_code")
+	private String companyCode;
+	
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;
