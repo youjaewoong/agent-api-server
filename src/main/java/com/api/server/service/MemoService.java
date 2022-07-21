@@ -64,26 +64,6 @@ public class MemoService {
 			}
 			memoByGroups.add(memoByGroup);
 		}
-	
-		//더보기처리
-		for (MemosResponse group : memoByGroups) {
-			int total = group.getMemos().size();
-			int requestLimit = searchMemoRequest.getLimit();
-			int limit = total;
-			if (total > requestLimit) { //total 사이즈가 크면 더보기 기능 활성화
-				group.getViewMore().setViewMore(true);
-				limit = requestLimit;
-			}
-			group.getViewMore().setTotal(total);
-			group.getViewMore().setLimit(requestLimit);
-			group.getViewMore().setViewMoreCount(total-requestLimit); //더보기 클릭시 카운터 처리용
-			
-			List<MemoResponse> limitMemos = new ArrayList<>(); //제한된 사이즈만큼 리스트 처리
-			for (int i = 0; i < limit; i++) {
-				limitMemos.add(group.getMemos().get(i));
-			}
-			group.setMemos(limitMemos);
-		}
 		
 		return memoByGroups;
 	}
