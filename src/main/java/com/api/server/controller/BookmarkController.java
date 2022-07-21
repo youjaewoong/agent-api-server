@@ -97,7 +97,7 @@ public class BookmarkController {
 	
 	
 	@ApiOperation("그룹삭제")
-    @DeleteMapping("/bookmarks/groups/{id}")
+    @DeleteMapping("groups/{id}")
     public void removeBookmarkByGroup(@Valid @NotEmpty @PathVariable String id, 
     								  @Valid DeleteBookmark deleteBookmark) {
 		deleteBookmark.setId(id);
