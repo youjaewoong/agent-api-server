@@ -12,61 +12,38 @@
 			  A.ID
 			 ,A.AGENT_ID
 			 ,A.TITLE
-			 ,A.CONTENTS
+			 ,A.CONTENT
 			 ,A.GROUP_ID
 			 ,B.TITLE AS GROUP_TITLE
 			 ,B.BASIC_GROUP_YN
-			 ,DATE_FORMAT(A.UPDATED_ILSI, '%Y.%m.%d') AS CONVERSION_UPDATED_ILSI
-			 ,A.CREATED_ILSI
-			 ,DATE_FORMAT(A.UPDATED_ILSI, '%Y-%m-%d %H:%i:%s') AS UPDATED_ILSI
+			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
+			 ,A.CREATED_DATETIME
+			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d %H:%i:%s') AS UPDATED_DATETIME
 			FROM MEMO A
 			LEFT JOIN MEMO_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.AGENT_ID = #{agentId}
- 	    ORDER BY UPDATED_ILSI DESC
-	</select>
-	
-	
-	<select id="selectViewMoreMemos" resultMap="memoResponse">
-		SELECT * FROM ( 
-			SELECT
-			  A.ID
-			 ,A.AGENT_ID
-			 ,A.TITLE
-			 ,A.CONTENTS
-			 ,A.GROUP_ID
-			 ,B.TITLE AS GROUP_TITLE
-			 ,B.BASIC_GROUP_YN
-			 ,DATE_FORMAT(A.UPDATED_ILSI, '%Y.%m.%d') AS CONVERSION_UPDATED_ILSI
-			 ,A.CREATED_ILSI
-			 ,DATE_FORMAT(A.UPDATED_ILSI, '%Y-%m-%d %H:%i:%s') AS UPDATED_ILSI
-			FROM MEMO A
-			LEFT JOIN MEMO_GROUP B
-			ON A.GROUP_ID  = B.ID
-		) AA
-		WHERE AA.AGENT_ID = #{agentId}
-	    AND AA.GROUP_ID = #{groupId}
-	  	AND AA.UPDATED_ILSI  <![CDATA[<]]> #{updatedIlsi}
- 	    ORDER BY UPDATED_ILSI DESC
-	    LIMIT #{limit}
+ 	    ORDER BY UPDATED_DATETIME DESC
 	</select>
 	
 	
 	<insert id="createMemo">
  		INSERT INTO MEMO (
  			 ID
+ 			,COMPANY_ID
  			,AGENT_ID
  			,TITLE
- 			,CONTENTS
+ 			,CONTENT
  			,GROUP_ID
- 			,CREATED_ILSI
- 			,UPDATED_ILSI
+ 			,CREATED_DATETIME
+ 			,UPDATED_DATETIME
  		) VALUES (
  			 #{id}
+ 			,#{companyId}
  			,#{agentId}
  			,#{title}
- 			,#{contents}
+ 			,#{content}
  			,#{groupId}
  			,NOW()
  			,NOW()
@@ -77,9 +54,9 @@
 	<update id="updateMemo">
  		UPDATE MEMO SET
  		  TITLE = #{title}
- 		 ,CONTENTS = #{contents}
+ 		 ,CONTENT = #{content}
  		 ,GROUP_ID = #{groupId}
- 		 ,UPDATED_ILSI = NOW()
+ 		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</update>

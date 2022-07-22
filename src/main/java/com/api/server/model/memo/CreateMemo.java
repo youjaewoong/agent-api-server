@@ -20,6 +20,8 @@ public class CreateMemo {
 	
 	@JsonIgnore
 	private String id;
+	@JsonProperty("company_id")
+	private String companyId;
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;
@@ -29,16 +31,16 @@ public class CreateMemo {
 	@JsonIgnore
 	private String title;
 	@NotBlank
-	private String contents;
+	private String content;
 	@NotBlank
-	@JsonProperty("original_contents")
-	private String originalContents;
+	@JsonProperty("original_content")
+	private String originalContent;
 	
 	public void setTitle() {
-		if (this.originalContents.length() > 10) {
-			this.title = this.originalContents.substring(0, 7) + "...";
+		if (this.originalContent.length() > 10) {
+			this.title = this.originalContent.substring(0, 7) + "...";
 		} else {
-			this.title = this.originalContents;
+			this.title = this.originalContent;
 		}
 	}
 }

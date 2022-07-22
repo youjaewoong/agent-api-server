@@ -69,22 +69,6 @@ public class MemoService {
 	}
 
 	
-	public List<MemoResponse> selectViewMoreMemos(SearchMemoRequest searchMemoRequest) {
-		List<MemoResponse> memos = memoMapper.selectViewMoreMemos(searchMemoRequest);
-		
-		//그룹 셋팅
-		SearchMemoGroupRequest searchMemoGroupRequest = new SearchMemoGroupRequest();
-		searchMemoGroupRequest.setAgentId(searchMemoRequest.getAgentId());
-		List<MemoGroupResponse> memoGroups = memoGroupMapper.selectMemoGroups(searchMemoGroupRequest);
-		if (memoGroups != null) {
-			for (MemoResponse memo : memos) {
-				memo.setMemoGroups(memoGroups);
-			}
-		}
-		return memos;
-	}
-	
-	
 	public void updateMemo(UpdateMemo updateMemo) {
 		updateMemo.setTitle();
 		memoMapper.updateMemo(updateMemo);

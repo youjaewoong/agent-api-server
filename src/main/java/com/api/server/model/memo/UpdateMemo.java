@@ -11,27 +11,33 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateMemo {
+	
 	@JsonIgnore
 	private String id;
+	
 	@JsonIgnore
 	private String title;
-	private String contents;
+	
+	@NotBlank
+	private String content;
 	
 	@NotBlank
 	@JsonProperty("group_id")
 	private String groupId;
+	
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;
+	
 	@NotBlank
-	@JsonProperty("original_contents")
-	private String originalContents;
+	@JsonProperty("original_content")
+	private String originalContent;
 	
 	public void setTitle() {
-		if (this.originalContents.length() > 10) {
-			this.title = this.originalContents.substring(0, 7) + "...";
+		if (this.originalContent.length() > 10) {
+			this.title = this.originalContent.substring(0, 10) + "...";
 		} else {
-			this.title = this.originalContents;
+			this.title = this.originalContent;
 		}
 	}
 }

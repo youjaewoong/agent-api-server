@@ -18,8 +18,6 @@ public interface MemoMapper {
 
 	List<MemoResponse> selectMemos(SearchMemoRequest searchMemoRequest);
 	
-	List<MemoResponse> selectViewMoreMemos(SearchMemoRequest searchMemoRequest);
-
     int createMemo(CreateMemo createMemo);
     
     int updateMemo(UpdateMemo updateMemo);

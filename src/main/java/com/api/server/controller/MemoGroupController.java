@@ -37,7 +37,7 @@ public class MemoGroupController {
 	
 
 	@ApiOperation("조회")
-    @GetMapping("/memo-groups")
+    @GetMapping("memo-groups")
     public List<MemoGroupResponse> getMemoGroups(@NotBlank @RequestParam("agent_id") String agentId) {
     	SearchMemoGroupRequest searchMemoGroupRequest = new SearchMemoGroupRequest();
     	searchMemoGroupRequest.setAgentId(agentId);
@@ -46,14 +46,14 @@ public class MemoGroupController {
 	
     
 	@ApiOperation("추가")
-    @PostMapping("/memo-groups")
+    @PostMapping("memo-groups")
     public MemoGroupResponse addMemoGroup(@RequestBody CreateMemoGroup createMemoGroup) throws Exception {
     	return memoGroupService.createMemoGroup(createMemoGroup);
     }
     
 	
 	@ApiOperation("단건수정")
-    @PutMapping("/memo-groups/{id}")
+    @PutMapping("memo-groups/{id}")
     public void editMemoGroup(@PathVariable String id, @RequestBody UpdateMemoGroup updateMemoGroup) {
     	updateMemoGroup.setId(id);
     	memoGroupService.updateMemoGroup(updateMemoGroup);
@@ -61,7 +61,7 @@ public class MemoGroupController {
 	
 	
 	@ApiOperation("건별수정")
-    @PutMapping("/memo-groups")
+    @PutMapping("memo-groups")
     public void editMemoGroups(@Valid @RequestBody UpdateMemoGroups updateMemoGroups) throws Exception {
 		memoGroupService.updateMemoGroups(updateMemoGroups);
     }
@@ -69,7 +69,7 @@ public class MemoGroupController {
     
 	
 	@ApiOperation("건별삭제")
-	@DeleteMapping("/memo-groups")
+	@DeleteMapping("memo-groups")
     public void removeMemoGroups(@Valid @RequestBody DeleteMemoGroups deleteMemoGroups) {
 		memoGroupService.deleteMemoGroups(deleteMemoGroups);
     }

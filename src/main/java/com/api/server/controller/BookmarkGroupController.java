@@ -32,14 +32,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/advisor/bookmark-groups")
+@RequestMapping("/advisor")
 public class BookmarkGroupController {
 
 	private final BookmarkGroupService bookMarkGroupService;
 	
 	
 	@ApiOperation("조회")
-    @GetMapping
+    @GetMapping("bookmark-groups")
     public List<BookmarkGroupResponse> getBookmarkGroups(@NotBlank @RequestParam("agent_id") String agentId) {
 		SearchBookmarkGroupRequest searchBookmarkGroupRequest = new SearchBookmarkGroupRequest();
 		searchBookmarkGroupRequest.setAgentId(agentId);
@@ -48,7 +48,7 @@ public class BookmarkGroupController {
     
     
 	@ApiOperation("추가")
-    @PostMapping
+    @PostMapping("bookmark-groups")
 	@ResponseStatus(HttpStatus.CREATED)
     public BookmarkGroupResponse addBookmarkGroup(@Valid @RequestBody CreateBookmarkGroup createBookmarkGroup) throws Exception {
 		return bookMarkGroupService.createBookmarkGroup(createBookmarkGroup);
@@ -56,28 +56,28 @@ public class BookmarkGroupController {
     
 	
 	@ApiOperation("단건수정")
-	@PutMapping("{id}")
+	@PutMapping("bookmark-groups/{id}")
 	public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroup updateBookmarkGroup) throws Exception {
 		bookMarkGroupService.updateBookmarkGroup(updateBookmarkGroup);
 	}
 	
 	
 	@ApiOperation("건별수정")
-    @PutMapping
+    @PutMapping("bookmark-groups")
     public void editBookmarkGroups(@Valid @RequestBody UpdateBookmarkGroups updateBookmarkGroups) throws Exception {
     	bookMarkGroupService.updateBookmarkGroups(updateBookmarkGroups);
     }
 	
     
 	@ApiOperation("단건삭제")
-	@DeleteMapping("{id}")
+	@DeleteMapping("bookmark-groups/{id}")
     public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroup deleteBookmarkGroup) {
 		bookMarkGroupService.deleteBookmarkGroup(deleteBookmarkGroup);
     }
 	
 	
 	@ApiOperation("건별삭제")
-	@DeleteMapping
+	@DeleteMapping("bookmark-groups")
     public void removeBookmarkGroup(@Valid @RequestBody DeleteBookmarkGroups deleteBookmarkGroups) {
 		bookMarkGroupService.deleteBookmarkGroups(deleteBookmarkGroups);
     }

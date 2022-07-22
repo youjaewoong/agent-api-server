@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.model.memo.CreateMemo;
 import com.api.server.model.memo.DeleteMemo;
-import com.api.server.model.memo.MemoResponse;
 import com.api.server.model.memo.MemosResponse;
 import com.api.server.model.memo.SearchMemoRequest;
 import com.api.server.model.memo.UpdateMemo;
@@ -36,7 +35,7 @@ public class MemoController {
 	private final MemoService memoService;
 	
 	@ApiOperation("조회")
-    @GetMapping("/memos")
+    @GetMapping("memos")
     public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId) {
 		
 		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
@@ -46,30 +45,15 @@ public class MemoController {
     }
 	
 	
-	@ApiOperation("더보기 조회")
-    @GetMapping("/memos/view-mores")
-    public List<MemoResponse> getViewMoreMemos(@NotBlank @RequestParam("agent_id") String agentId,
-    										   @NotBlank @RequestParam("group_id") String groupId,
-    										   @NotBlank @RequestParam("updated_ilsi") String updatedIlsi) {
-		
-		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
-		searchMemoRequest.setAgentId(agentId);
-		searchMemoRequest.setGroupId(groupId);
-		searchMemoRequest.setUpdatedIlsi(updatedIlsi);
-		
-        return memoService.selectViewMoreMemos(searchMemoRequest);
-    }
-    
-	
 	@ApiOperation("추가")
-    @PostMapping("/memos")
+    @PostMapping("memos")
     public void createMemo(@RequestBody CreateMemo createMemo) {
     	memoService.createMemo(createMemo);
     }
 	
     
 	@ApiOperation("삭제")
-    @DeleteMapping("/memos/{id}")
+    @DeleteMapping("memos/{id}")
     public void deleteMemo(@Valid @RequestBody DeleteMemo deleteMemo) {
     	memoService.deleteMemo(deleteMemo);
     }

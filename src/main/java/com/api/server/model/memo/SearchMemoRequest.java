@@ -14,11 +14,10 @@ public class SearchMemoRequest {
     @NotBlank
     @JsonProperty("agent_id")
 	private String agentId;
-    private int limit = 5;
     
 	@NotBlank
 	@JsonProperty("group_id")
     private String groupId;
-    @JsonProperty("updated_ilsi")
-    private String updatedIlsi;
+	
 }
+

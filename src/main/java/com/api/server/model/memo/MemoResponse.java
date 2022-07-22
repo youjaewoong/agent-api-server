@@ -14,12 +14,12 @@ public class MemoResponse {
 	private String id;
 	private String agentId;
 	private String title;
-	private String contents;
+	private String content;
 	private String groupId;
 	private String groupTitle;
 	private String basicGroupYn;
-	private Date createdIlsi;
-	private String updatedIlsi;
-	private String conversionUpdatedIlsi;
+	private Date createdDatetime;
+	private String updatedDatetime;
+	private String conversionUpdatedDatetime;
 	private List<MemoGroupResponse> memoGroups;
 }
