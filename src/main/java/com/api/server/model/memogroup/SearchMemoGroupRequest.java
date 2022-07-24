@@ -11,4 +11,6 @@ public class SearchMemoGroupRequest {
 	
 	@NotBlank
 	private String agentId;
+	
+	private String title;
 }

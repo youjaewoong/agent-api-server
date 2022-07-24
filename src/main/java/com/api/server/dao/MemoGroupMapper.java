@@ -21,7 +21,7 @@ public interface MemoGroupMapper {
     
     int updateMemoGroup(UpdateMemoGroup updateMemo);
 	
-	int checkMemoGroupTitle(String name);
+	int checkMemoGroupTitle(String title, String agentId);
 
 	int deleteMemoGroup(String id);
 

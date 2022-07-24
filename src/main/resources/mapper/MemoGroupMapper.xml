@@ -63,5 +63,6 @@
  			COUNT(*) 
  		FROM MEMO_GROUP
  		WHERE TITLE = #{title}
+ 		AND AGENT_ID = #{agentId}
 	</select>
 </mapper>

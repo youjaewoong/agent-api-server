@@ -59,7 +59,7 @@ public class MemoGroupService {
 	
 	public MemoGroupResponse createMemoGroup(CreateMemoGroup createMemoGroup) throws Exception {
 		
-		this.checkMemoGroupTitle(createMemoGroup.getTitle());
+		this.checkMemoGroupTitle(createMemoGroup.getTitle(), createMemoGroup.getAgentId());
 		
 		memoGroupMapper.createMemoGroup(createMemoGroup);
 		MemoGroupResponse memoGroupResponse = new MemoGroupResponse();
@@ -77,8 +77,8 @@ public class MemoGroupService {
 	}
 
 	
-	public void checkMemoGroupTitle(String title) throws Exception {
-		int foundCnt = memoGroupMapper.checkMemoGroupTitle(title);
+	public void checkMemoGroupTitle(String title, String agentId) throws Exception {
+		int foundCnt = memoGroupMapper.checkMemoGroupTitle(title, agentId);
 		if (foundCnt > 0) {
 			throw new Exception();
 		}
