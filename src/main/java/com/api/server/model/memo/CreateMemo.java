@@ -20,18 +20,24 @@ public class CreateMemo {
 	
 	@JsonIgnore
 	private String id;
-	@JsonProperty("company_id")
-	private String companyId;
+	
+	@JsonProperty("company_code")
+	private String companyCode;
+	
 	@NotBlank
 	@JsonProperty("agent_id")
 	private String agentId;
+	
 	@NotBlank
 	@JsonProperty("group_id")
 	private String groupId;
+	
 	@JsonIgnore
 	private String title;
+	
 	@NotBlank
 	private String content;
+	
 	@NotBlank
 	@JsonProperty("original_content")
 	private String originalContent;

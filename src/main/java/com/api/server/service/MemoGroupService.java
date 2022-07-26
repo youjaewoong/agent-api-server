@@ -78,7 +78,11 @@ public class MemoGroupService {
 
 	
 	public void checkMemoGroupTitle(String title, String agentId) throws Exception {
-		int foundCnt = memoGroupMapper.checkMemoGroupTitle(title, agentId);
+		
+    	SearchMemoGroupRequest searchMemoGroupRequest = new SearchMemoGroupRequest();
+    	searchMemoGroupRequest.setAgentId(agentId);
+    	searchMemoGroupRequest.setTitle(title);
+		int foundCnt = memoGroupMapper.checkMemoGroupTitle(searchMemoGroupRequest);
 		if (foundCnt > 0) {
 			throw new Exception();
 		}
