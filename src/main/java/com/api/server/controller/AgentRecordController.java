@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.service.AgentRecordService;
 
-import io.swagger.annotations.Api;
-
-@Api("상담이력")
-@RequestMapping(value = "/advisor/history", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
+@RequestMapping("/advisor/history")
 public class AgentRecordController {
 
 	@Autowired

@@ -27,7 +27,6 @@ public class BookmarkService {
 	
 	private final BookmarkMapper bookMarkMapper;
 
-
 	public List<BookmarksResponse> selectBookmarks(SearchBookmarkRequest searchBookmarkRequest) {
 		
 		List<BookmarkResponse> bookmarks = bookMarkMapper.selectBookmarks(searchBookmarkRequest);

@@ -3,67 +3,62 @@ package com.api.server.service;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.dao.CoachingMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 @Transactional
-@PropertySources({@PropertySource(value = "classpath:config/application.properties")})
+@RequiredArgsConstructor
 public class CoachingService {
 
-    @Autowired
-    CoachingMapper coachingMyBatisMapper;
+    private final CoachingMapper coachingMapper;
     
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    
-    @Autowired
-    private SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
-
     //채팅방(topic)에 발행되는 메시지를 처리할 Listner
-    @Autowired
     private RedisMessageListenerContainer redisMessageListener;
 
     private Map<String, ChannelTopic> subscribers = new HashMap<>();
 
     public HashMap<String, Object> lookupCoachingRequestList(HashMap<String, Object> params) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("data", coachingMyBatisMapper.lookupCoachingRequestList(params));
+        resultMap.put("data", coachingMapper.lookupCoachingRequestList(params));
         return resultMap;
     }
 
     public HashMap<String, Object> getCoachingRequestList(HashMap<String, Object> params) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("data", coachingMyBatisMapper.getCoachingRequestList(params));
+        resultMap.put("data", coachingMapper.getCoachingRequestList(params));
         return resultMap;
     }
 
     public HashMap<String, Object> getCoachingRequest(HashMap<String, Object> params) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("data", coachingMyBatisMapper.getCoachingRequest(params));
+        resultMap.put("data", coachingMapper.getCoachingRequest(params));
         return resultMap;
     }
 
     public HashMap<String, Object> getAdminList(HashMap<String, Object> params) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("data", coachingMyBatisMapper.getAdminList(params));
+        resultMap.put("data", coachingMapper.getAdminList(params));
         return resultMap;
     }
 
@@ -108,14 +103,14 @@ public class CoachingService {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  CoachingService  55");
 
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("RESULT33", coachingMyBatisMapper.lookupCoachingMessageList(params));
+        resultMap.put("RESULT33", coachingMapper.lookupCoachingMessageList(params));
 
         return resultMap;
     }
 
     public Integer lookupCount(HashMap<String, Object> params) throws Exception {
 
-        return coachingMyBatisMapper.lookupCount(params);
+        return coachingMapper.lookupCount(params);
     }
 
     /**
@@ -139,7 +134,7 @@ public class CoachingService {
             // 1. Redis
             redisYn = publish(params.get("adminExt").toString(), params);
             // 2. DB 저장
-            coachingMyBatisMapper.insertOneCoachingMessage(params);
+            coachingMapper.insertOneCoachingMessage(params);
         } catch (Exception e) {
             insertYn = "N";
         }
@@ -170,7 +165,7 @@ public class CoachingService {
                 params.remove("coachingDate");
             }
             // 2. DB 저장
-            coachingMyBatisMapper.updateOneCoachingMessage(params);
+            coachingMapper.updateOneCoachingMessage(params);
         } catch (Exception e) {
             updateYn = "N";
         }
@@ -184,7 +179,7 @@ public class CoachingService {
         String updateYn = "Y";
 
         try {
-            coachingMyBatisMapper.updateOneReadYn(params);
+            coachingMapper.updateOneReadYn(params);
         } catch (Exception e) {
             updateYn = "N";
         }
@@ -193,21 +188,21 @@ public class CoachingService {
 
     public Integer lookupCountNoAnswer(HashMap<String, Object> params) throws Exception {
 
-        return coachingMyBatisMapper.lookupCount(params);
+        return coachingMapper.lookupCount(params);
     }
 
     public Integer lookupCountNoRead(HashMap<String, Object> params) throws Exception {
 
-        return coachingMyBatisMapper.lookupCountNoRead(params);
+        return coachingMapper.lookupCountNoRead(params);
     }
 
     public HashMap<String, Object> lookupCoachingAgentList(HashMap<String, Object> params) throws Exception {
 
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("RESULT33", coachingMyBatisMapper.lookupCoachingAgentList(params));
+        resultMap.put("RESULT33", coachingMapper.lookupCoachingAgentList(params));
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  CochService  98");
-        System.out.println(coachingMyBatisMapper.lookupCoachingAgentList(params));
+        System.out.println(coachingMapper.lookupCoachingAgentList(params));
 
         return resultMap;
     }
@@ -258,7 +253,7 @@ public class CoachingService {
     private void subscriber(ChannelTopic channel, Message message) {
         log.info(">>># subscriber");
         // 채널 생성
-        template.convertAndSend(channel.getTopic(), message.toString());
+        //template.convertAndSend(channel.getTopic(), message.toString());
     }
 
     //TODO

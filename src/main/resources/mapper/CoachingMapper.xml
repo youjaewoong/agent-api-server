@@ -330,8 +330,7 @@
         </if>
     </select>
 
-    <insert id="insertOneCoachingMessage"
-            parameterType="com.diquest.dplatform.webmanager.module.adv.common.coaching.entity.Coaching">
+    <insert id="insertOneCoachingMessage" >
         <if test='chattingDiv == "A"'>
             INSERT DP_ADV_COACHING (REQUEST_DATE, AGENT_ID, ADMIN_ID, CLIENT_ID, CLIENT_NAME, CLIENT_TEL,
             REQUEST_CONTENT, CHATTING_DIVISION, EMERGENCY_DIVISION)
@@ -396,12 +395,11 @@
         AND CHATTING_DIVISION='A'
     </update>
 
-    <update id="updateOneReadYn"
-            parameterType="com.diquest.dplatform.webmanager.module.adv.common.coaching.entity.Coaching">
+    <update id="updateOneReadYn" >
         UPDATE DP_ADV_COACHING
         SET
         READ_ILSI_AGENT=now()
-        WHERE chatting_no=#{chatting_no}
+        WHERE chatting_no= #{chatting_no}
         AND READ_ILSI_AGENT is null
         AND COACHING_CONTENT is not null
     </update>
