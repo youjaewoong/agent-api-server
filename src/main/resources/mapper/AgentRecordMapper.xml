@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.server.dao.AgentRecordMapper">
+	
+	<select id="getAgentRecordRecent" resultType="list">
+		SELECT IFNULL(NULLIF(CUSTOMER_ID, ''), '고객 아이디 없음') AS CUSTOMER_ID
+			 , IFNULL(NULLIF(ADVISOR_ID, ''), '상담원 아이디 없음') AS ADVISOR_ID
+			 , IFNULL(NULLIF(CUSTOMER_NM, ''), '고객 이름 없음') AS CUSTOMER_NM
+			 , IFNULL(NULLIF(CUSTOMER_PHONE, ''), '고객 전화번호 없음') AS CUSTOMER_PHONE
+			 , IFNULL(NULLIF(CUSTOMER_HIGHLIGHT, ''), '고객 관심여부 정보 없음') AS CUSTOMER_HIGHLIGHT
+			 , IFNULL(NULLIF(ADVISOR_NM, ''), '상담원 이름 없음') AS ADVISOR_NM
+             , IFNULL(NULLIF(CALL_ID, ''), '통화 고유번호 없음') AS CALL_ID
+			 , MAX(TIME_FORMAT(TIME(DATE_ADD(CALL_START_TIME, INTERVAL CEIL(CALL_TIME/1000/60) MINUTE)), '%h:%i %p')) AS CALL_START_TIME
+		  FROM DP_ADV_CALL_DATA
+			<where>
+			  CALL_START_TIME > DATE_FORMAT(CURDATE(), '%Y-%m-%d 00:00')
+			  <if test="agentId != null">
+			    AND ADVISOR_ID = #{agentId}
+			  </if>
+			</where>
+	  GROUP BY CUSTOMER_ID
+			  , ADVISOR_ID
+			  , CUSTOMER_NM
+			  , CUSTOMER_PHONE
+			  , CUSTOMER_HIGHLIGHT
+			  , ADVISOR_NM
+              , CALL_ID
+			<if test="timeSt !=null and timeSt !='' and timeEd !=null and timeEd !=''">
+			  HAVING CALL_START_TIME 
+                     BETWEEN TIME_FORMAT(#{timeSt}, '%h:%i %p') 
+                         AND TIME_FORMAT(#{timeEd}, '%h:%i %p')
+			</if>
+			ORDER BY 
+				<choose>
+				  <when test="orderBy == 'customerNm'">
+				    CUSTOMER_NM ASC
+				  </when>
+				  <otherwise>
+				    CALL_START_TIME DESC
+				  </otherwise>
+				</choose>
+            <if test="limit != null">
+              LIMIT ${limit}
+            </if>
+	</select>
+	
+	<update id="updateCustomerHighlight" parameterType="map">
+		UPDATE DP_ADV_CALL_DATA
+		   SET CUSTOMER_HIGHLIGHT =
+			<choose>
+			  <when test="customerHighlight == 0">
+			    1
+			  </when>
+			  <otherwise>
+			    0
+			  </otherwise>
+			</choose>
+	   <where>
+	     CUSTOMER_ID = #{customerId}
+		 AND ADVISOR_ID = #{advisorId}
+		</where>
+	</update>
+	
+	<select id="getAgentInfo" resultType="hashmap">
+		SELECT 
+               IFNULL (
+                       (SELECT AGENT_NAME
+                          FROM DP_ADV_AGENT 
+                         WHERE AGENT_ID = #{agentId}
+                      ), '미등록') AS AGENT_NAME
+             , IFNULL (
+                       (SELECT AGENT_TITLE 
+                          FROM DP_ADV_AGENT 
+                         WHERE AGENT_ID = #{agentId}
+                      ), '미등록') AS AGENT_TITLE 
+	</select>
+    
+    <select id="getDeptInfo" resultType="list">
+        SELECT IFNULL(NULLIF(DAD.DEPT_CODE, ''), '부서 코드 없음') AS DEPT_CODE
+             , IFNULL(NULLIF(DAD.DEPT_NAME, ''), '부서명 없음') AS DEPT_NAME
+             , IFNULL(NULLIF(DAD.COMPANY_CODE, ''), '회사 코드 없음') AS COMPANY_CODE
+             , IFNULL(NULLIF(DAA.AGENT_ID, ''), '상담원 아이디 없음') AS AGENT_ID
+             , IFNULL(NULLIF(DAA.AGENT_NAME, ''), '상담원 이름 없음') AS AGENT_NAME
+             , IFNULL(NULLIF(DAA.EXT, ''), '내선번호 없음') AS EXT
+             , IFNULL(NULLIF(DAA.AGENT_TITLE, ''), '상담원 직급 없음') AS AGENT_TITLE
+             , IFNULL(NULLIF(DAA.IS_ADMIN , ''), '관리자 여부 정보 없음') AS IS_ADMIN
+          FROM DP_ADV_DEPT DAD 
+     LEFT JOIN DP_ADV_AGENT DAA 
+         USING (DEPT_CODE)
+         <where>
+           <if test="app_name != null and app_name != ''">
+             COMPANY_CODE = #{app_name}
+           </if>
+           <if test="center != null and center != ''">
+             AND DEPT_CODE = #{center}
+           </if>
+           <if test="dept != null and dept != ''">
+             AND DEPT_CODE = #{dept}
+           </if>
+         </where>
+         ORDER BY DAD.DEPT_CODE ASC
+         		, DAA.IS_ADMIN DESC
+         		, DAA.AGENT_TITLE DESC
+    </select>
+    <select id="getCustomerCallHistory" resultType="list">
+    	SELECT IFNULL(NULLIF(DASM.CALL_ID, ''), '통화 고유번호 없음') AS  CALL_ID
+			 , IFNULL(NULLIF(DASM.CALL_START_TIME, ''), '통화 시작 시간 기록 없음') AS  CALL_START_TIME
+			 , IFNULL(NULLIF(DASM.CALL_END_TIME, ''), '통화 종료 시간 기록 없음') AS  CALL_END_TIME
+			 , IFNULL(MINUTE(TIMEDIFF(DASM.CALL_END_TIME, DASM.CALL_START_TIME)), '0') AS CALL_TIME
+			 , IFNULL(NULLIF(DASM.CUST_ID, ''), '고객 아이디 없음') AS CUST_ID
+			 , IFNULL(NULLIF(DASM.CUST_NAME, ''), '고객 이름 없음') AS CUST_NAME
+			 , IFNULL(NULLIF(DASM.EMP_ID, ''), '사원 번호 없음') AS EMP_ID
+			 , IFNULL(NULLIF(DASM.EXT, ''), '내선 번호 없음') AS EXT
+			 , IFNULL(NULLIF(DASM.REC_KEY, ''), '녹취 파일명 없음') AS REC_KEY
+			 , IFNULL(NULLIF(DASM.INPUT_TEL, ''), '인입 번호 없음') AS INPUT_TEL
+			 , IFNULL(NULLIF(DAA.AGENT_NAME, ''), '사원 이름 없음') AS AGENT_NAME
+			 , IFNULL(NULLIF(DAD.DEPT_NAME, ''), '부서명 없음') AS DEPT_NAME
+			 , IFNULL(NULLIF(DASAI.TOPIC_SENTENCE, ''), 'TOPIC_SENTENCE') AS TOPIC_SENTENCE
+			 , IFNULL(NULLIF(DASAI.MAIN_KEYWORD, ''), 'K1, K2, K3') AS MAIN_KEYWORD
+		  FROM DP_ADV_STT_META DASM
+	 LEFT JOIN DP_ADV_AGENT DAA 
+	 	    ON DASM.EMP_ID = DAA.AGENT_ID
+	 LEFT JOIN DP_ADV_STT_ANALYSIS_INFO DASAI 
+	 	    ON DASM.REC_KEY = DASAI.REC_KEY
+ 	 LEFT JOIN DP_ADV_DEPT DAD 
+ 	 		ON DAA.DEPT_CODE = DAD.DEPT_CODE
+    	<where>
+    	  <if test="custId != null and custId != ''">
+    	    DASM.CUST_ID = #{custId}
+    	  </if>
+    	</where>
+      ORDER BY DASM.CALL_ID DESC
+		<if test="limit != null and limit != ''">
+		  LIMIT ${limit}
+		</if>    
+    </select>
+    <select id="getCallIdStt" resultType="list">
+    	SELECT STT
+    		 , STT_ONLY
+    		 , WHO 
+    	  FROM DP_ADV_STT_RESULT 
+		<where>
+    	  CMD = 'T'
+		  <if test="recKey != null and recKey !=''">
+	        AND REC_KEY = #{recKey}
+		  </if>
+		</where>
+    	 ORDER BY STT_INDEX ASC
+    </select>
+</mapper>

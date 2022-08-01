@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.server.dao.CoachingMapper">
+
+    <resultMap id="Coaching1" type="com.api.server.model.coaching.Coaching"/>
+    <resultMap id="Coaching2" type="com.api.server.model.coaching.CoachingAgentList"/>
+    <resultMap id="Coaching3" type="com.api.server.model.coaching.CoachingHist"/>
+    <resultMap id="Coaching4" type="com.api.server.model.coaching.CoachingAgent"/>
+
+    <select id="lookupCoachingRequestList" resultMap="Coaching3">
+        SELECT IFNULL(NULLIF(t2.CHATTING_NO, ''), '채팅번호 없음') AS CHATTING_NO
+        , t2.REQUEST_DATE
+        , t2.COACHING_DATE
+        , IFNULL(NULLIF(t2.AGENT_ID, ''), '상담원 아이디 없음') AS AGENT_ID
+        , IFNULL(NULLIF(t2.ADMIN_ID, ''), '관리자 아이디 없음') AS ADMIN_ID
+        , (SELECT AGENT_NAME FROM DP_ADV_AGENT WHERE AGENT_ID = t2.ADMIN_ID) ADMIN_NAME
+        , IFNULL(NULLIF(t1.AGENT_NAME, ''), '상담원 이름 없음') AS AGENT_NAME
+        , IFNULL(NULLIF(t1.EXT, ''), '내선번호 없음') AS EXT
+        , IFNULL(NULLIF(t2.CLIENT_ID, ''), '고객 아이디 없음') AS CLIENT_ID
+        , IFNULL(NULLIF(t2.CLIENT_NAME, ''), '고객 이름 없음') AS CLIENT_NAME
+        , IFNULL(NULLIF(t2.CLIENT_TEL, ''), '고객 전화번호 없음') AS CLIENT_TEL
+        , t2.REQUEST_CONTENT
+        , t2.COACHING_CONTENT
+        , t2.EMERGENCY_DIVISION
+        , t2.CHATTING_DIVISION
+        , t2.READ_DATE_AGENT 
+        , t2.UPDATED_DATE
+        FROM DP_ADV_AGENT t1
+  RIGHT JOIN DP_ADV_COACHING t2 ON t1.AGENT_ID = t2.agent_id
+        <where>
+            <if test="adminId != null and adminId != ''">
+                AND t2.ADMIN_ID = #{adminId}
+            </if>
+            <if test="agentId != null and agentId != ''">
+                AND t2.AGENT_ID = #{agentId}
+            </if>
+            <if test="agentNm != null and agentNm != ''">
+                AND t1.AGENT_NAME = #{agentNm}
+            </if>
+            <if test="dateSt != null and dateSt != ''">
+                AND t2.REQUEST_DATE >= DATE_FORMAT(#{dateSt}, '%Y-%m-%d 00:00')
+            </if>
+            <if test="dateEd != null and dateEd != ''">
+                AND t2.REQUEST_DATE <![CDATA[<=]]> DATE_FORMAT(#{dateEd}, '%Y-%m-%d 00:00')
+            </if>
+            <if test="range != null and range != ''">
+                <choose>
+                    <when test="range == 'day'">
+                        AND t2.REQUEST_DATE >= DATE_FORMAT(CURDATE(), '%Y-%m-%d 00:00')
+                    </when>
+                    <otherwise>
+                        AND t2.REQUEST_DATE BETWEEN DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL -7 DAY), '%Y-%m-%d 00:00')
+                        AND DATE_FORMAT(CURDATE(), '%Y-%m-%d 00:00')
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="division != null and division != '' and division != 'all'">
+                <choose>
+                    <when test="division == 'emergency'">
+                        AND EMERGENCY_DIVISION = 'Y'
+                    </when>
+                    <otherwise>
+                        AND EMERGENCY_DIVISION = 'N'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="orderBy != null and orderBy != ''">
+                ORDER BY
+                <choose>
+                    <when test="orderBy == 'requestDate'">
+                        REQUEST_DATE
+                    </when>
+                    <otherwise>
+                        t1.AGENT_NAME
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="getCoachingRequestList" resultMap="Coaching3">
+		SELECT *
+		FROM (
+			SELECT
+				t2.CHATTING_NO
+				, COALESCE(t2.REQUEST_DATE, t2.COACHING_DATE) REQUEST_DATE
+				, t2.COACHING_DATE
+				, t2.AGENT_ID
+				, t2.ADMIN_ID
+				, (SELECT AGENT_NAME FROM DP_ADV_AGENT WHERE AGENT_ID = t2.ADMIN_ID) ADMIN_NAME
+				, t1.AGENT_NAME
+				, t1.EXT
+				, t2.CLIENT_ID
+				, t2.CLIENT_NAME
+				, t2.CLIENT_TEL
+				, t2.REQUEST_CONTENT
+				, t2.COACHING_CONTENT
+				, t2.EMERGENCY_DIVISION
+				, t2.CHATTING_DIVISION
+				, t2.READ_DATE_AGENT
+				, t2.UPDATED_DATE
+			FROM DP_ADV_AGENT t1, DP_ADV_COACHING t2
+			WHERE 1=1
+			<if test='adminId != null and adminId != ""'>
+				AND t2.ADMIN_ID = #{adminId}
+			</if>
+			<if test='agentId != null and agentId != ""'>
+				AND t2.AGENT_ID = #{agentId}
+			</if>
+			<if test='clientId != null and clientId != ""'>
+				AND t2.CLIENT_ID = #{clientId}
+			</if>
+			<if test='isNoAnswer != null and isNoAnswer == "Y"'>
+				AND t2.COACHING_CONTENT IS NULL
+			</if>
+			<if test='division != null and division != ""'>
+				AND t2.EMERGENCY_DIVISION = #{division}
+			</if>
+			<if test='isAgentList != null and isAgentList == "Y"'>
+				AND COACHING_CONTENT IS NOT NULL
+			</if>
+			<if test='chattingNo != null and chattingNo != ""'>
+				AND CHATTING_NO = #{chattingNo}
+			</if>
+			<choose>
+				<when test='isAgentList != null and isAgentList == "Y"'>
+					AND t1.AGENT_ID = t2.ADMIN_ID
+				</when>
+				<otherwise>
+					AND t1.AGENT_ID = t2.AGENT_ID
+				</otherwise>
+			</choose>
+			<choose>
+				<when test='isAgentList != null and isAgentList == "Y"'>
+					<choose>
+						<when test='endDate != null and endDate != ""'>
+							<![CDATA[
+								AND t2.COACHING_DATE < #{endDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								AND t2.COACHING_DATE <= NOW()
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='startDate != null and startDate != ""'>
+							<![CDATA[
+								AND t2.COACHING_DATE < #{startDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								AND t2.COACHING_DATE >= DATE_FORMAT(now(), '%Y-%m-%d')
+							]]>
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+					AND ((
+					<choose>
+						<when test='endDate != null and endDate != ""'>
+							<![CDATA[
+								t2.REQUEST_DATE < #{endDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								t2.REQUEST_DATE <= NOW()
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='startDate != null and startDate != ""'>
+							<![CDATA[
+								AND t2.REQUEST_DATE < #{startDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								AND t2.REQUEST_DATE >= DATE_FORMAT(now(), '%Y-%m-%d')
+							]]>
+						</otherwise>
+					</choose>
+					) OR (
+					<choose>
+						<when test='endDate != null and endDate != ""'>
+							<![CDATA[
+								t2.COACHING_DATE < #{endDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								t2.COACHING_DATE <= NOW()
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='startDate != null and startDate != ""'>
+							<![CDATA[
+								AND t2.COACHING_DATE < #{startDate}
+							]]>
+						</when>
+						<otherwise>
+							<![CDATA[
+								AND t2.COACHING_DATE >= DATE_FORMAT(now(), '%Y-%m-%d')
+							]]>
+						</otherwise>
+					</choose>
+					))
+				</otherwise>
+			</choose>
+			<if test='pageSize == 1'>
+				AND t2.CHATTING_NO = (select max(CHATTING_NO) chatting_no from DP_ADV_COACHING)
+			</if>
+		) a
+        <choose>
+            <when test='isAgentList != null and isAgentList == "Y"'>
+                ORDER BY COACHING_DATE DESC
+            </when>
+            <otherwise>
+                ORDER BY REQUEST_DATE DESC
+            </otherwise>
+        </choose>
+        LIMIT ${pageSize}
+    </select>
+
+    <select id="getCoachingRequest" resultMap="Coaching3">
+        /* CoachingMyBatisMapper.getCoachingRequest 코칭 단건조회 */
+        SELECT
+        t2.CHATTING_NO
+        , t2.REQUEST_DATE
+        , t2.COACHING_DATE
+        , t2.AGENT_ID
+        , t2.ADMIN_ID
+        , (SELECT AGENT_NAME FROM DP_ADV_AGENT WHERE AGENT_ID = t2.ADMIN_ID) ADMIN_NAME
+        , t1.AGENT_NAME
+        , t1.EXT
+        , t2.CLIENT_ID
+        , t2.CLIENT_NAME
+        , t2.CLIENT_TEL
+        , t2.REQUEST_CONTENT
+        , t2.COACHING_CONTENT
+        , t2.EMERGENCY_DIVISION
+        , t2.CHATTING_DIVISION
+        , t2.READ_DATE_AGENT
+        , t2.UPDATED_DATE
+        FROM DP_ADV_AGENT t1, DP_ADV_COACHING t2
+        WHERE 1=1
+        <choose>
+            <when test='chattingNo != null and isAgentList != ""'>
+                AND CHATTING_NO = #{chattingNo}
+            </when>
+            <otherwise>
+                AND t2.CHATTING_NO = (select max(CHATTING_NO) chatting_no from DP_ADV_COACHING)
+            </otherwise>
+        </choose>
+        AND t2.AGENT_ID = t1.AGENT_ID
+    </select>
+
+    <select id="getAdminList" resultMap="Coaching3">
+        SELECT *
+        FROM DP_ADV_AGENT t1
+        , (SELECT * FROM DP_ADV_AGENT WHERE IS_ADMIN = 'N' AND AGENT_ID = #{agentId}) t2
+        WHERE t1.IS_ADMIN = 'Y'
+        AND t1.DEPT_CODE = t2.DEPT_CODE
+    </select>
+
+    <select id="lookupCount" resultType="int">
+        /* 미답변 건수 조회 */
+        SELECT COUNT(0)
+        FROM DP_ADV_COACHING
+        WHERE 1=1
+        <choose>
+            <when test='isAgentList != null and isAgentList == "Y"'>
+                <![CDATA[
+					AND(
+						(REQUEST_DATE <= NOW() AND REQUEST_DATE >= DATE_FORMAT(now(), '%Y-%m-%d'))
+						OR (COACHING_DATE <= NOW() AND COACHING_DATE >= DATE_FORMAT(now(), '%Y-%m-%d'))
+					)
+				]]>
+            </when>
+            <otherwise>
+                <choose>
+                    <when test='endDate != null and endDate != ""'>
+                        <![CDATA[
+					AND REQUEST_DATE < #{endDate}
+				]]>
+                    </when>
+                    <otherwise>
+                        <![CDATA[
+					AND REQUEST_DATE <= DATE_ADD(now(), INTERVAL 1 MINUTE)
+				]]>
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test='requestDate != null and requestDate != ""'>
+                        <![CDATA[
+							AND	REQUEST_DATE >= #{requestDate}
+						]]>
+                    </when>
+                    <otherwise>
+                        <![CDATA[
+							AND	REQUEST_DATE >= DATE_FORMAT(now(), '%Y-%m-%d')
+						]]>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <if test='adminId != null and adminId != ""'>
+            AND ADMIN_ID = #{adminId}
+        </if>
+        <if test='agentId != null and agentId != ""'>
+            AND AGENT_ID = #{agentId}
+        </if>
+        <if test='isNoAnswer != null and isNoAnswer == "Y"'>
+            AND COACHING_CONTENT IS NULL
+        </if>
+        <if test='isAgentList != null and isAgentList == "Y"'>
+            AND COACHING_CONTENT IS NOT NULL
+        </if>
+        <if test='isAgentList != null and isAgentList == "Y"'>
+            AND READ_DATE_AGENT IS NULL
+        </if>
+        <if test='emergencyDivision != null and emergencyDivision != ""'>
+            AND EMERGENCY_DIVISION = #{emergencyDivision}
+        </if>
+    </select>
+
+    <insert id="insertOneCoachingMessage"
+            parameterType="com.diquest.dplatform.webmanager.module.adv.common.coaching.entity.Coaching">
+        <if test='chattingDiv == "A"'>
+            INSERT DP_ADV_COACHING (REQUEST_DATE, AGENT_ID, ADMIN_ID, CLIENT_ID, CLIENT_NAME, CLIENT_TEL,
+            REQUEST_CONTENT, CHATTING_DIVISION, EMERGENCY_DIVISION)
+        </if>
+        <if test='chattingDiv != "A"'>
+            INSERT DP_ADV_COACHING (COACHING_DATE, AGENT_ID, ADMIN_ID, CLIENT_ID, CLIENT_NAME, CLIENT_TEL,
+            COACHING_CONTENT, CHATTING_DIVISION)
+        </if>
+        VALUES (
+        <choose>
+            <when test='requestDate != null and requestDate != ""'>
+                #{requestDate}
+            </when>
+            <otherwise>
+                now()
+            </otherwise>
+        </choose>
+        , #{agentId}
+        , #{adminId}
+        , #{clientId}
+        , #{clientName}
+        , #{clientTel}
+        <if test='chattingDiv == "A"'>
+            , #{requestContent}
+        </if>
+        <if test='chattingDiv != "A"'>
+            , #{coachingContent}
+        </if>
+        , #{chattingDiv}
+        <if test='emergencyDivision != null and emergencyDivision != ""'>
+            , #{emergencyDivision}
+        </if>
+        )
+    </insert>
+
+    <update id="updateOneCoachingMessage" parameterType="hashMap">
+        UPDATE DP_ADV_COACHING
+        SET
+        UPDATED_DATE=now()
+        <if test='coachingDate != null and coachingDate != ""'>
+            , COACHING_DATE = #{coachingDate}
+        </if>
+        <if test='coachingContent != null and coachingContent != ""'>
+            , coaching_content=#{coachingContent}
+        </if>
+        <if test='read != null and read != ""'>
+            , read_date_agent = #{readDateAgent}
+        </if>
+        WHERE 1=1
+        <if test='chattingNo != null and chattingNo != ""'>
+            AND chatting_no = #{chattingNo}
+        </if>
+        <if test='chattingNo != null and chattingNo != ""'>
+            AND AGENT_ID = #{agentId}
+        </if>
+        <if test='adminId != null and adminId != ""'>
+            AND ADMIN_ID = #{adminId}
+        </if>
+        <if test='requestDate != null and requestDate != ""'>
+            AND REQUEST_DATE = #{requestDate}
+        </if>
+        AND CHATTING_DIVISION='A'
+    </update>
+
+    <update id="updateOneReadYn"
+            parameterType="com.diquest.dplatform.webmanager.module.adv.common.coaching.entity.Coaching">
+        UPDATE DP_ADV_COACHING
+        SET
+        READ_ILSI_AGENT=now()
+        WHERE chatting_no=#{chatting_no}
+        AND READ_ILSI_AGENT is null
+        AND COACHING_CONTENT is not null
+    </update>
+
+    <select id="lookupCountNoAnswer" resultType="int">
+        SELECT COUNT(0)
+        FROM DP_ADV_COACHING
+        WHERE COACHING_ILSI is null
+        AND CHATTING_GUBUN = 'A'
+        <if test='base_gubun == "A"'>
+            AND AGENT_NO = #{agent_no}
+        </if>
+        <if test='base_gubun != "A"'>
+            AND ADMIN_NO = #{admin_no}
+        </if>
+    </select>
+
+    <select id="lookupCountNoRead" resultType="int">
+        SELECT COUNT(0)
+        FROM DP_ADV_COACHING
+        WHERE READ_ILSI_AGENT is null
+        <if test='base_gubun == "A"'>
+            AND AGENT_NO = #{agent_no}
+        </if>
+        <if test='base_gubun != "A"'>
+            AND ADMIN_NO = #{admin_no}
+        </if>
+    </select>
+
+    <select id="lookupCoachingAgentList" resultMap="Coaching2">
+        SELECT
+        AGENT_NO
+        , COUNT(0) AS coachingCount
+        FROM COACHING
+        WHERE ADMIN_NO = #{admin_no}
+        GROUP BY AGENT_NO
+    </select>
+
+</mapper>
