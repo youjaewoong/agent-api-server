@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.api.server.dao.AgentRecordMapper;
+import com.api.server.model.agentrecord.DeptInfoResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,9 +38,8 @@ public class AgentRecordService{
 	}
 
 	// 부서 정보 조회
-	public List<Object> getDeptInfo(HashMap<String, Object> params) throws Exception {
-		List<Object> deptInfoList = agentRecordMapper.getDeptInfo(params);
-		return deptInfoList;
+	public List<DeptInfoResponse> getDeptInfo(HashMap<String, Object> params) throws Exception {
+		return agentRecordMapper.getDeptInfo(params);
 	}
 
 	// 고객 최근 상담이력 조회

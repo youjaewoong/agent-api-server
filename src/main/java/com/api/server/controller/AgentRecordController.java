@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.model.agentrecord.DeptInfoResponse;
 import com.api.server.service.AgentRecordService;
 
 @RestController
@@ -40,9 +41,8 @@ public class AgentRecordController {
 	
 	// 부서 테이블 조회
 	@GetMapping("/getDeptInfo")
-	public List<Object> getDeptInfo(@RequestParam HashMap<String, Object> params) throws Exception {
-		List<Object> deptInfoList = agentRecordService.getDeptInfo(params);
-		return deptInfoList;
+	public List<DeptInfoResponse> getDeptInfo(@RequestParam HashMap<String, Object> params) throws Exception {
+		return agentRecordService.getDeptInfo(params);
 	}
 	
 	// 고객 최근 상담이력 조회

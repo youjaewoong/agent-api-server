@@ -7,14 +7,21 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.api.server.model.agentrecord.DeptInfoResponse;
+
 @Repository
 @Mapper
 public interface AgentRecordMapper {
 
 	List<Map<String, Object>> getAgentRecordRecent(HashMap<String, Object> param) throws Exception;
+	
 	void updateCustomerHighlight(HashMap<String, Object> param) throws Exception;
+	
 	HashMap<String, Object> getAgentInfo(HashMap<String, Object> param) throws Exception;
-	List<Object> getDeptInfo(HashMap<String, Object> param) throws Exception;
+	
+	List<DeptInfoResponse> getDeptInfo(HashMap<String, Object> param) throws Exception;
+	
 	List<Object> getCustomerCallHistory(HashMap<String, Object> param) throws Exception;
+	
 	List<Object> getCallIdStt(HashMap<String, Object> param) throws Exception;
 }
