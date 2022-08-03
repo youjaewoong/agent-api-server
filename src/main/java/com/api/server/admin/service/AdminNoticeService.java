@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.api.server.admin.dao.AdminNoticeMapper;
+import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
@@ -31,12 +32,28 @@ public class AdminNoticeService {
 	
 	
 	public void createAdminNotice(CreateAdminNotice createAdminNotice) {
+		
+		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
+		searchAdminNoticeRequest.setCompanyCode(createAdminNotice.getCompanyCode());
+		searchAdminNoticeRequest.setDeptCode(createAdminNotice.getDeptCode());
+
+		//부서 상담사 총합
+		int deptCount = adminNoticeMapper.countAdminNoticeDeptCount(searchAdminNoticeRequest);
+		if (deptCount > 0) {
+			createAdminNotice.setDeptCount(deptCount);
+		}
+		
 		adminNoticeMapper.createAdminNotice(createAdminNotice);
 	}
 	
 
 	public void deleteAdminNotice(DeleteAdminNotice deleteMemo) {
 		adminNoticeMapper.deleteAdminNotice(deleteMemo);
+	}
+	
+	
+	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode) {
+		return adminNoticeMapper.selectAdminNoticeDept(companyCode);
 	}
 
 	

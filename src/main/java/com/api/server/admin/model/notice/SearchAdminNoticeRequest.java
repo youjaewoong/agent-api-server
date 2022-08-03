@@ -14,4 +14,8 @@ public class SearchAdminNoticeRequest {
 	@JsonProperty("admin_id")
 	@NotBlank
 	private String adminId;
+	
+	private String deptCode;
+	
+	private String companyCode;
 }

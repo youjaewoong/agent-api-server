@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
@@ -49,15 +50,7 @@ public class AdminNoticeController {
     public void createAdminNotice(@RequestBody CreateAdminNotice createAdminNotice) {
 		adminNoticeService.createAdminNotice(createAdminNotice);
     }
-	
-    
-	@ApiOperation("단건 삭제")
-    @DeleteMapping("notices/{id}")
-    public void deleteAdminNotice(@PathVariable String id, @Valid @RequestBody DeleteAdminNotice deleteAdminNotice) {
-		deleteAdminNotice.setId(id);
-		adminNoticeService.deleteAdminNotice(deleteAdminNotice);
-    }
-    
+	  
     
     @ApiOperation("단건 수정")
     @PutMapping("/notices/{id}")
@@ -65,4 +58,21 @@ public class AdminNoticeController {
     	updateAdminNotice.setId(id);
     	adminNoticeService.updateAdminNotice(updateAdminNotice);
     }
+    
+    
+	@ApiOperation("단건 삭제")
+    @DeleteMapping("notices/{id}")
+    public void deleteAdminNotice(@PathVariable String id, @Valid @RequestBody DeleteAdminNotice deleteAdminNotice) {
+		deleteAdminNotice.setId(id);
+		adminNoticeService.deleteAdminNotice(deleteAdminNotice);
+    }
+	
+	
+	@ApiOperation("부서 조회")
+	@GetMapping("notices/dept")
+    public List<AdminNoticeDeptResponse> selectAdminNoticeDept(@NotBlank @RequestParam("company_code") String companyCode) {
+		return adminNoticeService.selectAdminNoticeDept(companyCode);
+    }
+	
+	
 }

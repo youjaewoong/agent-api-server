@@ -4,6 +4,7 @@
 <mapper namespace="com.api.server.admin.dao.AdminNoticeMapper">
 	
 	<resultMap id="adminNoticeResponse" type="com.api.server.admin.model.notice.AdminNoticeResponse" autoMapping="true"/>
+	<resultMap id="adminNoticeDeptResponse" type="com.api.server.admin.model.notice.AdminNoticeDeptResponse" autoMapping="true"/>
 	
 	<select id="selectAdminNotices" resultMap="adminNoticeResponse">
 		SELECT 
@@ -20,8 +21,9 @@
 		  ELSE '일반'
 		  END AS CATEGORY_NAME
 		 ,DEPT_CODE
-		 ,CONFIRM_COUNT
-		 ,CONFIRM_YN
+		 ,DEPT_CONFIRM_COUNT
+		 ,DEPT_COUNT
+		 ,DEPT_CONFIRM_YN
 		 ,CREATED_DATETIME
 		 ,DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE
@@ -50,6 +52,7 @@
  			,CONTENT
  			,CATEGORY
  			,DEPT_CODE
+ 			,DEPT_COUNT
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
  		) VALUES (
@@ -60,6 +63,7 @@
  			,#{content}
  			,#{category}
  			,#{deptCode}
+ 			,#{deptCount}
  			,NOW()
  			,NOW()
  		)
@@ -72,4 +76,36 @@
  		AND ADMIN_ID =#{adminId}
 	</delete>
 	
+	
+	<select id="countAdminNoticeDeptCount">
+		SELECT 
+		  DEPT_COUNT 
+		FROM (
+		  SELECT
+		     A.DEPT_CODE 
+		    ,COUNT(A.DEPT_CODE) AS DEPT_COUNT 
+		  FROM DP_ADV_AGENT A
+		  WHERE IS_ADMIN = 'N'
+		  GROUP BY A.DEPT_CODE
+		)AA INNER JOIN (SELECT 
+					      DISTINCT DEPT_CODE 
+						FROM DP_ADV_DEPT 
+						WHERE DEPTH = '4'
+				    	AND COMPANY_CODE = #{companyCode}) B 
+			ON AA.DEPT_CODE = B.DEPT_CODE 
+		WHERE AA.DEPT_CODE = #{deptCode}
+	</select>
+	
+	
+	<select id="selectAdminNoticeDept" resultMap="adminNoticeDeptResponse">
+		SELECT 
+		  DEPT_CODE
+		 ,DEPT_NAME
+		 ,P_DEPT_CODE
+		 ,DEPTH
+		 ,COMPANY_CODE
+		FROM DP_ADV_DEPT
+		WHERE COMPANY_CODE = #{companyCode}
+		ORDER BY DEPTH
+	</select>
 </mapper>
