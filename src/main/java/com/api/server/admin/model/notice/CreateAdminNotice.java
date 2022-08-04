@@ -44,8 +44,12 @@ public class CreateAdminNotice {
 	@JsonProperty("dept_code")
 	private String deptCode;
 	
+	@NotBlank
+	@JsonProperty("dept_name")
+	private String deptName;
+	
 	@JsonIgnore
-	private int deptCount;
+	private int deptTotal;
 	
 	/**
 	 * E: 긴급

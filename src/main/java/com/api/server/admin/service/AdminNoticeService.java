@@ -3,10 +3,11 @@ package com.api.server.admin.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.admin.dao.AdminNoticeMapper;
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
-import com.api.server.admin.model.notice.AdminNoticeResponse;
+import com.api.server.admin.model.notice.AdminNoticeGroupResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -20,9 +21,9 @@ public class AdminNoticeService {
 	
 	private final AdminNoticeMapper adminNoticeMapper;
 
-	public List<AdminNoticeResponse> selectAdminNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
-		
-		return adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest);
+	
+	public AdminNoticeGroupResponse selectAdminNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
+		return  new AdminNoticeGroupResponse(adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest));
 	}
 
 	
@@ -31,6 +32,7 @@ public class AdminNoticeService {
 	}
 	
 	
+	@Transactional
 	public void createAdminNotice(CreateAdminNotice createAdminNotice) {
 		
 		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
@@ -38,12 +40,16 @@ public class AdminNoticeService {
 		searchAdminNoticeRequest.setDeptCode(createAdminNotice.getDeptCode());
 
 		//부서 상담사 총합
-		int deptCount = adminNoticeMapper.countAdminNoticeDeptCount(searchAdminNoticeRequest);
-		if (deptCount > 0) {
-			createAdminNotice.setDeptCount(deptCount);
+		int deptTotal = adminNoticeMapper.countAdminNoticeDeptTotal(searchAdminNoticeRequest);
+		if (deptTotal > 0) {
+			createAdminNotice.setDeptTotal(deptTotal);
 		}
 		
 		adminNoticeMapper.createAdminNotice(createAdminNotice);
+		
+		
+		//해당 상담사들에게 공지 데이터 추가
+		//TODO
 	}
 	
 

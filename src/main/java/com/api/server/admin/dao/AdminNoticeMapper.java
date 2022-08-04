@@ -25,7 +25,7 @@ public interface AdminNoticeMapper {
 
 	public int deleteAdminNotice(DeleteAdminNotice deleteAdminNotice);
 	
-	public int countAdminNoticeDeptCount(SearchAdminNoticeRequest searchAdminNoticeRequest);
+	public int countAdminNoticeDeptTotal(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	
 	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode);
 	

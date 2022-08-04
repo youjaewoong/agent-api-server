@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
-import com.api.server.admin.model.notice.AdminNoticeResponse;
+import com.api.server.admin.model.notice.AdminNoticeGroupResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -37,7 +37,7 @@ public class AdminNoticeController {
 	
 	@ApiOperation("조회")
     @GetMapping("notices")
-    public List<AdminNoticeResponse> selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId) {
+    public AdminNoticeGroupResponse selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId) {
 		
 		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
 		searchAdminNoticeRequest.setAdminId(adminId);
@@ -47,14 +47,14 @@ public class AdminNoticeController {
 	
 	@ApiOperation("추가")
     @PostMapping("notice")
-    public void createAdminNotice(@RequestBody CreateAdminNotice createAdminNotice) {
+    public void createAdminNotice(@Valid @RequestBody CreateAdminNotice createAdminNotice) {
 		adminNoticeService.createAdminNotice(createAdminNotice);
     }
 	  
     
     @ApiOperation("단건 수정")
     @PutMapping("/notices/{id}")
-    public void updateAdminNotice(@PathVariable String id, @RequestBody UpdateAdminNotice updateAdminNotice) {
+    public void updateAdminNotice(@PathVariable String id, @Valid @RequestBody UpdateAdminNotice updateAdminNotice) {
     	updateAdminNotice.setId(id);
     	adminNoticeService.updateAdminNotice(updateAdminNotice);
     }

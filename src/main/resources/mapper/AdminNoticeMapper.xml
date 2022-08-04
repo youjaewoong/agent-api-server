@@ -8,27 +8,28 @@
 	
 	<select id="selectAdminNotices" resultMap="adminNoticeResponse">
 		SELECT 
-		  ID
-		 ,COMPANY_CODE
-		 ,ADMIN_ID
-		 ,TITLE
-		 ,CONTENT
-		 ,CATEGORY
-		 ,CASE
-		 	WHEN CATEGORY = 'E' THEN '긴급'
-		 	WHEN CATEGORY = 'N' THEN '일반'
-		 	WHEN CATEGORY = 'W' THEN '워닝'
-		  ELSE '일반'
-		  END AS CATEGORY_NAME
-		 ,DEPT_CODE
-		 ,DEPT_CONFIRM_COUNT
-		 ,DEPT_COUNT
-		 ,DEPT_CONFIRM_YN
-		 ,CREATED_DATETIME
-		 ,DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
+		   ID
+		  ,COMPANY_CODE
+		  ,ADMIN_ID
+		  ,TITLE
+		  ,CONTENT
+		  ,CATEGORY
+		  ,CASE
+		     WHEN CATEGORY = 'E' THEN '긴급'
+		 	 WHEN CATEGORY = 'N' THEN '일반'
+		 	 WHEN CATEGORY = 'W' THEN '워닝'
+		     ELSE '일반'
+		   END AS CATEGORY_NAME
+		  ,DEPT_CODE
+		  ,DEPT_CONFIRM_COUNT
+		  ,DEPT_TOTAL
+		  ,DEPT_CONFIRM_YN
+		  ,CREATED_DATETIME
+		  ,DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
+		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%p %h:%i %m-%d-%Y'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE
 		WHERE ADMIN_ID = #{adminId}
-		ORDER BY CREATED_DATETIME ASC
+		ORDER BY CREATED_DATETIME DESC
 	</select>
 
 	
@@ -52,7 +53,8 @@
  			,CONTENT
  			,CATEGORY
  			,DEPT_CODE
- 			,DEPT_COUNT
+ 			,DEPT_NAME
+ 			,DEPT_TOTAL
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
  		) VALUES (
@@ -63,7 +65,8 @@
  			,#{content}
  			,#{category}
  			,#{deptCode}
- 			,#{deptCount}
+ 			,#{deptName}
+ 			,#{deptTotal}
  			,NOW()
  			,NOW()
  		)
@@ -77,13 +80,13 @@
 	</delete>
 	
 	
-	<select id="countAdminNoticeDeptCount">
+	<select id="countAdminNoticeDeptTotal" resultType="int">
 		SELECT 
-		  DEPT_COUNT 
+		  DEPT_TOTAL
 		FROM (
 		  SELECT
 		     A.DEPT_CODE 
-		    ,COUNT(A.DEPT_CODE) AS DEPT_COUNT 
+		    ,COUNT(A.DEPT_CODE) AS DEPT_TOTAL 
 		  FROM DP_ADV_AGENT A
 		  WHERE IS_ADMIN = 'N'
 		  GROUP BY A.DEPT_CODE
