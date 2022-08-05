@@ -18,7 +18,7 @@ public class CreateAdminNotice {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 		
 		if (this.category == null) {
-			this.category = CategoryType.N;
+			this.category = AdminNoticeCategory.Type.N;
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class CreateAdminNotice {
 	@NotBlank
 	private String content;
 	
-	private CategoryType category;
+	private AdminNoticeCategory.Type category;
 	
 	@NotBlank
 	@JsonProperty("dept_code")
@@ -50,14 +50,6 @@ public class CreateAdminNotice {
 	
 	@JsonIgnore
 	private int deptTotal;
-	
-	/**
-	 * E: 긴급
-	 * N: 기본
-	 * W: 워닝
-	 */
-	private enum CategoryType {
-        E,N,W;
-    }
+
 	
 }

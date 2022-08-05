@@ -5,6 +5,7 @@
 	
 	<resultMap id="adminNoticeResponse" type="com.api.server.admin.model.notice.AdminNoticeResponse" autoMapping="true"/>
 	<resultMap id="adminNoticeDeptResponse" type="com.api.server.admin.model.notice.AdminNoticeDeptResponse" autoMapping="true"/>
+	<resultMap id="adminNoticeCategory" type="com.api.server.admin.model.notice.AdminNoticeCategory" autoMapping="true"/>
 	
 	<select id="selectAdminNotices" resultMap="adminNoticeResponse">
 		SELECT 
@@ -21,17 +22,39 @@
 		     ELSE '일반'
 		   END AS CATEGORY_NAME
 		  ,DEPT_CODE
+		  ,DEPT_NAME
 		  ,DEPT_CONFIRM_COUNT
 		  ,DEPT_TOTAL
 		  ,DEPT_CONFIRM_YN
 		  ,CREATED_DATETIME
+		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
 		  ,DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
-		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%p %h:%i %m-%d-%Y'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
+		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE
 		WHERE ADMIN_ID = #{adminId}
-		ORDER BY CREATED_DATETIME DESC
+		<if test="!'ALL'.equalsIgnoreCase(category)">
+			<if test="category != null and !category.equals('')">
+			  AND CATEGORY = #{category}
+			</if>
+		</if>
+		ORDER BY UPDATED_DATETIME DESC
+		LIMIT #{limit}
 	</select>
 
+
+	<select id="selectAdminNoticeTotalByCategories" resultMap="adminNoticeCategory">
+		SELECT
+			 'ALL' AS CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE
+		UNION ALL
+		SELECT 
+			 CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE
+		GROUP BY CATEGORY
+	</select>
+	
 	
 	<update id="updateAdminNotice">
  		UPDATE DP_ADV_ADMIN_NOTICE SET

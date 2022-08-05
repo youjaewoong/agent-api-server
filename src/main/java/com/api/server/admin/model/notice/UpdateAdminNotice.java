@@ -22,14 +22,10 @@ public class UpdateAdminNotice {
 	private String content;
 	
 	@NotBlank
-	private CategoryType category;
+	private AdminNoticeCategory category;
 	
 	@NotBlank
 	@JsonProperty("admin_id")
 	private String adminId;
-	
-	private enum CategoryType {
-        E,N,W;
-    }
 	
 }

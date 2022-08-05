@@ -1,10 +1,12 @@
 package com.api.server.admin.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.api.server.admin.model.notice.AdminNoticeCategory;
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
@@ -28,5 +30,7 @@ public interface AdminNoticeMapper {
 	public int countAdminNoticeDeptTotal(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	
 	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode);
+	
+	public List<AdminNoticeCategory> selectAdminNoticeTotalByCategories();
 	
 }

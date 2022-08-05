@@ -17,7 +17,8 @@ public class AdminNoticeResponse {
 	private String deptName;
 	private int deptConfirmCount; //부서에속한 상담사별 읽음 카운트
 	private int deptTotal; //부서별 상담사 총수
-	private char deptConfirmYn; //전체읽음: Y, 진행중: N 
+	private char deptConfirmYn; //전체읽음: Y, 진행중: N
+	private char newYn; //신규건 Y, 기존: N 
 	private String createdDatetime;
 	private String updatedDatetime;
 	private String conversionUpdatedDatetime;

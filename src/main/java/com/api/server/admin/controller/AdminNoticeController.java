@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
-import com.api.server.admin.model.notice.AdminNoticeGroupResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -35,9 +35,9 @@ public class AdminNoticeController {
 
 	private final AdminNoticeService adminNoticeService;
 	
-	@ApiOperation("조회")
+	@ApiOperation("카테고리별 전체 조회")
     @GetMapping("notices")
-    public AdminNoticeGroupResponse selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId) {
+    public List<AdminNoticeCategoryResponse> selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId) {
 		
 		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
 		searchAdminNoticeRequest.setAdminId(adminId);

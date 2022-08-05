@@ -18,4 +18,9 @@ public class SearchAdminNoticeRequest {
 	private String deptCode;
 	
 	private String companyCode;
+	
+	private String category = "ALL";
+	
+	private int limit = 10;
+	
 }
