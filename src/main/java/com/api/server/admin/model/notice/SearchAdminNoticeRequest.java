@@ -1,9 +1,5 @@
 package com.api.server.admin.model.notice;
 
-import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class SearchAdminNoticeRequest {
 	
-	@JsonProperty("admin_id")
-	@NotBlank
 	private String adminId;
 	
 	private String deptCode;
@@ -22,5 +16,7 @@ public class SearchAdminNoticeRequest {
 	private String category = "ALL";
 	
 	private int limit = 10;
+	
+	private int offset = 0;
 	
 }

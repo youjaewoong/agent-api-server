@@ -8,7 +8,7 @@ import lombok.Setter;
 public class AdminNoticeCategory {
 	private String category;
 	private int total;
-	
+	private boolean loading = false;
 
 	/**
 	 * ALL : 전체

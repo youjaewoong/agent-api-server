@@ -37,12 +37,12 @@
 			  AND CATEGORY = #{category}
 			</if>
 		</if>
-		ORDER BY UPDATED_DATETIME DESC
-		LIMIT #{limit}
+		ORDER BY DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
+		LIMIT #{offset}, #{limit}
 	</select>
 
-
-	<select id="selectAdminNoticeTotalByCategories" resultMap="adminNoticeCategory">
+	
+	<select id="countAdminNoticeByCategories" resultMap="adminNoticeCategory">
 		SELECT
 			 'ALL' AS CATEGORY
 			,COUNT(*) AS TOTAL

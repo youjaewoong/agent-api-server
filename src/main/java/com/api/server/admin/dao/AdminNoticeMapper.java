@@ -1,7 +1,6 @@
 package com.api.server.admin.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -31,6 +30,6 @@ public interface AdminNoticeMapper {
 	
 	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode);
 	
-	public List<AdminNoticeCategory> selectAdminNoticeTotalByCategories();
+	public List<AdminNoticeCategory> countAdminNoticeByCategories();
 	
 }

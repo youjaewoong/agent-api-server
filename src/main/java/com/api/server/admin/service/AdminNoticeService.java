@@ -11,6 +11,7 @@ import com.api.server.admin.model.notice.AdminNoticeCategory;
 import com.api.server.admin.model.notice.AdminNoticeCategory.Type;
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
+import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -25,9 +26,9 @@ public class AdminNoticeService {
 	private final AdminNoticeMapper adminNoticeMapper;
 
 	
-	public List<AdminNoticeCategoryResponse> selectAdminNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
+	public List<AdminNoticeCategoryResponse> selectAdminNoticesAll(SearchAdminNoticeRequest searchAdminNoticeRequest) {
 		
-		List<AdminNoticeCategory> categories = adminNoticeMapper.selectAdminNoticeTotalByCategories();
+		List<AdminNoticeCategory> categories = adminNoticeMapper.countAdminNoticeByCategories();
 		List<AdminNoticeCategoryResponse> response = new ArrayList<>();
 		
 		List<String> empryCategories = new ArrayList<>(); 
@@ -37,16 +38,22 @@ public class AdminNoticeService {
 		
 		for (AdminNoticeCategory category : categories) {
 			
-			AdminNoticeCategoryResponse categoryResponse = new AdminNoticeCategoryResponse();
-			
-			//카테고리 검색조건
+			//카테고리 별 검색조건
 			searchAdminNoticeRequest.setCategory(category.getCategory());
+			List<AdminNoticeResponse> notices = adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest);
+			
+			//total 사이즈가 크면 무한스크롤 기능 활성화
+			if (category.getTotal() > notices.size()) {
+				category.setLoading(true);
+			}
+			
+			AdminNoticeCategoryResponse categoryResponse = new AdminNoticeCategoryResponse();
 			categoryResponse.setCategory(category);
-			categoryResponse.setNotices(adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest));
+			categoryResponse.setNotices(notices);
+			
 			response.add(categoryResponse);
 			
 			empryCategories.remove(category.getCategory());
-		
 		}
 		
 		//비어있는 카테고리 처리
@@ -54,13 +61,18 @@ public class AdminNoticeService {
 			
 			AdminNoticeCategory category = new AdminNoticeCategory();
 			category.setCategory(empryCategory);
-			
+
 			AdminNoticeCategoryResponse categoryResponse = new AdminNoticeCategoryResponse();
 			categoryResponse.setCategory(category);
 			response.add(categoryResponse);
 		}
 		
 		return response;
+	}
+	
+	public List<AdminNoticeResponse> selectAdminPageNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
+		
+		return adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest);
 	}
 
 	
