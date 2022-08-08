@@ -70,9 +70,25 @@ public class AdminNoticeService {
 		return response;
 	}
 	
-	public List<AdminNoticeResponse> selectAdminPageNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
+	public AdminNoticeCategoryResponse selectAdminPageNotices(SearchAdminNoticeRequest searchAdminNoticeRequest) {
 		
-		return adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest);
+		List<AdminNoticeResponse> notices = adminNoticeMapper.selectAdminNotices(searchAdminNoticeRequest);
+		int total = adminNoticeMapper.countAdminNotice(searchAdminNoticeRequest);
+		
+		AdminNoticeCategory category = new AdminNoticeCategory();
+		category.setTotal(total);
+		category.setCategory(searchAdminNoticeRequest.getCategory());
+		
+		//total 사이즈가 크면 무한스크롤 기능 활성화
+		if (category.getTotal() > notices.size()) {
+			category.setLoading(true);
+		}
+		
+		AdminNoticeCategoryResponse categoryResponse = new AdminNoticeCategoryResponse();
+		categoryResponse.setCategory(category);
+		categoryResponse.setNotices(notices);
+		
+		return categoryResponse;
 	}
 
 	

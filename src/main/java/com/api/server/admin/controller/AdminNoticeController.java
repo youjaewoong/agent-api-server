@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
 import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
-import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -48,7 +47,7 @@ public class AdminNoticeController {
 	
 	@ApiOperation("공지사항 카테고리별 개별 조회")
     @GetMapping("notices")
-    public List<AdminNoticeResponse> selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId
+    public AdminNoticeCategoryResponse selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId
 											    	   ,@RequestParam(value = "start_date", required = false) String startDate
 											    	   ,@RequestParam(value = "end_date", required = false) String endDate
     												   ,SearchAdminNoticeRequest searchAdminNoticeRequest) {

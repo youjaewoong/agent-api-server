@@ -38,14 +38,30 @@
 			</if>
 		</if>
 		<if test="startDate != null and !startDate.equals('')">
-			<if test="endDate != null and !endDate.equals('')">
-			<![CDATA[
-			  ( AND UPDATED_DATETIME >= #{startDate} AND UPDATED_DATETIME <= #{endDate} )
-			]]>
-			</if>
+		  <if test="endDate != null and !endDate.equals('')">
+		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
+		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
+		  </if>
 		</if>
 		ORDER BY DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
 		LIMIT #{offset}, #{limit}
+	</select>
+	
+	
+	<select id="countAdminNotice" resultType="int">
+	   SELECT 
+	     COUNT(*)
+	   FROM DP_ADV_ADMIN_NOTICE
+	   WHERE ADMIN_ID = #{adminId}
+	   <if test="!'ALL'.equalsIgnoreCase(category)">
+	     <if test="category != null and !category.equals('')">
+		   AND CATEGORY = #{category}
+		  </if>
+	   </if>
+	   <if test="startDate != null and !startDate.equals('')">
+	     AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
+	     AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
+	   </if>
 	</select>
 
 	

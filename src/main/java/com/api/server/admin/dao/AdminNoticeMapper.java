@@ -32,4 +32,6 @@ public interface AdminNoticeMapper {
 	
 	public List<AdminNoticeCategory> countAdminNoticeByCategories();
 	
+	public int countAdminNotice(SearchAdminNoticeRequest searchAdminNoticeRequest);
+	
 }
