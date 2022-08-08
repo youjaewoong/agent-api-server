@@ -15,6 +15,10 @@ public class SearchAdminNoticeRequest {
 	
 	private String category = "ALL";
 	
+	private String startDate;
+	
+	private String endDate;
+	
 	private int limit = 10;
 	
 	private int offset = 0;

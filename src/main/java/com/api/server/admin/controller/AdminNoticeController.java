@@ -48,9 +48,13 @@ public class AdminNoticeController {
 	
 	@ApiOperation("공지사항 카테고리별 개별 조회")
     @GetMapping("notices")
-    public List<AdminNoticeResponse> selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId, 
-    													SearchAdminNoticeRequest searchAdminNoticeRequest ) {
+    public List<AdminNoticeResponse> selectAdminNotices(@NotBlank @RequestParam("admin_id") String adminId
+											    	   ,@RequestParam(value = "start_date", required = false) String startDate
+											    	   ,@RequestParam(value = "end_date", required = false) String endDate
+    												   ,SearchAdminNoticeRequest searchAdminNoticeRequest) {
 		searchAdminNoticeRequest.setAdminId(adminId);
+		searchAdminNoticeRequest.setStartDate(startDate);
+		searchAdminNoticeRequest.setEndDate(endDate);
         return adminNoticeService.selectAdminPageNotices(searchAdminNoticeRequest);
     }
 	

@@ -21,8 +21,7 @@ public class UpdateAdminNotice {
 	@NotBlank
 	private String content;
 	
-	@NotBlank
-	private AdminNoticeCategory category;
+	private AdminNoticeCategory.Type category;
 	
 	@NotBlank
 	@JsonProperty("admin_id")
