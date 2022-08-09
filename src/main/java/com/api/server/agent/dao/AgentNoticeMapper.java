@@ -21,4 +21,8 @@ public interface AgentNoticeMapper {
     
 	public int updateAgentNotice(UpdateAgentNotice updateAgentNotice);
 	
+	public List<String> selectNoticeTargetAgentIds(SearchAgentNoticeRequest searchAgentNoticeRequest);
+	
+	public List<String> selectReNoticeTargetAgentIds(String id);
+	
 }

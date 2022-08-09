@@ -88,4 +88,10 @@ public class AdminNoticeController {
     }
 	
 	
+	@ApiOperation("공지읽음 처리")
+	@PutMapping("notices/read/{id}")
+    public void updateAdminNoticeRead(@PathVariable String id) {
+		adminNoticeService.updateAdminNoticeRead(id);
+    }
+	
 }

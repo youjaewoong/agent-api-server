@@ -16,6 +16,9 @@ import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
 import com.api.server.admin.model.notice.UpdateAdminNotice;
+import com.api.server.agent.dao.AgentNoticeMapper;
+import com.api.server.agent.model.notice.CreateAgentNotice;
+import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminNoticeService {
 	
 	private final AdminNoticeMapper adminNoticeMapper;
+	private final AgentNoticeMapper agentNoticeMapper;
 
 	
 	public List<AdminNoticeCategoryResponse> selectAdminNoticesAll(SearchAdminNoticeRequest searchAdminNoticeRequest) {
@@ -97,6 +101,11 @@ public class AdminNoticeService {
 	}
 	
 	
+	public void updateAdminNoticeRead(String id) {
+		adminNoticeMapper.updateAdminNoticeRead(id);
+	}
+	
+	
 	@Transactional
 	public void createAdminNotice(CreateAdminNotice createAdminNotice) {
 		
@@ -112,9 +121,21 @@ public class AdminNoticeService {
 		
 		adminNoticeMapper.createAdminNotice(createAdminNotice);
 		
+		//부서에 속한 상담사 데이터 추가
+		SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
+		searchAgentNoticeRequest.setCompanyCode(createAdminNotice.getCompanyCode());
+		searchAgentNoticeRequest.setDeptCode(createAdminNotice.getDeptCode());
+		List<String> ids = agentNoticeMapper.selectNoticeTargetAgentIds(searchAgentNoticeRequest);
 		
-		//해당 상담사들에게 공지 데이터 추가
-		//TODO
+		if (ids.size() > 0) { 
+			for (String agentId : ids) {
+				CreateAgentNotice createAgentNotice = new CreateAgentNotice();
+				createAgentNotice.setAdminNoticeId(createAdminNotice.getId());
+				createAgentNotice.setAdminId(createAdminNotice.getAdminId());
+				createAgentNotice.setAgentId(agentId);
+				agentNoticeMapper.createAgentNotice(createAgentNotice);
+			}
+		}
 	}
 	
 

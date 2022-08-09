@@ -23,14 +23,15 @@
 		   END AS CATEGORY_NAME
 		  ,DEPT_CODE
 		  ,DEPT_NAME
-		  ,DEPT_CONFIRM_COUNT
+		  ,(SELECT COUNT(*) FROM DP_ADV_AGENT_NOTICE B WHERE A.ID = B.ADMIN_NOTICE_ID AND B.NOTICE_COFIRM_YN ='Y') AS DEPT_CONFIRM_COUNT
 		  ,DEPT_TOTAL
-		  ,DEPT_CONFIRM_YN
+		  ,IF((SELECT COUNT(*) FROM DP_ADV_AGENT_NOTICE B WHERE A.ID = B.ADMIN_NOTICE_ID AND B.NOTICE_COFIRM_YN ='Y') >= A.DEPT_TOTAL, 'Y', 'N') DEPT_CONFIRM_YN
 		  ,CREATED_DATETIME
 		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
 		  ,DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
 		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
-		FROM DP_ADV_ADMIN_NOTICE
+		  ,READ_YN
+		FROM DP_ADV_ADMIN_NOTICE A
 		WHERE ADMIN_ID = #{adminId}
 		<if test="!'ALL'.equalsIgnoreCase(category)">
 			<if test="category != null and !category.equals('')">
@@ -42,6 +43,9 @@
 		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
 		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
 		  </if>
+		</if>
+		<if test="'dept_confirm_yn'.equalsIgnoreCase(order)">
+			AND DEPT_CONFIRM_YN = #{sort}
 		</if>
 		ORDER BY DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
 		LIMIT #{offset}, #{limit}
@@ -87,6 +91,14 @@
  		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
  		AND ADMIN_ID = #{adminId}
+	</update>
+	
+	
+	<update id="updateAdminNoticeRead">
+ 		UPDATE DP_ADV_ADMIN_NOTICE SET
+ 		  READ_YN = 'Y'
+ 		 ,READ_DATETIME = NOW()
+ 		WHERE ID = #{id}
 	</update>
 	
 	

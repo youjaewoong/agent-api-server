@@ -24,6 +24,16 @@ public class AgentNoticeService {
 	public List<AgentNoticeResponse> selectAgentNotices(SearchAgentNoticeRequest searchAgentNoticeRequest) {
 		return agentNoticeMapper.selectAgentNotices(searchAgentNoticeRequest);
 	}
+	
+	
+	/**
+	 * 제공지 대상 상담사 ID LIST
+	 * @param id
+	 * @return
+	 */
+	public List<String> selectReNoticeTargetAgentIds(String id) {
+		return agentNoticeMapper.selectReNoticeTargetAgentIds(id);
+	}
 
 	
 	public void updateAgentNotice(UpdateAgentNotice updateAgentNotice) {

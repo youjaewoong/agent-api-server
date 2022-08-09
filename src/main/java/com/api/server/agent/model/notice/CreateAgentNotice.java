@@ -20,9 +20,13 @@ public class CreateAgentNotice {
 	@JsonIgnore
 	private String id;
 	
+	@NotBlank
 	private String agentId;
 	
 	@NotBlank
-	private String targetId;
+	private String adminNoticeId;
+	
+	@NotBlank
+	private String adminId;
 		
 }

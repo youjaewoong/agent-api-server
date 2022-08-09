@@ -19,6 +19,10 @@ public class SearchAdminNoticeRequest {
 	
 	private String endDate;
 	
+	private String order;
+	
+	private String sort;
+	
 	private int limit = 10;
 	
 	private int offset = 0;

@@ -32,16 +32,40 @@
 	</select>
 
 
-	<insert id="createagentNotice">
+	<select id="selectNoticeTargetAgentIds" resultType="string">
+	  SELECT DISTINCT
+	    AGENT_ID 
+	  FROM DP_ADV_AGENT
+	  WHERE IS_ADMIN = 'N'
+	  AND DEPT_CODE = (SELECT
+	                     DEPT_CODE
+					   FROM DP_ADV_DEPT
+				       WHERE COMPANY_CODE = #{companyCode} 
+				       AND DEPT_CODE = #{deptCode})
+	</select>
+
+
+	<select id="selectReNoticeTargetAgentIds" resultType="string">
+	  SELECT DISTINCT
+	    AGENT_ID
+	  FROM DP_ADV_AGENT_NOTICE
+	  WHERE NOTICE_COFIRM_YN  = 'N'
+	  AND ADMIN_NOTICE_ID = {id}
+	</select>
+	
+
+	<insert id="createAgentNotice">
  		INSERT INTO DP_ADV_AGENT_NOTICE (
  			 ID
  			,AGENT_ID
- 			,TARGET_ID
+ 			,ADMIN_NOTICE_ID
+ 			,ADMIN_ID
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
  		) VALUES (
  			 #{id}
  			,#{agentId}
+ 			,#{adminNoticeId}
  			,#{adminId}
  			,NOW()
  			,NOW()
