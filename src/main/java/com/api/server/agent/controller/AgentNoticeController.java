@@ -64,5 +64,14 @@ public class AgentNoticeController {
     	agentNoticeService.updateAgentNotice(updateAgentNotice);
     }
     
-	
+    
+    @ApiOperation("확인되지 않은 공지 갯수")
+    @GetMapping("/notices/{agentId}")
+    public int countAgentNoticeUnConfirmed(@PathVariable String agentId, @NotBlank @RequestParam("company_code") String companyCode) {
+    	SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
+    	searchAgentNoticeRequest.setAgentId(agentId);
+    	searchAgentNoticeRequest.setCompanyCode(companyCode);
+    	return agentNoticeService.countAgentNoticeUnConfirmed(searchAgentNoticeRequest);
+    }
+    
 }

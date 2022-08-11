@@ -86,12 +86,6 @@ public class AdminNoticeController {
     public List<AdminNoticeDeptResponse> selectAdminNoticeDept(@NotBlank @RequestParam("company_code") String companyCode) {
 		return adminNoticeService.selectAdminNoticeDept(companyCode);
     }
-	
-	
-	@ApiOperation("공지읽음 처리")
-	@PutMapping("notices/read/{id}")
-    public void updateAdminNoticeRead(@PathVariable String id) {
-		adminNoticeService.updateAdminNoticeRead(id);
-    }
+
 	
 }

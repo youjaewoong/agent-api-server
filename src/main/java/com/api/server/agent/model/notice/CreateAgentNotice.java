@@ -21,6 +21,9 @@ public class CreateAgentNotice {
 	private String id;
 	
 	@NotBlank
+	private String companyCode;
+	
+	@NotBlank
 	private String agentId;
 	
 	@NotBlank

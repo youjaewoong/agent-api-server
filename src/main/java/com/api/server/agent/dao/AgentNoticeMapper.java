@@ -25,4 +25,6 @@ public interface AgentNoticeMapper {
 	
 	public List<String> selectReNoticeTargetAgentIds(String id);
 	
+	public int countAgentNoticeUnConfirmed(SearchAgentNoticeRequest searchAgentNoticeRequest);
+	
 }

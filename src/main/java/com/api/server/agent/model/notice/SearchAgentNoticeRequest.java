@@ -15,7 +15,9 @@ public class SearchAgentNoticeRequest {
 	@NotBlank
 	private String agentId;
 	
+	@JsonProperty("dept_code")
 	private String deptCode;
 	
+	@JsonProperty("company_code")
 	private String companyCode;
 }

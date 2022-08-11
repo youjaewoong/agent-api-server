@@ -27,7 +27,7 @@ public class AgentNoticeService {
 	
 	
 	/**
-	 * 제공지 대상 상담사 ID LIST
+	 * 관리자화면에서 재공지 시 상담사ID 리스트 
 	 * @param id
 	 * @return
 	 */
@@ -43,5 +43,15 @@ public class AgentNoticeService {
 	
 	public void createAgentNotice(CreateAgentNotice createAgentNotice) {
 		agentNoticeMapper.createAgentNotice(createAgentNotice);
+	}
+	
+	
+	/**
+	 * 상담사별 읽지않은 공지 갯수
+	 * @param searchAgentNoticeRequest
+	 * @return
+	 */
+	public int countAgentNoticeUnConfirmed(SearchAgentNoticeRequest searchAgentNoticeRequest) {
+		return agentNoticeMapper.countAgentNoticeUnConfirmed(searchAgentNoticeRequest);
 	}
 }

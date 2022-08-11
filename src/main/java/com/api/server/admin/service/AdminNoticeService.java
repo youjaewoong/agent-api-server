@@ -101,11 +101,6 @@ public class AdminNoticeService {
 	}
 	
 	
-	public void updateAdminNoticeRead(String id) {
-		adminNoticeMapper.updateAdminNoticeRead(id);
-	}
-	
-	
 	@Transactional
 	public void createAdminNotice(CreateAdminNotice createAdminNotice) {
 		
@@ -130,6 +125,7 @@ public class AdminNoticeService {
 		if (ids.size() > 0) { 
 			for (String agentId : ids) {
 				CreateAgentNotice createAgentNotice = new CreateAgentNotice();
+				createAgentNotice.setCompanyCode(createAdminNotice.getCompanyCode());
 				createAgentNotice.setAdminNoticeId(createAdminNotice.getId());
 				createAgentNotice.setAdminId(createAdminNotice.getAdminId());
 				createAgentNotice.setAgentId(agentId);

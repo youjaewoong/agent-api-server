@@ -34,6 +34,5 @@ public interface AdminNoticeMapper {
 	
 	public int countAdminNotice(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	
-	public int updateAdminNoticeRead(String id);
 	
 }

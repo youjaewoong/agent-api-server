@@ -30,6 +30,16 @@
 		WHERE AGENT_ID = #{agentId}
 		ORDER BY CREATED_DATETIME ASC
 	</select>
+	
+	
+	<select id="countAgentNoticeUnConfirmed" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM DP_ADV_AGENT_NOTICE 
+		WHERE  NOTICE_COFIRM_YN = 'N'
+		AND AGENT_ID = #{agentId}
+		AND COMPANY_CODE = #{companyCode}
+	</select>
 
 
 	<select id="selectNoticeTargetAgentIds" resultType="string">
@@ -57,6 +67,7 @@
 	<insert id="createAgentNotice">
  		INSERT INTO DP_ADV_AGENT_NOTICE (
  			 ID
+ 			,COMPANY_CODE
  			,AGENT_ID
  			,ADMIN_NOTICE_ID
  			,ADMIN_ID
@@ -64,6 +75,7 @@
  			,UPDATED_DATETIME
  		) VALUES (
  			 #{id}
+ 			,#{companyCode}
  			,#{agentId}
  			,#{adminNoticeId}
  			,#{adminId}

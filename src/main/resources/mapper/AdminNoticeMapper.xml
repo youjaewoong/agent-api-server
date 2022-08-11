@@ -30,7 +30,6 @@
 		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
 		  ,DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
 		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
-		  ,READ_YN
 		FROM DP_ADV_ADMIN_NOTICE A
 		WHERE ADMIN_ID = #{adminId}
 		<if test="!'ALL'.equalsIgnoreCase(category)">
@@ -91,14 +90,6 @@
  		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
  		AND ADMIN_ID = #{adminId}
-	</update>
-	
-	
-	<update id="updateAdminNoticeRead">
- 		UPDATE DP_ADV_ADMIN_NOTICE SET
- 		  READ_YN = 'Y'
- 		 ,READ_DATETIME = NOW()
- 		WHERE ID = #{id}
 	</update>
 	
 	
