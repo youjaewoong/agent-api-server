@@ -3,6 +3,7 @@ package com.api.server.agent.model.notice;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,20 @@ public class UpdateAgentNotice {
 	@JsonIgnore
 	private String id;
 	
+	@JsonProperty("company_code")
+	private String companyCode;
+
+	@JsonProperty("admin_notice_id")
+	private String adminNoticeId;
+	
 	@NotBlank
+	@JsonProperty("agent_id")
 	private String agentId;
 	
-	@NotBlank
-	private char noticeCofirmYn;
+	@JsonProperty("admin_id")
+	private String adminId;
 	
+	@JsonProperty("notice_remind")
 	private String noticeRemind;
 	
 }

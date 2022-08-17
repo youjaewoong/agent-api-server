@@ -31,55 +31,51 @@
 		  ,DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
 		  ,REPLACE(REPLACE(DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE A
-		WHERE ADMIN_ID = #{adminId}
-		<if test="!'ALL'.equalsIgnoreCase(category)">
-			<if test="category != null and !category.equals('')">
-			  AND CATEGORY = #{category}
-			</if>
-		</if>
-		<if test="startDate != null and !startDate.equals('')">
-		  <if test="endDate != null and !endDate.equals('')">
-		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
-		    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
-		  </if>
-		</if>
-		<if test="'dept_confirm_yn'.equalsIgnoreCase(order)">
-			AND DEPT_CONFIRM_YN = #{sort}
-		</if>
+		<include refid="adminNoticeWhere"></include>
 		ORDER BY DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
 		LIMIT #{offset}, #{limit}
 	</select>
-	
-	
+
+
 	<select id="countAdminNotice" resultType="int">
 	   SELECT 
 	     COUNT(*)
 	   FROM DP_ADV_ADMIN_NOTICE
-	   WHERE ADMIN_ID = #{adminId}
-	   <if test="!'ALL'.equalsIgnoreCase(category)">
-	     <if test="category != null and !category.equals('')">
-		   AND CATEGORY = #{category}
-		  </if>
-	   </if>
-	   <if test="startDate != null and !startDate.equals('')">
-	     AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
-	     AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
-	   </if>
+	   <include refid="adminNoticeWhere"></include>
 	</select>
-
 	
-	<select id="countAdminNoticeByCategories" resultMap="adminNoticeCategory">
+	
+    <select id="countAdminNoticeByCategories" resultMap="adminNoticeCategory">
 		SELECT
 			 'ALL' AS CATEGORY
 			,COUNT(*) AS TOTAL
 		FROM DP_ADV_ADMIN_NOTICE
+		<include refid="adminNoticeWhere"></include>
 		UNION ALL
 		SELECT 
 			 CATEGORY
 			,COUNT(*) AS TOTAL
 		FROM DP_ADV_ADMIN_NOTICE
+		<include refid="adminNoticeWhere"></include>
 		GROUP BY CATEGORY
 	</select>
+
+	
+	<sql id="adminNoticeWhere">
+	  WHERE ADMIN_ID = #{adminId}
+	  <if test="startDate != null and !startDate.equals('')">
+	    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[>=]]>#{startDate} 
+	    AND DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d')<![CDATA[<=]]>#{endDate}
+	  </if>
+	  <if test="!'ALL'.equalsIgnoreCase(category)">
+	    <if test="category != null and !category.equals('')">
+	   	  AND CATEGORY = #{category}
+	  	</if>
+	  </if>
+	  <if test="'dept_confirm_yn'.equalsIgnoreCase(order)">
+	    AND ${order} = #{sort}
+	  </if>
+	</sql>
 	
 	
 	<update id="updateAdminNotice">

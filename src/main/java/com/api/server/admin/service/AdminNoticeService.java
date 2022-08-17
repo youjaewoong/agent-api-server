@@ -32,7 +32,7 @@ public class AdminNoticeService {
 	
 	public List<AdminNoticeCategoryResponse> selectAdminNoticesAll(SearchAdminNoticeRequest searchAdminNoticeRequest) {
 		
-		List<AdminNoticeCategory> categories = adminNoticeMapper.countAdminNoticeByCategories();
+		List<AdminNoticeCategory> categories = adminNoticeMapper.countAdminNoticeByCategories(searchAdminNoticeRequest);
 		List<AdminNoticeCategoryResponse> response = new ArrayList<>();
 		
 		List<String> empryCategories = new ArrayList<>(); 

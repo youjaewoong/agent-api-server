@@ -30,7 +30,7 @@ public interface AdminNoticeMapper {
 	
 	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode);
 	
-	public List<AdminNoticeCategory> countAdminNoticeByCategories();
+	public List<AdminNoticeCategory> countAdminNoticeByCategories(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	
 	public int countAdminNotice(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	

@@ -1,7 +1,24 @@
 package com.api.server.agent.model.notice;
 
-import com.api.server.admin.model.notice.AdminNoticeResponse;
+import lombok.Getter;
+import lombok.Setter;
 
-public class AgentNoticeResponse extends AdminNoticeResponse {
-
+@Getter
+@Setter
+public class AgentNoticeResponse {
+	private String id;
+	private String agentNoticeId; //DP_ADV_AGENT_NOTICE 테이블의 상담사 고유ID
+	private String companyCode;
+	private String adminId;
+	private String title;
+	private String content;
+	private String category;
+	private String categoryName;
+	private char newYn; //신규건 Y, 기존: N 
+	private char remindYn; //알람설정 Y, 미설정: N
+	private char noticeCofirmYn; //읽음처리 Y, 미처리: N
+	private String noticeRemind; //알람시간
+	private String createdDatetime;
+	private String updatedDatetime;
+	private String conversionUpdatedDatetime;
 }

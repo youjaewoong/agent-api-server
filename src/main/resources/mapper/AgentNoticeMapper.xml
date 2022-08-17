@@ -4,39 +4,84 @@
 <mapper namespace="com.api.server.agent.dao.AgentNoticeMapper">
 	
 	<resultMap id="agentNoticeResponse" type="com.api.server.agent.model.notice.AgentNoticeResponse" autoMapping="true"/>
-	
+	<resultMap id="agentNoticeCategory" type="com.api.server.agent.model.notice.AgentNoticeCategory" autoMapping="true"/>
 	
 	<select id="selectAgentNotices" resultMap="agentNoticeResponse">
 		SELECT 
-		  ID
-		 ,COMPANY_CODE
-		 ,AGENT_ID
-		 ,TITLE
-		 ,CONTENT
-		 ,CATEGORY
-		 ,CASE
-		 	WHEN CATEGORY = 'E' THEN '긴급'
-		 	WHEN CATEGORY = 'N' THEN '일반'
-		 	WHEN CATEGORY = 'W' THEN '워닝'
-		  ELSE '일반'
-		  END AS CATEGORY_NAME
-		 ,DEPT_CODE
-		 ,DEPT_CONFIRM_COUNT
-		 ,DEPT_COUNT
-		 ,DEPT_CONFIRM_YN
-		 ,CREATED_DATETIME
-		 ,DATE_FORMAT(UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
-		FROM DP_ADV_ADMIN_NOTICE
-		WHERE AGENT_ID = #{agentId}
-		ORDER BY CREATED_DATETIME ASC
+		   A.ID
+		  ,B.ID AS AGENT_NOTICE_ID 
+		  ,A.COMPANY_CODE
+		  ,A.ADMIN_ID
+		  ,A.TITLE
+		  ,A.CONTENT
+		  ,A.CATEGORY
+		  ,CASE
+		     WHEN A.CATEGORY = 'E' THEN '긴급'
+		 	 WHEN A.CATEGORY = 'N' THEN '일반'
+		 	 WHEN A.CATEGORY = 'W' THEN '워닝'
+		     ELSE '일반'
+		   END AS CATEGORY_NAME
+		  ,A.CREATED_DATETIME
+		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
+		  ,IF(B.NOTICE_REMIND IS NOT NULL, 'Y', 'N') AS REMIND_YN
+		  ,B.NOTICE_REMIND 
+		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
+		  ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
+		  ,REPLACE(REPLACE(DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
+		FROM DP_ADV_ADMIN_NOTICE A
+		<include refid="agentNoticeWhere"></include>
+		ORDER BY DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
+		LIMIT #{offset}, #{limit}
 	</select>
+
+
+	<select id="countAgentNotice" resultType="int">
+	   SELECT 
+	     COUNT(*)
+	   FROM DP_ADV_ADMIN_NOTICE A
+	   <include refid="agentNoticeWhere"></include>
+	</select>
+	
+	
+    <select id="countAgentNoticeByCategories" resultMap="agentNoticeCategory">
+		SELECT
+			 'ALL' AS CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE A
+		<include refid="agentNoticeWhere"></include>
+		UNION ALL
+		SELECT 
+			 A.CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE A
+		<include refid="agentNoticeWhere"></include>
+		GROUP BY CATEGORY
+	</select>
+
+
+	<sql id="agentNoticeWhere">
+	  LEFT JOIN DP_ADV_AGENT_NOTICE B
+	  ON A.ID = B.ADMIN_NOTICE_ID 
+	  AND B.AGENT_ID = #{agentId}
+	  AND B.COMPANY_CODE = #{companyCode}
+	  <if test="!'ALL'.equalsIgnoreCase(category)">
+	    <if test="category != null and !category.equals('')">
+	      AND A.CATEGORY = #{category}
+	    </if>
+	  </if>
+	  <if test="order != null and !order.equals('')">
+	    <if test="!'updated_datetime'.equalsIgnoreCase(order)">
+	      AND ${order} = #{sort}
+	    </if>
+	  </if>
+	</sql>
 	
 	
 	<select id="countAgentNoticeUnConfirmed" resultType="int">
 		SELECT 
 			COUNT(*) 
 		FROM DP_ADV_AGENT_NOTICE 
-		WHERE  NOTICE_COFIRM_YN = 'N'
+		WHERE NOTICE_COFIRM_YN = 'N'
 		AND AGENT_ID = #{agentId}
 		AND COMPANY_CODE = #{companyCode}
 	</select>
@@ -68,17 +113,21 @@
  		INSERT INTO DP_ADV_AGENT_NOTICE (
  			 ID
  			,COMPANY_CODE
- 			,AGENT_ID
  			,ADMIN_NOTICE_ID
+ 			,AGENT_ID
  			,ADMIN_ID
+ 			,NOTICE_COFIRM_YN
+ 			,NOTICE_REMIND
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
  		) VALUES (
  			 #{id}
  			,#{companyCode}
- 			,#{agentId}
  			,#{adminNoticeId}
+ 			,#{agentId}
  			,#{adminId}
+ 			,'Y'
+ 			,#{noticeRemind}
  			,NOW()
  			,NOW()
  		)
@@ -88,11 +137,12 @@
 	<update id="updateAgentNotice">
  		UPDATE DP_ADV_AGENT_NOTICE SET
  		   UPDATED_DATETIME = NOW()
- 		  ,NOTICE_COFIRM_YN = #{noticeCofirmYn}
- 		  ,NOTICE_REMIND = #{noticeRemind}
+ 		  ,NOTICE_COFIRM_YN = 'Y'
+ 		  <if test="noticeRemind != null and !noticeRemind.equals('')">
+ 		    ,NOTICE_REMIND = #{noticeRemind}
+ 		  </if>
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</update>
-
 
 </mapper>

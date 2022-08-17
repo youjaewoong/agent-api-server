@@ -11,13 +11,24 @@ import lombok.Setter;
 @Setter
 public class SearchAgentNoticeRequest {
 	
-	@JsonProperty("agent_id")
 	@NotBlank
+	@JsonProperty("agent_id")
 	private String agentId;
+
+	@NotBlank
+	@JsonProperty("company_code")
+	private String companyCode;
 	
 	@JsonProperty("dept_code")
 	private String deptCode;
 	
-	@JsonProperty("company_code")
-	private String companyCode;
+	private String category = "ALL";
+	
+	private String order;
+	
+	private String sort;
+	
+	private int limit = 10;
+	
+	private int offset = 0;
 }

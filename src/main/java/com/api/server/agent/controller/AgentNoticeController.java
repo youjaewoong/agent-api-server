@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.agent.model.notice.AgentNoticeResponse;
+import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
+import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
+import com.api.server.admin.service.AdminNoticeService;
+import com.api.server.agent.model.notice.AgentNoticeCategoryResponse;
 import com.api.server.agent.model.notice.CreateAgentNotice;
 import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 import com.api.server.agent.model.notice.UpdateAgentNotice;
@@ -33,13 +36,27 @@ public class AgentNoticeController {
 	private final AgentNoticeService agentNoticeService;
 	
 	
-	@ApiOperation("조회")
-    @GetMapping("notices")
-    public List<AgentNoticeResponse> selectAgentNotices(@NotBlank @RequestParam("agent_id") String agentId) {
+	
+	@ApiOperation("공지사항 카테고리별 전체 조회")
+    @GetMapping("notices/all")
+    public List<AgentNoticeCategoryResponse> selectAgentNotices(@NotBlank @RequestParam("agent_id") String agentId
+    														   ,@NotBlank @RequestParam("company_code") String companyCode) {
 		
 		SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
 		searchAgentNoticeRequest.setAgentId(agentId);
-        return agentNoticeService.selectAgentNotices(searchAgentNoticeRequest);
+		searchAgentNoticeRequest.setCompanyCode(companyCode);
+        return agentNoticeService.selectAgentNoticesAll(searchAgentNoticeRequest);
+    }
+	
+	
+	@ApiOperation("공지사항 카테고리별 개별 조회")
+    @GetMapping("notices")
+    public AgentNoticeCategoryResponse selectAdminNotices(@NotBlank @RequestParam("agent_id") String agentId
+    													 ,@NotBlank @RequestParam("company_code") String companyCode
+    												     ,SearchAgentNoticeRequest searchAgentNoticeRequest) {
+		searchAgentNoticeRequest.setAgentId(agentId);
+		searchAgentNoticeRequest.setCompanyCode(companyCode);
+        return agentNoticeService.selectAgentPageNotices(searchAgentNoticeRequest);
     }
 	
 	
@@ -67,7 +84,8 @@ public class AgentNoticeController {
     
     @ApiOperation("확인되지 않은 공지 갯수")
     @GetMapping("/notices/{agentId}")
-    public int countAgentNoticeUnConfirmed(@PathVariable String agentId, @NotBlank @RequestParam("company_code") String companyCode) {
+    public int countAgentNoticeUnConfirmed(@PathVariable String agentId 
+    									  ,@NotBlank @RequestParam("company_code") String companyCode) {
     	SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
     	searchAgentNoticeRequest.setAgentId(agentId);
     	searchAgentNoticeRequest.setCompanyCode(companyCode);
