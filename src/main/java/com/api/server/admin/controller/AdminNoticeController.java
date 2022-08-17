@@ -60,8 +60,8 @@ public class AdminNoticeController {
 	
 	@ApiOperation("추가")
     @PostMapping("notice")
-    public void createAdminNotice(@Valid @RequestBody CreateAdminNotice createAdminNotice) {
-		adminNoticeService.createAdminNotice(createAdminNotice);
+    public String createAdminNotice(@Valid @RequestBody CreateAdminNotice createAdminNotice) {
+		return adminNoticeService.createAdminNotice(createAdminNotice);
     }
 	  
     

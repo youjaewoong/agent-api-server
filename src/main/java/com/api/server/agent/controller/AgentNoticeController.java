@@ -60,9 +60,10 @@ public class AgentNoticeController {
     }
 	
 	
-	@ApiOperation("공지 대상 조회")
+	@ApiOperation("공지 대상 상담사ID 조회")
 	@GetMapping("notices/target-agents")
 	public List<String> selectReNoticeTargetAgentIds(@NotBlank @RequestParam("id") String id) {
+		
 		return agentNoticeService.selectReNoticeTargetAgentIds(id);
 	}
 	

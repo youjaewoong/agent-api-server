@@ -21,11 +21,12 @@
 		 	 WHEN A.CATEGORY = 'W' THEN '워닝'
 		     ELSE '일반'
 		   END AS CATEGORY_NAME
-		  ,A.CREATED_DATETIME
+		  ,A.DEPT_CODE
 		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
 		  ,IF(B.NOTICE_REMIND IS NOT NULL, 'Y', 'N') AS REMIND_YN
-		  ,B.NOTICE_REMIND 
+		  ,B.NOTICE_REMIND
 		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
+		  ,A.CREATED_DATETIME
 		  ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
 		  ,REPLACE(REPLACE(DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE A
@@ -61,9 +62,9 @@
 
 	<sql id="agentNoticeWhere">
 	  LEFT JOIN DP_ADV_AGENT_NOTICE B
-	  ON A.ID = B.ADMIN_NOTICE_ID 
-	  AND B.AGENT_ID = #{agentId}
-	  AND B.COMPANY_CODE = #{companyCode}
+	  ON (A.ID = B.ADMIN_NOTICE_ID AND B.AGENT_ID = #{agentId})
+	  WHERE A.DEPT_CODE = (SELECT DEPT_CODE FROM DP_ADV_AGENT WHERE AGENT_ID = #{agentId} )
+	  AND A.COMPANY_CODE = #{companyCode}
 	  <if test="!'ALL'.equalsIgnoreCase(category)">
 	    <if test="category != null and !category.equals('')">
 	      AND A.CATEGORY = #{category}
@@ -105,7 +106,7 @@
 	    AGENT_ID
 	  FROM DP_ADV_AGENT_NOTICE
 	  WHERE NOTICE_COFIRM_YN  = 'N'
-	  AND ADMIN_NOTICE_ID = {id}
+	  AND ADMIN_NOTICE_ID = #{id}
 	</select>
 	
 
@@ -126,7 +127,7 @@
  			,#{adminNoticeId}
  			,#{agentId}
  			,#{adminId}
- 			,'Y'
+ 			,#{noticeCofirmYn}
  			,#{noticeRemind}
  			,NOW()
  			,NOW()

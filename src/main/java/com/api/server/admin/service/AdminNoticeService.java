@@ -102,7 +102,7 @@ public class AdminNoticeService {
 	
 	
 	@Transactional
-	public void createAdminNotice(CreateAdminNotice createAdminNotice) {
+	public String createAdminNotice(CreateAdminNotice createAdminNotice) {
 		
 		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
 		searchAdminNoticeRequest.setCompanyCode(createAdminNotice.getCompanyCode());
@@ -122,7 +122,7 @@ public class AdminNoticeService {
 		searchAgentNoticeRequest.setDeptCode(createAdminNotice.getDeptCode());
 		List<String> ids = agentNoticeMapper.selectNoticeTargetAgentIds(searchAgentNoticeRequest);
 		
-		if (ids.size() > 0) { 
+		if (ids.size() > 0) {
 			for (String agentId : ids) {
 				CreateAgentNotice createAgentNotice = new CreateAgentNotice();
 				createAgentNotice.setCompanyCode(createAdminNotice.getCompanyCode());
@@ -132,6 +132,7 @@ public class AdminNoticeService {
 				agentNoticeMapper.createAgentNotice(createAgentNotice);
 			}
 		}
+		return createAdminNotice.getId();
 	}
 	
 

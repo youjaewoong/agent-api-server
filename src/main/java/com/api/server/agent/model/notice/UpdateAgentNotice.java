@@ -30,5 +30,6 @@ public class UpdateAgentNotice {
 	
 	@JsonProperty("notice_remind")
 	private String noticeRemind;
+
 	
 }
