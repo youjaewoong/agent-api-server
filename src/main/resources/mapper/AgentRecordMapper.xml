@@ -75,6 +75,11 @@
                           FROM DP_ADV_AGENT 
                          WHERE AGENT_ID = #{agentId}
                       ), '미등록') AS AGENT_TITLE 
+             , IFNULL (
+                       (SELECT DEPT_CODE 
+                          FROM DP_ADV_AGENT 
+                         WHERE AGENT_ID = #{agentId}
+                      ), '미등록') AS DEPT_CODE 
 	</select>
     
     

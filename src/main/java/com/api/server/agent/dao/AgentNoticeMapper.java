@@ -32,4 +32,6 @@ public interface AgentNoticeMapper {
 	
 	public int countAgentNoticeUnConfirmed(SearchAgentNoticeRequest searchAgentNoticeRequest);
 	
+	public int deleteAgentNoticeByDay(int day);
+	
 }

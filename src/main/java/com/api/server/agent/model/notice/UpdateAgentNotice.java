@@ -30,6 +30,11 @@ public class UpdateAgentNotice {
 	
 	@JsonProperty("notice_remind")
 	private String noticeRemind;
+	
+	@JsonProperty("notice_remind_yn")
+	private String noticeRemindYn;
 
+	@JsonProperty("notice_cofirm_yn")
+	private String noticeCofirmYn;
 	
 }

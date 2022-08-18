@@ -23,7 +23,7 @@
 		   END AS CATEGORY_NAME
 		  ,A.DEPT_CODE
 		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
-		  ,IF(B.NOTICE_REMIND IS NOT NULL, 'Y', 'N') AS REMIND_YN
+		  ,IFNULL(B.NOTICE_REMIND_YN,'N') AS NOTICE_REMIND_YN
 		  ,B.NOTICE_REMIND
 		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
 		  ,A.CREATED_DATETIME
@@ -81,10 +81,12 @@
 	<select id="countAgentNoticeUnConfirmed" resultType="int">
 		SELECT 
 			COUNT(*) 
-		FROM DP_ADV_AGENT_NOTICE 
-		WHERE NOTICE_COFIRM_YN = 'N'
-		AND AGENT_ID = #{agentId}
-		AND COMPANY_CODE = #{companyCode}
+		FROM DP_ADV_AGENT_NOTICE A
+		INNER JOIN DP_ADV_ADMIN_NOTICE B ON (A.ADMIN_NOTICE_ID = B.ID
+		AND A.NOTICE_COFIRM_YN = 'N'
+		AND A.AGENT_ID = #{agentId}
+		AND A.COMPANY_CODE = #{companyCode}
+		)
 	</select>
 
 
@@ -119,6 +121,7 @@
  			,ADMIN_ID
  			,NOTICE_COFIRM_YN
  			,NOTICE_REMIND
+ 			,NOTICE_REMIND_YN
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
  		) VALUES (
@@ -129,6 +132,7 @@
  			,#{adminId}
  			,#{noticeCofirmYn}
  			,#{noticeRemind}
+ 			,#{noticeRemindYn}
  			,NOW()
  			,NOW()
  		)
@@ -142,8 +146,17 @@
  		  <if test="noticeRemind != null and !noticeRemind.equals('')">
  		    ,NOTICE_REMIND = #{noticeRemind}
  		  </if>
+ 		  <if test="noticeRemindYn != null and !noticeRemindYn.equals('')">
+ 		    ,NOTICE_REMIND_YN = #{noticeRemindYn}
+ 		  </if>
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</update>
 
+
+	<delete id="deleteAgentNoticeByDay">
+	   DELETE FROM DP_ADV_AGENT_NOTICE A
+	   WHERE DATE_ADD(DATE_FORMAT(NOW(),'%Y-%m-%d'), INTERVAL ${day} DAY) >= DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') 
+	</delete>
+	
 </mapper>

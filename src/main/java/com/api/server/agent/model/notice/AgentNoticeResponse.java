@@ -15,9 +15,9 @@ public class AgentNoticeResponse {
 	private String category;
 	private String categoryName;
 	private char newYn; //신규건 Y, 기존: N 
-	private char remindYn; //알람설정 Y, 미설정: N
 	private char noticeCofirmYn; //읽음처리 Y, 미처리: N
 	private String noticeRemind; //알람시간
+	private String noticeRemindYn; //알람확인처리 Y, 미처리: N
 	private String createdDatetime;
 	private String updatedDatetime;
 	private String conversionUpdatedDatetime;

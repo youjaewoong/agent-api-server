@@ -104,19 +104,26 @@ public class AgentNoticeService {
 
 	
 	/**
-	 * 상담사 공지데이터가 없을 경우 데이터를 삽입한다.
+	 * 상담사 공지데이터 하루전 데이터가 없을수 있기떄문에 리마인드 처리를 위한 데이터 삽입
 	 * @param updateAgentNotice
+	 * @return 
 	 */
 	@Transactional
-	public void updateAgentNotice(UpdateAgentNotice updateAgentNotice) {
+	public String updateAgentNotice(UpdateAgentNotice updateAgentNotice) {
 		
-		if (updateAgentNotice.getId() == null) {
+		if ("null".equals(updateAgentNotice.getId()) || updateAgentNotice.getId() == null) {
 			CreateAgentNotice createAgentNotice = new CreateAgentNotice();
+			String id = createAgentNotice.getId();
+			
 			BeanUtils.copyProperties(updateAgentNotice, createAgentNotice);
+			
+			createAgentNotice.setId(id);
+			
 			this.createAgentNotice(createAgentNotice);
-		} else {
-			agentNoticeMapper.updateAgentNotice(updateAgentNotice);
-		}
+			return createAgentNotice.getId();
+		} 
+		agentNoticeMapper.updateAgentNotice(updateAgentNotice);
+		return updateAgentNotice.getId();
 	}
 	
 	
@@ -132,5 +139,13 @@ public class AgentNoticeService {
 	 */
 	public int countAgentNoticeUnConfirmed(SearchAgentNoticeRequest searchAgentNoticeRequest) {
 		return agentNoticeMapper.countAgentNoticeUnConfirmed(searchAgentNoticeRequest);
+	}
+	
+	
+	/**
+	 * 하루전 데이터 일괄삭제
+	 */
+	public int deleteAgentNoticeByDay(int day) {
+		return agentNoticeMapper.deleteAgentNoticeByDay(day);
 	}
 }

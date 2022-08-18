@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,9 +78,9 @@ public class AgentNoticeController {
     
     @ApiOperation("단건 수정")
     @PutMapping("/notices/{id}")
-    public void updateAgentNotice(@PathVariable String id, @Valid @RequestBody UpdateAgentNotice updateAgentNotice) {
+    public String updateAgentNotice(@PathVariable String id, @Valid @RequestBody UpdateAgentNotice updateAgentNotice) {
     	updateAgentNotice.setId(id);
-    	agentNoticeService.updateAgentNotice(updateAgentNotice);
+    	return agentNoticeService.updateAgentNotice(updateAgentNotice);
     }
     
     
@@ -91,6 +92,18 @@ public class AgentNoticeController {
     	searchAgentNoticeRequest.setAgentId(agentId);
     	searchAgentNoticeRequest.setCompanyCode(companyCode);
     	return agentNoticeService.countAgentNoticeUnConfirmed(searchAgentNoticeRequest);
+    }
+    
+    
+    /**
+     * -1 하루전 default
+     * @param dayNumber
+     * @return
+     */
+    @ApiOperation("일별 데이터 일괄삭제")
+    @DeleteMapping("/notices/day")
+    public int countAgentNoticeUnConfirmed(@RequestParam(value="day_count",defaultValue = "-1") int dayCount) {
+    	return agentNoticeService.deleteAgentNoticeByDay(dayCount);
     }
     
 }
