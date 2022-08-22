@@ -61,12 +61,35 @@ public class AgentStatusController {
     												  @PathVariable String key) {
 		
 		
-		URI uri = UriComponentsBuilder
+		URI pushUri = UriComponentsBuilder
 				.fromUriString(WEBSOCKET_URL)
 				.path("/redis/hash/push/{key}")
 				.build()
 				.expand(key)
 				.toUri();
+		
+		
+		URI keyUri = UriComponentsBuilder
+				.fromUriString(WEBSOCKET_URL)
+				.path("/redis/keys/has/{key}")
+				.build()
+				.expand(key)
+				.toUri();
+		
+		//key가 존재하는지 확인
+		ResponseEntity<String> iskey = restTemplate.getForEntity(keyUri, String.class);
+		
+		if (Boolean.parseBoolean(iskey.getBody())) {
+			//key가 있으면 삭제
+			URI deleteUri = UriComponentsBuilder
+					.fromUriString(WEBSOCKET_URL)
+					.path("/redis/keys/{key}")
+					.build()
+					.expand(key)
+					.toUri();
+			restTemplate.delete(deleteUri);
+		}
+	
 		
 		for(Map<String, Object> category : obj.getCategories() ) {
 			for (String hashKey : category.keySet() ) {
@@ -75,20 +98,23 @@ public class AgentStatusController {
 			    params.put("hashKey", hashKey);
 			    params.put("obj", category.get(hashKey).toString());
 			    
-			    restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params);
+			    restTemplate.getForEntity(pushUri+"?hashKey={hashKey}&obj={obj}", String.class, params);
 			}
 		}
 		
 	    Map<String, String> params1 = new HashMap<String, String>();
-	    params1.put("hashKey", "adviceSentence");
-	    params1.put("obj", obj.getSentences());
-		restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params1);
-		
+	    if (obj.getSentences() != null) {
+	    	params1.put("hashKey", "adviceSentence");
+	    	params1.put("obj", obj.getSentences());
+	    	restTemplate.getForEntity(pushUri+"?hashKey={hashKey}&obj={obj}", String.class, params1);
+	    }
 		
 	    Map<String, String> params2 = new HashMap<String, String>();
-	    params2.put("hashKey", "adviceMemo");
-	    params2.put("obj", obj.getMemo());
-		restTemplate.getForEntity(uri+"?hashKey={hashKey}&obj={obj}", String.class, params2);
+	    if (obj.getMemo() != null) {
+	    	params2.put("hashKey", "adviceMemo");
+	    	params2.put("obj", obj.getMemo());
+	    	restTemplate.getForEntity(pushUri+"?hashKey={hashKey}&obj={obj}", String.class, params2);
+	    }
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

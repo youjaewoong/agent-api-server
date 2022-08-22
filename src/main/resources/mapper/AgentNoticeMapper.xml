@@ -25,6 +25,7 @@
 		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
 		  ,IFNULL(B.NOTICE_REMIND_YN,'N') AS NOTICE_REMIND_YN
 		  ,B.NOTICE_REMIND
+		  ,B.NOTICE_REMIND_TIME
 		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
 		  ,A.CREATED_DATETIME
 		  ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
@@ -82,14 +83,41 @@
 		SELECT 
 			COUNT(*) 
 		FROM DP_ADV_AGENT_NOTICE A
-		INNER JOIN DP_ADV_ADMIN_NOTICE B ON (A.ADMIN_NOTICE_ID = B.ID
-		AND A.NOTICE_COFIRM_YN = 'N'
-		AND A.AGENT_ID = #{agentId}
-		AND A.COMPANY_CODE = #{companyCode}
+		INNER JOIN DP_ADV_ADMIN_NOTICE B 
+		ON (A.ADMIN_NOTICE_ID = B.ID
+		  AND A.NOTICE_COFIRM_YN = 'N'
+		  AND A.AGENT_ID = #{agentId}
+		  AND A.COMPANY_CODE = #{companyCode}
 		)
 	</select>
 
-
+	
+	<select id="selectAgentNoticeByAlarm" resultMap="agentNoticeResponse">
+		SELECT 
+		   A.ID
+		  ,B.ID AS AGENT_NOTICE_ID 
+		  ,A.COMPANY_CODE
+		  ,A.ADMIN_ID
+		  ,A.TITLE
+		  ,A.CONTENT
+		  ,A.CATEGORY
+		  ,A.DEPT_CODE
+		  ,IF(DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'), DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d')) = 0, 'Y', 'N') AS NEW_YN
+		  ,IFNULL(B.NOTICE_REMIND_YN,'N') AS NOTICE_REMIND_YN
+		  ,B.NOTICE_REMIND
+		  ,B.NOTICE_REMIND_TIME
+		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
+		  ,A.CREATED_DATETIME
+		FROM DP_ADV_ADMIN_NOTICE A
+		INNER JOIN DP_ADV_AGENT_NOTICE B 
+		ON ( A.ID = B.ADMIN_NOTICE_ID
+		  AND B.NOTICE_REMIND_YN = 'Y'
+		  AND B.AGENT_ID = #{agentId}
+		  AND B.COMPANY_CODE = #{companyCode}
+		)
+	</select>
+	
+	
 	<select id="selectNoticeTargetAgentIds" resultType="string">
 	  SELECT DISTINCT
 	    AGENT_ID 
@@ -121,6 +149,7 @@
  			,ADMIN_ID
  			,NOTICE_COFIRM_YN
  			,NOTICE_REMIND
+ 			,NOTICE_REMIND_TIME
  			,NOTICE_REMIND_YN
  			,CREATED_DATETIME
  			,UPDATED_DATETIME
@@ -132,6 +161,7 @@
  			,#{adminId}
  			,#{noticeCofirmYn}
  			,#{noticeRemind}
+ 			,#{noticeRemindTime}
  			,#{noticeRemindYn}
  			,NOW()
  			,NOW()
@@ -145,6 +175,7 @@
  		  ,NOTICE_COFIRM_YN = 'Y'
  		  <if test="noticeRemind != null and !noticeRemind.equals('')">
  		    ,NOTICE_REMIND = #{noticeRemind}
+ 		    ,NOTICE_REMIND_TIME = #{noticeRemindTime}
  		  </if>
  		  <if test="noticeRemindYn != null and !noticeRemindYn.equals('')">
  		    ,NOTICE_REMIND_YN = #{noticeRemindYn}

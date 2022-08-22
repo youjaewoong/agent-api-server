@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
-import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
-import com.api.server.admin.service.AdminNoticeService;
 import com.api.server.agent.model.notice.AgentNoticeCategoryResponse;
+import com.api.server.agent.model.notice.AgentNoticeResponse;
 import com.api.server.agent.model.notice.CreateAgentNotice;
 import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 import com.api.server.agent.model.notice.UpdateAgentNotice;
@@ -104,6 +102,19 @@ public class AgentNoticeController {
     @DeleteMapping("/notices/day")
     public int countAgentNoticeUnConfirmed(@RequestParam(value="day_count",defaultValue = "-1") int dayCount) {
     	return agentNoticeService.deleteAgentNoticeByDay(dayCount);
+    }
+    
+    
+
+    @ApiOperation("리마인드 설정 데이터 조회")
+    @GetMapping("/notices/remind")
+    public List<AgentNoticeResponse> selectAgentNoticeByAlarm(@NotBlank @RequestParam("agent_id") String agentId
+			   						   ,@NotBlank @RequestParam("company_code") String companyCode) {
+		
+		SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
+		searchAgentNoticeRequest.setAgentId(agentId);
+		searchAgentNoticeRequest.setCompanyCode(companyCode);
+    	return agentNoticeService.selectAgentNoticeByAlarm(searchAgentNoticeRequest);
     }
     
 }

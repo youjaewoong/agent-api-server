@@ -148,4 +148,14 @@ public class AgentNoticeService {
 	public int deleteAgentNoticeByDay(int day) {
 		return agentNoticeMapper.deleteAgentNoticeByDay(day);
 	}
+	
+	
+	/**
+	 * 리마인드 설정 Y 데이터  
+	 * @param id
+	 * @return
+	 */
+	public List<AgentNoticeResponse> selectAgentNoticeByAlarm(SearchAgentNoticeRequest searchAgentNoticeRequest) {
+		return agentNoticeMapper.selectAgentNoticeByAlarm(searchAgentNoticeRequest);
+	}
 }

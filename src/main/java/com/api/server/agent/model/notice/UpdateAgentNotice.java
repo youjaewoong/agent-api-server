@@ -37,4 +37,7 @@ public class UpdateAgentNotice {
 	@JsonProperty("notice_cofirm_yn")
 	private String noticeCofirmYn;
 	
+	@JsonProperty("notice_remind_time")
+	private String noticeRemindTime;
+	
 }
