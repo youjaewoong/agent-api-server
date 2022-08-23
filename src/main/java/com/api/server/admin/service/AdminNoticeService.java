@@ -23,6 +23,7 @@ import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminNoticeService {
 	
@@ -101,7 +102,6 @@ public class AdminNoticeService {
 	}
 	
 	
-	@Transactional
 	public String createAdminNotice(CreateAdminNotice createAdminNotice) {
 		
 		SearchAdminNoticeRequest searchAdminNoticeRequest = new SearchAdminNoticeRequest();
@@ -136,8 +136,11 @@ public class AdminNoticeService {
 	}
 	
 
-	public void deleteAdminNotice(DeleteAdminNotice deleteMemo) {
-		adminNoticeMapper.deleteAdminNotice(deleteMemo);
+	public void deleteAdminNotice(DeleteAdminNotice deleteAdminNotice) {
+		int deleteCnt = adminNoticeMapper.deleteAdminNotice(deleteAdminNotice);
+		if (deleteCnt > 0) {
+			agentNoticeMapper.deleteAgentNoticeByAdminId(deleteAdminNotice.getId());
+		}
 	}
 	
 	

@@ -34,6 +34,8 @@ public interface AgentNoticeMapper {
 	
 	public int deleteAgentNoticeByDay(int day);
 	
+	public int deleteAgentNoticeByAdminId(String id);
+	
 	public List<AgentNoticeResponse> selectAgentNoticeByAlarm(SearchAgentNoticeRequest searchAgentNoticeRequest);
 	
 }

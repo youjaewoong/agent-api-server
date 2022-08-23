@@ -100,8 +100,9 @@ public class AgentNoticeController {
      */
     @ApiOperation("일별 데이터 일괄삭제")
     @DeleteMapping("/notices/day")
-    public int countAgentNoticeUnConfirmed(@RequestParam(value="day_count",defaultValue = "-1") int dayCount) {
-    	return agentNoticeService.deleteAgentNoticeByDay(dayCount);
+    public void countAgentNoticeUnConfirmed(@RequestParam(value="day_count",defaultValue = "-1") int dayCount) {
+    	agentNoticeService.deleteAgentNoticeByDay(dayCount);
+    	
     }
     
     

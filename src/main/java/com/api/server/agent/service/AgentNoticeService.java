@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +20,11 @@ import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 import com.api.server.agent.model.notice.UpdateAgentNotice;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AgentNoticeService {
 	
 	@Autowired
@@ -145,8 +149,9 @@ public class AgentNoticeService {
 	/**
 	 * 하루전 데이터 일괄삭제
 	 */
-	public int deleteAgentNoticeByDay(int day) {
-		return agentNoticeMapper.deleteAgentNoticeByDay(day);
+	public void deleteAgentNoticeByDay(int day) {
+		int deleteCnt = agentNoticeMapper.deleteAgentNoticeByDay(day);
+		log.info("하루전 데이터 일괄삭제 {} 건", deleteCnt);
 	}
 	
 	

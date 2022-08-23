@@ -28,11 +28,11 @@
 		  ,B.NOTICE_REMIND_TIME
 		  ,IFNULL(B.NOTICE_COFIRM_YN, 'N') AS NOTICE_COFIRM_YN
 		  ,A.CREATED_DATETIME
-		  ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d') AS UPDATED_DATETIME
+		  ,A.UPDATED_DATETIME
 		  ,REPLACE(REPLACE(DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d %p %h:%i'),'AM', '오전'),'PM','오후') AS CONVERSION_UPDATED_DATETIME
 		FROM DP_ADV_ADMIN_NOTICE A
 		<include refid="agentNoticeWhere"></include>
-		ORDER BY DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d %p %h:%i') DESC
+		ORDER BY A.UPDATED_DATETIME DESC
 		LIMIT #{offset}, #{limit}
 	</select>
 
@@ -85,7 +85,7 @@
 		FROM DP_ADV_AGENT_NOTICE A
 		INNER JOIN DP_ADV_ADMIN_NOTICE B 
 		ON (A.ADMIN_NOTICE_ID = B.ID
-		  AND A.NOTICE_COFIRM_YN = 'N'
+		  AND IFNULL(A.NOTICE_COFIRM_YN, 'N') = 'N'
 		  AND A.AGENT_ID = #{agentId}
 		  AND A.COMPANY_CODE = #{companyCode}
 		)
@@ -115,6 +115,7 @@
 		  AND B.AGENT_ID = #{agentId}
 		  AND B.COMPANY_CODE = #{companyCode}
 		)
+		ORDER BY NOTICE_REMIND ASC
 	</select>
 	
 	
@@ -185,8 +186,14 @@
 	</update>
 
 
+	<delete id="deleteAgentNoticeByAdminId">
+	   DELETE FROM DP_ADV_AGENT_NOTICE
+	   WHERE ADMIN_NOTICE_ID = #{id}
+	</delete>
+	
+
 	<delete id="deleteAgentNoticeByDay">
-	   DELETE FROM DP_ADV_AGENT_NOTICE A
+	   DELETE FROM DP_ADV_AGENT_NOTICE
 	   WHERE DATE_ADD(DATE_FORMAT(NOW(),'%Y-%m-%d'), INTERVAL ${day} DAY) >= DATE_FORMAT(UPDATED_DATETIME, '%Y-%m-%d') 
 	</delete>
 	
