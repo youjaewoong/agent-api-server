@@ -7,6 +7,13 @@ http://localhost:8088/swagger-ui/index.html
 -Dspring.profiles.active=local
 ```
 
+### redis publish example
+```
+공지사항 재공지
+publish /sub/redis/notice/01010101 '{"id":"e4fb91e703ea4efd990c2f36cfcee66e","publisherId":"admin001","category":"N","agentType":"ADMIN","eventType":"RENOTICE","targetIds":["agent025","agent031","agent032","agent024","agent029","agent020","agent022","agent001","agent028","agent021","agent030","agent002","agent003","agent026","agent023","agent027"],"message":"sss"}'
+```
+
+
 ### DDL
 ```
 CREATE TABLE `MEMO` (

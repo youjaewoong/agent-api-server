@@ -40,26 +40,10 @@
 	<select id="countAdminNotice" resultType="int">
 	   SELECT 
 	     COUNT(*)
-	   FROM DP_ADV_ADMIN_NOTICE
+	   FROM DP_ADV_ADMIN_NOTICE A
 	   <include refid="adminNoticeWhere"></include>
 	</select>
 	
-	
-    <select id="countAdminNoticeByCategories" resultMap="adminNoticeCategory">
-		SELECT
-			 'ALL' AS CATEGORY
-			,COUNT(*) AS TOTAL
-		FROM DP_ADV_ADMIN_NOTICE
-		<include refid="adminNoticeWhere"></include>
-		UNION ALL
-		SELECT 
-			 CATEGORY
-			,COUNT(*) AS TOTAL
-		FROM DP_ADV_ADMIN_NOTICE
-		<include refid="adminNoticeWhere"></include>
-		GROUP BY CATEGORY
-	</select>
-
 	
 	<sql id="adminNoticeWhere">
 	  WHERE ADMIN_ID = #{adminId}
@@ -73,9 +57,25 @@
 	  	</if>
 	  </if>
 	  <if test="'dept_confirm_yn'.equalsIgnoreCase(order)">
-	    AND ${order} = #{sort}
+	    AND IF((SELECT COUNT(*) FROM DP_ADV_AGENT_NOTICE B WHERE A.ID = B.ADMIN_NOTICE_ID AND B.NOTICE_COFIRM_YN ='Y') >= A.DEPT_TOTAL, 'Y', 'N') = #{sort}
 	  </if>
 	</sql>
+	
+	
+    <select id="countAdminNoticeByCategories" resultMap="adminNoticeCategory">
+		SELECT
+			 'ALL' AS CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE A
+		<include refid="adminNoticeWhere"></include>
+		UNION ALL
+		SELECT 
+			 CATEGORY
+			,COUNT(*) AS TOTAL
+		FROM DP_ADV_ADMIN_NOTICE A
+		<include refid="adminNoticeWhere"></include>
+		GROUP BY CATEGORY
+	</select>
 	
 	
 	<update id="updateAdminNotice">
