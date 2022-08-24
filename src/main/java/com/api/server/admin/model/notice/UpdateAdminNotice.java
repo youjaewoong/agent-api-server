@@ -27,4 +27,12 @@ public class UpdateAdminNotice {
 	@JsonProperty("admin_id")
 	private String adminId;
 	
+	@NotBlank
+	@JsonProperty("company_code")
+	private String companyCode;
+	
+	@NotBlank
+	@JsonProperty("dept_code")
+	private String deptCode;
+	
 }

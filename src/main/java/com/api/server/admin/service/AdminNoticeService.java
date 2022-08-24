@@ -99,6 +99,26 @@ public class AdminNoticeService {
 	
 	public void updateAdminNotice(UpdateAdminNotice updateAdminNotice) {
 		adminNoticeMapper.updateAdminNotice(updateAdminNotice);
+		
+		//수정을 했을 경우 상담사 정보 삭제
+		agentNoticeMapper.deleteAgentNoticeByAdminId(updateAdminNotice.getId());
+		
+		//대상 상담사 리스트 다시 저장
+		SearchAgentNoticeRequest searchAgentNoticeRequest = new SearchAgentNoticeRequest();
+		searchAgentNoticeRequest.setCompanyCode(updateAdminNotice.getCompanyCode());
+		searchAgentNoticeRequest.setDeptCode(updateAdminNotice.getDeptCode());
+		List<String> ids = agentNoticeMapper.selectNoticeTargetAgentIds(searchAgentNoticeRequest);
+		
+		if (ids.size() > 0) {
+			for (String agentId : ids) {
+				CreateAgentNotice createAgentNotice = new CreateAgentNotice();
+				createAgentNotice.setCompanyCode(updateAdminNotice.getCompanyCode());
+				createAgentNotice.setAdminNoticeId(updateAdminNotice.getId());
+				createAgentNotice.setAdminId(updateAdminNotice.getAdminId());
+				createAgentNotice.setAgentId(agentId);
+				agentNoticeMapper.createAgentNotice(createAgentNotice);
+			}
+		}
 	}
 	
 	
