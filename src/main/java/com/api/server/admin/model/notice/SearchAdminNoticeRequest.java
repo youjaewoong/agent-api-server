@@ -33,7 +33,7 @@ public class SearchAdminNoticeRequest {
 	
 	private String sort;
 	
-	private int limit = 10;
+	private int limit = 15;
 	
 	private int offset = 0;
 	
