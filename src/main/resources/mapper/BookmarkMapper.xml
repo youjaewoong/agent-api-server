@@ -25,8 +25,8 @@
 			 ,B.BASIC_GROUP_YN
 			 ,A.CREATED_DATETIME
 			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
-			FROM BOOKMARK A
-			LEFT JOIN BOOKMARK_GROUP B
+			FROM DP_ADV_BOOKMARK A
+			LEFT JOIN DP_ADV_BOOKMARK_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.AGENT_ID = #{agentId}
@@ -40,14 +40,14 @@
 	<select id="checkBookmarkTargetId" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM BOOKMARK
+		FROM DP_ADV_BOOKMARK
 		WHERE AGENT_ID = #{agentId}
  		AND TARGET_ID = #{targetId}
 	</select>
 
 	
 	<update id="updateBookmark">
- 		UPDATE BOOKMARK SET
+ 		UPDATE DP_ADV_BOOKMARK SET
  		  GROUP_ID = #{groupId}
  		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
@@ -55,7 +55,7 @@
 	
 	
 	<insert id="createBookmark">
- 		INSERT INTO BOOKMARK (
+ 		INSERT INTO DP_ADV_BOOKMARK (
  			 ID
  			,COMPANY_CODE
  			,AGENT_ID
@@ -84,7 +84,7 @@
 	
 	
 	<delete id="deleteBookmark">
- 		DELETE FROM BOOKMARK
+ 		DELETE FROM DP_ADV_BOOKMARK
  		WHERE AGENT_ID = #{agentId}
  		<if test="id != null and !id.equals('')">
  		  AND ID = #{id}
@@ -96,7 +96,7 @@
 	
 	
     <delete id="deleteBookmarkByGroups">
-         DELETE FROM BOOKMARK
+         DELETE FROM DP_ADV_BOOKMARK
          WHERE AGENT_ID = #{agentId}
          AND GROUP_ID IN
          <foreach collection="ids" item="item" open="(" close=")" separator=",">
@@ -106,7 +106,7 @@
 	
 		
 	<delete id="deleteBookmarkByGroup">
- 		DELETE FROM BOOKMARK
+ 		DELETE FROM DP_ADV_BOOKMARK
  		WHERE GROUP_ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</delete>

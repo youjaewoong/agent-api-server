@@ -7,14 +7,14 @@
 	
 	
 	<select id="selectMemoGroups" resultMap="memoGroupResponse">
- 		SELECT * FROM MEMO_GROUP 
+ 		SELECT * FROM DP_ADV_MEMO_GROUP 
         WHERE AGENT_ID = #{agentId} 
  		ORDER BY TITLE ASC
 	</select>
 	
 	
 	<update id="updateMemoGroup">
- 		UPDATE MEMO_GROUP SET
+ 		UPDATE DP_ADV_MEMO_GROUP SET
  		  TITLE = #{title}
  		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
@@ -23,7 +23,7 @@
 	
 	
 	<insert id="createMemoGroup">
- 		INSERT INTO MEMO_GROUP (
+ 		INSERT INTO DP_ADV_MEMO_GROUP (
  			 ID
  			,AGENT_ID
  			,TITLE
@@ -42,14 +42,14 @@
 	
 	
 	<delete id="deleteMemoGroup">
- 		DELETE FROM MEMO_GROUP
+ 		DELETE FROM DP_ADV_MEMO_GROUP
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</delete>
 	
 	
 	<delete id="deleteMemoGroups">
- 		DELETE FROM MEMO_GROUP
+ 		DELETE FROM DP_ADV_MEMO_GROUP
 		WHERE AGENT_ID = #{agentId}
  		AND ID IN
  		<foreach collection="ids" item="item" open="(" close=")" separator=",">
@@ -61,7 +61,7 @@
 	<select id="checkMemoGroupTitle" resultType="int">
  		SELECT 
  			COUNT(*) 
- 		FROM MEMO_GROUP
+ 		FROM DP_ADV_MEMO_GROUP
  		WHERE TITLE = #{title}
  		AND AGENT_ID = #{agentId}
 	</select>

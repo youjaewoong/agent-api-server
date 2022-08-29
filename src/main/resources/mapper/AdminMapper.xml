@@ -31,10 +31,10 @@
 		   and b.DEPT_CODE = (select DEPT_CODE from  DP_ADV_AGENT where ext = #{adminExt})
 		   and b.AGENT_TITLE <![CDATA[<]]> '팀장'
 		   <if test="deptCode != null and deptCode != ''">
-		   	and a.dept_code = #{deptCd} /* 조회할 부서 */
+		     and a.dept_code in (${deptCode})
 		   </if>
 		   <if test="agentName != null and agentName != ''">
-		   	and b.agent_name like #{agentName}	/* 이름으로 조회 */
+		   	and b.agent_name like CONCAT(#{agentName}, '%') /* 이름으로 조회 */
 		   </if>
 		   <if test="interest=='true'">
 		   	and c.admin_id = #{adminId} /* 관심상담사 조회 */

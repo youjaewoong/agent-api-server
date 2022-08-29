@@ -19,8 +19,8 @@
 			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y.%m.%d') AS CONVERSION_UPDATED_DATETIME
 			 ,A.CREATED_DATETIME
 			 ,DATE_FORMAT(A.UPDATED_DATETIME, '%Y-%m-%d %H:%i:%s') AS UPDATED_DATETIME
-			FROM MEMO A
-			LEFT JOIN MEMO_GROUP B
+			FROM DP_ADV_MEMO A
+			LEFT JOIN DP_ADV_MEMO_GROUP B
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.AGENT_ID = #{agentId}
@@ -29,7 +29,7 @@
 	
 	
 	<insert id="createMemo">
- 		INSERT INTO MEMO (
+ 		INSERT INTO DP_ADV_MEMO (
  			 ID
  			,COMPANY_CODE
  			,AGENT_ID
@@ -52,7 +52,7 @@
 	
 	
 	<update id="updateMemo">
- 		UPDATE MEMO SET
+ 		UPDATE DP_ADV_MEMO SET
  		  TITLE = #{title}
  		 ,CONTENT = #{content}
  		 ,GROUP_ID = #{groupId}
@@ -63,14 +63,14 @@
 	
 	
 	<delete id="deleteMemo">
- 		DELETE FROM MEMO
+ 		DELETE FROM DP_ADV_MEMO
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</delete>
 	
 	
     <delete id="deleteMemoByGroups">
-    	DELETE FROM MEMO
+    	DELETE FROM DP_ADV_MEMO
         WHERE AGENT_ID = #{agentId}
         AND GROUP_ID IN
          <foreach collection="ids" item="item" open="(" close=")" separator=",">
