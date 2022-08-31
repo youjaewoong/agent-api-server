@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.api.server.admin.model.notice.AdminNoticeCategory;
-import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
@@ -27,8 +26,6 @@ public interface AdminNoticeMapper {
 	public int deleteAdminNotice(DeleteAdminNotice deleteAdminNotice);
 	
 	public int countAdminNoticeDeptTotal(SearchAdminNoticeRequest searchAdminNoticeRequest);
-	
-	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode);
 	
 	public List<AdminNoticeCategory> countAdminNoticeByCategories(SearchAdminNoticeRequest searchAdminNoticeRequest);
 	

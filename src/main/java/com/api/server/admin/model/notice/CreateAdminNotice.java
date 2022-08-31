@@ -28,7 +28,6 @@ public class CreateAdminNotice {
 	@JsonProperty("company_code")
 	private String companyCode;
 	
-	@NotBlank
 	@JsonProperty("admin_id")
 	private String adminId;
 	
@@ -40,11 +39,9 @@ public class CreateAdminNotice {
 	
 	private AdminNoticeCategory.Type category;
 	
-	@NotBlank
 	@JsonProperty("dept_code")
 	private String deptCode;
 	
-	@NotBlank
 	@JsonProperty("dept_name")
 	private String deptName;
 	

@@ -24,6 +24,9 @@
 			ON A.GROUP_ID  = B.ID
 		) AA
 		WHERE AA.AGENT_ID = #{agentId}
+		<if test="groupId != null and !groupId.equals('')">
+          AND AA.GROUP_ID = #{groupId}
+        </if>
  	    ORDER BY UPDATED_DATETIME DESC
 	</select>
 	
@@ -58,6 +61,15 @@
  		 ,GROUP_ID = #{groupId}
  		 ,UPDATED_DATETIME = NOW()
  		WHERE ID = #{id}
+ 		AND AGENT_ID = #{agentId}
+	</update>
+	
+	
+	<update id="updateMemoToMove">
+ 		UPDATE DP_ADV_MEMO SET
+ 		  GROUP_ID = #{groupId}
+ 		 ,UPDATED_DATETIME = NOW()
+ 		WHERE GROUP_ID IN (${targetIds})
  		AND AGENT_ID = #{agentId}
 	</update>
 	

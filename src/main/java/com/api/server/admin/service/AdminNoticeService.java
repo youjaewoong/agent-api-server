@@ -10,7 +10,6 @@ import com.api.server.admin.dao.AdminNoticeMapper;
 import com.api.server.admin.model.notice.AdminNoticeCategory;
 import com.api.server.admin.model.notice.AdminNoticeCategory.Type;
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
-import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
@@ -161,11 +160,6 @@ public class AdminNoticeService {
 		if (deleteCnt > 0) {
 			agentNoticeMapper.deleteAgentNoticeByAdminId(deleteAdminNotice.getId());
 		}
-	}
-	
-	
-	public List<AdminNoticeDeptResponse> selectAdminNoticeDept(String companyCode) {
-		return adminNoticeMapper.selectAdminNoticeDept(companyCode);
 	}
 
 	

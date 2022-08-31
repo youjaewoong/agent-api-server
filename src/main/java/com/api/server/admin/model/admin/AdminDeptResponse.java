@@ -1,9 +1,9 @@
-package com.api.server.admin.model.notice;
+package com.api.server.admin.model.admin;
 
 import lombok.Getter;
 
 @Getter
-public class AdminNoticeDeptResponse {
+public class AdminDeptResponse {
 	private String deptCode;
 	private String deptName;
 	private String pDeptCode;

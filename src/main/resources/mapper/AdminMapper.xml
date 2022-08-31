@@ -4,6 +4,7 @@
 <mapper	namespace="com.api.server.admin.dao.AdminMapper">
   
 	<resultMap id="resultMap" type="com.api.server.util.ResultMap"/>
+	<resultMap id="adminDeptResponse" type="com.api.server.admin.model.admin.AdminDeptResponse" autoMapping="true"/>
 	
 	<select id="getAdminInfo" parameterType="map" resultType="hashmap">
 		SELECT 
@@ -70,6 +71,19 @@
         </foreach>
         </if>		  
 		  order by a.id
+	</select>
+	
+		
+	<select id="selectAdminDept" resultMap="adminDeptResponse">
+		select 
+		  dept_code
+		 ,dept_name
+		 ,p_dept_code
+		 ,depth
+		 ,company_code
+		from dp_adv_dept
+		where company_code = #{companyCode}
+		order by depth
 	</select>
 
 </mapper>

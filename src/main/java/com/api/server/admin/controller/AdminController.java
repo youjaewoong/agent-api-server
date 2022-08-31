@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.admin.model.admin.AdminDeptResponse;
 import com.api.server.admin.service.AdminService;
 import com.api.server.util.ResultMap;
 
@@ -133,5 +136,12 @@ public class AdminController {
 		return result;
 
 	}
+	
+	
+	@ApiOperation("부서 조회")
+	@GetMapping("/dept")
+    public List<AdminDeptResponse> selectAdminDept(@RequestParam("company_code") String companyCode) {
+		return adminService.selectAdminDept(companyCode);
+    }
 
 }

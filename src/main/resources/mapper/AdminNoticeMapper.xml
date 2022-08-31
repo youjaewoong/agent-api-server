@@ -4,7 +4,6 @@
 <mapper namespace="com.api.server.admin.dao.AdminNoticeMapper">
 	
 	<resultMap id="adminNoticeResponse" type="com.api.server.admin.model.notice.AdminNoticeResponse" autoMapping="true"/>
-	<resultMap id="adminNoticeDeptResponse" type="com.api.server.admin.model.notice.AdminNoticeDeptResponse" autoMapping="true"/>
 	<resultMap id="adminNoticeCategory" type="com.api.server.admin.model.notice.AdminNoticeCategory" autoMapping="true"/>
 	
 	<select id="selectAdminNotices" resultMap="adminNoticeResponse">
@@ -144,16 +143,5 @@
 		WHERE AA.DEPT_CODE = #{deptCode}
 	</select>
 	
-	
-	<select id="selectAdminNoticeDept" resultMap="adminNoticeDeptResponse">
-		SELECT 
-		  DEPT_CODE
-		 ,DEPT_NAME
-		 ,P_DEPT_CODE
-		 ,DEPTH
-		 ,COMPANY_CODE
-		FROM DP_ADV_DEPT
-		WHERE COMPANY_CODE = #{companyCode}
-		ORDER BY DEPTH
-	</select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.api.server.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -36,10 +37,12 @@ public class MemoController {
 	
 	@ApiOperation("조회")
     @GetMapping("memos")
-    public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId) {
+    public List<MemosResponse> selectMemos(@NotBlank @RequestParam("agent_id") String agentId
+    		                              ,@RequestParam(value ="group_id", required = false) String groupId) {
 		
 		SearchMemoRequest searchMemoRequest = new SearchMemoRequest();
 		searchMemoRequest.setAgentId(agentId);
+		searchMemoRequest.setGroupId(groupId);
         return memoService.selectMemos(searchMemoRequest);
         
     }
@@ -64,5 +67,12 @@ public class MemoController {
     public void putMemo(@PathVariable String id, @RequestBody UpdateMemo updateMemo) {
     	updateMemo.setId(id);
     	memoService.updateMemo(updateMemo);
+    }
+    
+    
+    @ApiOperation("이동그룹 수정")
+    @PutMapping("/memos/move")
+    public void putMemoMove(@RequestBody HashMap<String, Object> updateMemo) {
+    	memoService.updateMemoToMove(updateMemo);
     }
 }

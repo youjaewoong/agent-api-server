@@ -20,7 +20,7 @@
  		WHERE ID = #{id}
  		AND AGENT_ID = #{agentId}
 	</update>
-	
+		
 	
 	<insert id="createMemoGroup">
  		INSERT INTO DP_ADV_MEMO_GROUP (

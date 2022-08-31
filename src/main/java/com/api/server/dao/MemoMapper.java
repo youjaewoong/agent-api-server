@@ -1,5 +1,6 @@
 package com.api.server.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -21,6 +22,8 @@ public interface MemoMapper {
     int createMemo(CreateMemo createMemo);
     
     int updateMemo(UpdateMemo updateMemo);
+    
+    int updateMemoToMove(HashMap<String, Object> updateMemo);
     
     int deleteMemo(DeleteMemo deleteMemo);
 

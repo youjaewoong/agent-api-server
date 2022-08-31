@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.server.admin.dao.AdminMapper;
+import com.api.server.admin.model.admin.AdminDeptResponse;
 import com.api.server.util.ResultMap;
 
 @Service
@@ -36,5 +37,9 @@ public class AdminService {
 	
 	public ResultMap selectMngAdvInterest(HashMap<String, Object> paramMap) {
 		return mapper.selectMngAdvInterest(paramMap);
+	}
+
+	public List<AdminDeptResponse> selectAdminDept(String companyCode) {
+		return  mapper.selectAdminDept(companyCode);
 	}
 }

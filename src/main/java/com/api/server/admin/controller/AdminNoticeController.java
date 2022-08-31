@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
-import com.api.server.admin.model.notice.AdminNoticeDeptResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
@@ -78,14 +77,7 @@ public class AdminNoticeController {
     public void deleteAdminNotice(@PathVariable String id, @Valid @RequestBody DeleteAdminNotice deleteAdminNotice) {
 		deleteAdminNotice.setId(id);
 		adminNoticeService.deleteAdminNotice(deleteAdminNotice);
-    }
-	
-	
-	@ApiOperation("부서 조회")
-	@GetMapping("notices/dept")
-    public List<AdminNoticeDeptResponse> selectAdminNoticeDept(@NotBlank @RequestParam("company_code") String companyCode) {
-		return adminNoticeService.selectAdminNoticeDept(companyCode);
-    }
+    }	
 
 	
 }
