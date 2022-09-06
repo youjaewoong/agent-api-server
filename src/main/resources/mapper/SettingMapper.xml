@@ -11,7 +11,9 @@
 			* 
 		FROM DP_ADV_SETTING
 		WHERE AGENT_ID = #{agentId}
-		AND COMPANY_CODE = #{companyCode} 
+		<if test="companyCode != null and companyCode.equals('')">
+		  AND COMPANY_CODE = #{companyCode}
+		</if>
 	</select>
 
 	

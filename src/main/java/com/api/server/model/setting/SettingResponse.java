@@ -22,7 +22,7 @@ public class SettingResponse {
 	private boolean adminToggle; //통합어드민 토글
 	private boolean callbackToggle; //프리미엄콜백 토글
 	private boolean complainToggle; //민원 토글
-	private String alarmSetting; //알람설정
+	private int alarmSetting; //알람설정
 	private String forbiddenKeyword; //금칙어키워드
 	private String iussueKeyword; //이슈어키워드
 }
