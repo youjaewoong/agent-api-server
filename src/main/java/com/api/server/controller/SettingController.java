@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @Validated
-@RequestMapping("/advisor")
+@RequestMapping({"/advisor","/advisor/admin"})
 public class SettingController {
 
 	private final SettingService settingService;
