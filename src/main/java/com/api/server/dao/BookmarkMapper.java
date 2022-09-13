@@ -1,5 +1,6 @@
 package com.api.server.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,6 @@ public interface BookmarkMapper {
 	public int deleteBookmarkByGroup(DeleteBookmark deleteBookmark);
 
 	public void deleteBookmarkByGroups(DeleteBookmarks deleteBookmarks);
+
+	public void updateBookmarkToMove(HashMap<String, Object> updateBookmark);
 }

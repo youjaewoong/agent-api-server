@@ -314,56 +314,56 @@ public class CoachingService {
 
     //TODO
     public List<HashMap<String, Object>> getRedisCoachingList(HashMap<String, Object> params) {
-        String key = String.valueOf(params.get("key"));
-        String agentExt = String.valueOf(params.get("agentExt"));
-        String clientId = String.valueOf(params.get("clientId"));
-
-        //Map<Object, Object> dataMap = RedisUtil.getHashAll(key);
-        Map<Object, Object> dataMap = null;
-        List<Map.Entry<Object, Object>> entries = new LinkedList<>(dataMap.entrySet());
-        ObjectMapper mapper = new ObjectMapper();
-
-        // 현재 시간(서버 시간 기준)
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmdd");
-        Date date = new Date();
-        String nowDate = dateFormat.format(date);
-        String todayDate = dateFormat.format(date);
-        todayDate = todayDate.substring(0, 8) + "000000";
-
-        List<Map.Entry<Object, Object>> list = new ArrayList<>();
-        for (Map.Entry<Object, Object> entry : entries) {
-            String redisKey = String.valueOf(entry.getKey());
-            if(redisKey.contains(agentExt)) {
-                String redisDate = redisKey.substring(redisKey.length() - 14, redisKey.length());
-                if(redisDate.compareTo(todayDate) >= 0 && redisDate.compareTo(nowDate) <= 0) {
-                    try {
-                        if(((mapper.readValue(String.valueOf(entry.getValue()), Map.class)).get("clientId").toString()).equals(clientId)){
-                            list.add(entry);
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-
-        Collections.sort(list, (o1, o2) -> {
-            try {
-                return ((mapper.readValue(String.valueOf(o2.getValue()), Map.class)).get("requestDate").toString().compareTo((mapper.readValue(String.valueOf(o1.getValue()), Map.class)).get("requestDate").toString()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        List<HashMap<String, Object>> result = new ArrayList<>();
-        for (Map.Entry<Object, Object> entry : list) {
-            try {
-                result.add(mapper.readValue(String.valueOf(entry.getValue()), HashMap.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return result;
+//        String key = String.valueOf(params.get("key"));
+//        String agentExt = String.valueOf(params.get("agentExt"));
+//        String clientId = String.valueOf(params.get("clientId"));
+//
+//        //Map<Object, Object> dataMap = RedisUtil.getHashAll(key);
+//        Map<Object, Object> dataMap = null;
+//        List<Map.Entry<Object, Object>> entries = new LinkedList<>(dataMap.entrySet());
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        // 현재 시간(서버 시간 기준)
+//        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmdd");
+//        Date date = new Date();
+//        String nowDate = dateFormat.format(date);
+//        String todayDate = dateFormat.format(date);
+//        todayDate = todayDate.substring(0, 8) + "000000";
+//
+//        List<Map.Entry<Object, Object>> list = new ArrayList<>();
+//        for (Map.Entry<Object, Object> entry : entries) {
+//            String redisKey = String.valueOf(entry.getKey());
+//            if(redisKey.contains(agentExt)) {
+//                String redisDate = redisKey.substring(redisKey.length() - 14, redisKey.length());
+//                if(redisDate.compareTo(todayDate) >= 0 && redisDate.compareTo(nowDate) <= 0) {
+//                    try {
+//                        if(((mapper.readValue(String.valueOf(entry.getValue()), Map.class)).get("clientId").toString()).equals(clientId)){
+//                            list.add(entry);
+//                        }
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//            }
+//        }
+//
+//        Collections.sort(list, (o1, o2) -> {
+//            try {
+//                return ((mapper.readValue(String.valueOf(o2.getValue()), Map.class)).get("requestDate").toString().compareTo((mapper.readValue(String.valueOf(o1.getValue()), Map.class)).get("requestDate").toString()));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//
+//        List<HashMap<String, Object>> result = new ArrayList<>();
+//        for (Map.Entry<Object, Object> entry : list) {
+//            try {
+//                result.add(mapper.readValue(String.valueOf(entry.getValue()), HashMap.class));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+        return null;
     }
 
     //TODO

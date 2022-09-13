@@ -54,6 +54,15 @@
 	</update>
 	
 	
+	<update id="updateBookmarkToMove">
+ 		UPDATE DP_ADV_BOOKMARK SET
+ 		  GROUP_ID = #{groupId}
+ 		 ,UPDATED_DATETIME = NOW()
+ 		WHERE GROUP_ID IN (${targetIds})
+ 		AND AGENT_ID = #{agentId}
+	</update>
+	
+	
 	<insert id="createBookmark">
  		INSERT INTO DP_ADV_BOOKMARK (
  			 ID

@@ -1,5 +1,6 @@
 package com.api.server.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -102,5 +103,12 @@ public class BookmarkController {
     								  @Valid DeleteBookmark deleteBookmark) {
 		deleteBookmark.setId(id);
     	bookMarkService.deleteBookmarkByGroup(deleteBookmark);
+    }
+	
+	
+    @ApiOperation("이동그룹 수정")
+    @PutMapping("move")
+    public void putMemoMove(@RequestBody HashMap<String, Object> updateBookmark) {
+    	bookMarkService.updateBookmarkToMove(updateBookmark);
     }
 }
