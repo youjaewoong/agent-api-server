@@ -13,12 +13,7 @@
 		   ,CD_NAME AS NAME
 		FROM DP_COMMON_CODE 
 		WHERE DEL_YN = 'N'
-		<if test="parentCd != null and !parentCd.equals('')">
-		  AND PARENT_CD = #{parentCd}
-		</if>
-		<if test="cdType != null and !cdType.equals('')">
-		  AND CD_TYPE = #{cdType}
-		</if>
-		ORDER BY CD_NAME
+		AND CD_TYPE LIKE CONCAT(#{cdType}, '%') 
+		ORDER BY CD_TYPE, CD_NAME
 	</select>
 </mapper>

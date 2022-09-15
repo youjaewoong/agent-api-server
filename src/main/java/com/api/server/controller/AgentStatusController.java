@@ -23,7 +23,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
 import com.api.server.model.agentstatus.CreateAgentStatus;
-import com.api.server.model.agentstatus.SearchAgentStatusCategories;
 import com.api.server.service.AgentStatusService;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,14 +42,8 @@ public class AgentStatusController {
     @GetMapping("categories")
 	@ApiOperation(value = "상담유형(카테고리) 조회")
     public List<AgentStatusCategoriesResponse> getAgentStatusCategories(
-    											@RequestParam(value = "parent_cd", required = false) String parentCd,
     											@RequestParam(value = "cd_type", required = false) String cdType) {
-		
-		SearchAgentStatusCategories searchAgentStatusCategories = new SearchAgentStatusCategories();
-		searchAgentStatusCategories.setParentCd(parentCd);
-		searchAgentStatusCategories.setCdType(cdType);
-		
-        return agentStatusService.searchAgentStatusCategories(searchAgentStatusCategories);
+		return agentStatusService.searchAgentStatusCategories(cdType);
     }
 	
 	

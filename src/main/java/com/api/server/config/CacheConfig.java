@@ -17,9 +17,8 @@ public class CacheConfig {
 		SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
 		simpleCacheManager.setCaches(Arrays.asList(
 				new ConcurrentMapCache("holidayList"), 
-				new ConcurrentMapCache("deptList")));
+				new ConcurrentMapCache("deptList"), 
+				new ConcurrentMapCache("agentStatusCategories")));
 		return simpleCacheManager;
 	}
-	
-	
 }
