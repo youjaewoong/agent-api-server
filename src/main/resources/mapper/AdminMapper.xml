@@ -29,8 +29,11 @@
 		  left join DP_ADV_INTEREST_AGENT c on b.agent_id = c.agent_id 
 		  						  and c.admin_id = #{adminId} /* 접속한 관리자 id */		  
 	 	 where a.DEPT_CODE = b.DEPT_CODE 
-		   and b.DEPT_CODE = (select DEPT_CODE from  DP_ADV_AGENT where ext = #{adminExt})
-		   and b.AGENT_TITLE <![CDATA[<]]> '팀장'
+	       <if test="adminId != null and adminId != 'super'">
+	       	<if test="deptCode == ''">
+	             and b.DEPT_CODE = (select DEPT_CODE from DP_ADV_AGENT where agent_id = #{adminId})
+	       	</if>
+	       </if>
 		   <if test="deptCode != null and deptCode != ''">
 		     and a.dept_code in (${deptCode})
 		   </if>

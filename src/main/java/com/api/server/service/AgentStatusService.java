@@ -23,7 +23,6 @@ public class AgentStatusService {
 	 */
 	@Cacheable(cacheNames = "agentStatusCategories")
 	public List<AgentStatusCategoriesResponse> searchAgentStatusCategories(String cdType) {
-		log.info(">>>>>>>>>> call dept");
 		return agentStatusMapper.searchAgentStatusCategories(cdType);
 	}
 
