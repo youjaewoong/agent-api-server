@@ -1,5 +1,6 @@
 package com.api.server.agent.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import com.api.server.agent.model.notice.CreateAgentNotice;
 import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
 import com.api.server.agent.model.notice.UpdateAgentNotice;
 import com.api.server.agent.service.AgentNoticeService;
+import com.api.server.service.AgentRecordService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class AgentNoticeController {
 
 	private final AgentNoticeService agentNoticeService;
 	
-	
+    private final AgentRecordService agentRecordService;
 	
 	@ApiOperation("공지사항 카테고리별 전체 조회")
     @GetMapping("notices/all")
@@ -105,7 +107,6 @@ public class AgentNoticeController {
     	
     }
     
-    
 
     @ApiOperation("리마인드 설정 데이터 조회")
     @GetMapping("/notices/remind")
@@ -116,6 +117,14 @@ public class AgentNoticeController {
 		searchAgentNoticeRequest.setAgentId(agentId);
 		searchAgentNoticeRequest.setCompanyCode(companyCode);
     	return agentNoticeService.selectAgentNoticeByAlarm(searchAgentNoticeRequest);
+    }
+    
+    
+    @ApiOperation("공지사항 구독 대상 조회")
+    @GetMapping("notices/agent-info")
+    public HashMap<String, Object> getAgentInfo(@RequestParam HashMap<String, Object> params) throws Exception {
+        HashMap<String, Object> agentInfoMap = agentRecordService.getAgentInfo(params);
+        return agentInfoMap;
     }
     
 }

@@ -1,5 +1,6 @@
 package com.api.server.admin.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.server.admin.model.admin.AdminDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
 import com.api.server.admin.model.notice.CreateAdminNotice;
 import com.api.server.admin.model.notice.DeleteAdminNotice;
 import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
 import com.api.server.admin.model.notice.UpdateAdminNotice;
 import com.api.server.admin.service.AdminNoticeService;
+import com.api.server.admin.service.AdminService;
+import com.api.server.util.ResultMap;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminNoticeController {
 
 	private final AdminNoticeService adminNoticeService;
+	
+    private final AdminService adminService;
 	
 	@ApiOperation("공지사항 카테고리별 전체 조회")
     @GetMapping("notices/all")
@@ -79,5 +85,11 @@ public class AdminNoticeController {
 		adminNoticeService.deleteAdminNotice(deleteAdminNotice);
     }	
 
+	
+    @ApiOperation("공지사항 구독 대상 부서 조회")
+    @GetMapping("notices/dept")
+    public List<AdminDeptResponse> selectAdminDept(@RequestParam("company_code") String companyCode) {
+        return adminService.selectAdminDept(companyCode);
+    }
 	
 }
