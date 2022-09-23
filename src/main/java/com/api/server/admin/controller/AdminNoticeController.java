@@ -88,7 +88,7 @@ public class AdminNoticeController {
 	
     @ApiOperation("공지사항 구독 대상 부서 조회")
     @GetMapping("notices/dept")
-    public List<AdminDeptResponse> selectAdminDept(@RequestParam("company_code") String companyCode) {
+    public List<AdminDeptResponse> selectAdminDept(@RequestParam("companyCode") String companyCode) {
         return adminService.selectAdminDept(companyCode);
     }
 	
