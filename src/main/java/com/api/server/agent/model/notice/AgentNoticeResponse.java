@@ -22,4 +22,5 @@ public class AgentNoticeResponse {
 	private String createdDatetime;
 	private String updatedDatetime;
 	private String conversionUpdatedDatetime;
+	private String dayOfWeek;
 }

@@ -141,6 +141,43 @@
 				    	AND COMPANY_CODE = #{companyCode}) B 
 			ON AA.DEPT_CODE = B.DEPT_CODE 
 		WHERE AA.DEPT_CODE = #{deptCode}
+		UNION ALL
+		SELECT 0 AS DEPT_TOTAL
+		LIMIT 1
+	</select>
+	
+	
+	<select id="selectAdminNoticeDeptDetail" resultType="map">
+		WITH RECURSIVE TARGET_DEPT AS (
+		  SELECT 
+			 DEPT_CODE,
+		     P_DEPT_CODE,
+		     DEPT_NAME,
+		     COMPANY_CODE
+		  FROM DP_ADV_DEPT 
+		  WHERE DEPT_CODE = #{deptCode}
+		  UNION ALL
+		  SELECT
+		    A.DEPT_CODE,
+		    A.P_DEPT_CODE,
+		    A.DEPT_NAME,
+		    A.COMPANY_CODE
+		  FROM DP_ADV_DEPT A
+		INNER JOIN TARGET_DEPT B ON A.DEPT_CODE = B.P_DEPT_CODE 
+		)
+		SELECT DEPT_CODE, DEPT_NAME, COMPANY_CODE  FROM TARGET_DEPT
+		WHERE LENGTH(DEPT_CODE) != '2'
+		ORDER BY DEPT_CODE ASC
+	</select>
+	
+	
+	<select id="selectAdminNoticeTargetUser" resultType="map">
+		SELECT 
+		  AGENT_ID
+		 ,DEPT_CODE
+		FROM DP_ADV_AGENT A
+		WHERE IS_ADMIN = 'Y'
+		AND AGENT_ID != 'super'
 	</select>
 	
 

@@ -1,6 +1,5 @@
 package com.api.server.admin.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -25,7 +24,6 @@ import com.api.server.admin.model.notice.SearchAdminNoticeRequest;
 import com.api.server.admin.model.notice.UpdateAdminNotice;
 import com.api.server.admin.service.AdminNoticeService;
 import com.api.server.admin.service.AdminService;
-import com.api.server.util.ResultMap;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -91,5 +89,6 @@ public class AdminNoticeController {
     public List<AdminDeptResponse> selectAdminDept(@RequestParam("companyCode") String companyCode) {
         return adminService.selectAdminDept(companyCode);
     }
+    
 	
 }

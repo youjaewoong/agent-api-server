@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
-
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -37,6 +35,7 @@ public class AdminController {
 		return adminInfoMap;
 	}
 
+	@SuppressWarnings("unused")
 	@ApiOperation("상담원 리스트 조회")
 	@GetMapping("/list")
 	public HashMap<String, Object> list(@RequestParam HashMap<String, Object> paramMap) {

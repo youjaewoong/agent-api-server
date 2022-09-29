@@ -1,12 +1,21 @@
 package com.api.server.admin.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.api.server.admin.dao.AdminNoticeMapper;
+import com.api.server.admin.model.admin.AdminDeptResponse;
 import com.api.server.admin.model.notice.AdminNoticeCategory;
 import com.api.server.admin.model.notice.AdminNoticeCategory.Type;
 import com.api.server.admin.model.notice.AdminNoticeCategoryResponse;
@@ -18,6 +27,8 @@ import com.api.server.admin.model.notice.UpdateAdminNotice;
 import com.api.server.agent.dao.AgentNoticeMapper;
 import com.api.server.agent.model.notice.CreateAgentNotice;
 import com.api.server.agent.model.notice.SearchAgentNoticeRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +39,8 @@ public class AdminNoticeService {
 	
 	private final AdminNoticeMapper adminNoticeMapper;
 	private final AgentNoticeMapper agentNoticeMapper;
+	private final RestTemplate restTemplate;
+	private static String WEBSOCKET_URL = "http://localhost:8089";
 
 	
 	public List<AdminNoticeCategoryResponse> selectAdminNoticesAll(SearchAdminNoticeRequest searchAdminNoticeRequest) {
@@ -159,6 +172,61 @@ public class AdminNoticeService {
 		int deleteCnt = adminNoticeMapper.deleteAdminNotice(deleteAdminNotice);
 		if (deleteCnt > 0) {
 			agentNoticeMapper.deleteAgentNoticeByAdminId(deleteAdminNotice.getId());
+		}
+	}
+
+	
+	/**
+	 * api를 통한 공지사항 추가
+	 * @param createAdminNotice
+	 * @throws JsonProcessingException 
+	 */
+	public void createAdminApiNotice(CreateAdminNotice createAdminNotice) throws Exception {
+		List<Map<String, Object>> targetUsers = adminNoticeMapper.selectAdminNoticeTargetUser();
+		if (targetUsers != null) {
+			for (Map<String, Object> user : targetUsers) {
+				
+				String deptCode = user.get("DEPT_CODE").toString();
+				createAdminNotice.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+				createAdminNotice.setDeptCode(deptCode);
+				createAdminNotice.setAdminId(user.get("AGENT_ID").toString());
+
+				List<Map<String, Object>> deptDetails = 
+						adminNoticeMapper.selectAdminNoticeDeptDetail(deptCode);
+				
+				String deptName = null;
+				List<String> deptNames = new ArrayList<>();
+				deptDetails.forEach(deptDetail -> {
+					deptNames.add(deptDetail.get("DEPT_NAME").toString());
+					createAdminNotice.setCompanyCode(deptDetail.get("COMPANY_CODE").toString());
+				});
+				deptName = String.join(" > ", deptNames);
+				createAdminNotice.setDeptName(deptName);
+				
+				// 공지사항 추가 메소드 호출
+				String id = this.createAdminNotice(createAdminNotice);
+				if (id != null) {
+					// 관리자별 구독 전달
+					Map<String, Object> message = new HashMap<>();
+					message.put("agentType", "SYSTEM");
+					
+					Map<String, Object> noticeMessage = new HashMap<>();
+					noticeMessage.put("topic", "/sub/redis/notice/" + createAdminNotice.getAdminId());
+					noticeMessage.put("message", message);
+					
+					ObjectMapper mapper = new ObjectMapper();
+					String jsonMessage = mapper.writeValueAsString(noticeMessage);
+					
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					HttpEntity<String> entity = new HttpEntity<String>(jsonMessage, headers);
+					
+					restTemplate.postForEntity(WEBSOCKET_URL+"/pubsub/redis/notice", entity, String.class);
+				}
+				
+			};
+		} else {
+			throw new NullPointerException();
 		}
 	}
 
