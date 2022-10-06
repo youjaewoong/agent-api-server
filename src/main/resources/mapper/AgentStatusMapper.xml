@@ -16,4 +16,12 @@
 		AND CD_TYPE LIKE CONCAT(#{cdType}, '%') 
 		ORDER BY CD_TYPE, CD_NAME
 	</select>
+	
+	
+	<update id="updateAgentStatus">
+ 		UPDATE DP_ADV_STT_ANALYSIS_INFO SET
+ 		  ADVICE_MEMO = #{memo}
+ 		WHERE REC_KEY = #{recKey}
+	</update>
+	
 </mapper>

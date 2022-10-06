@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.api.server.dao.AgentStatusMapper;
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
+import com.api.server.model.agentstatus.UpdateAgentStatus;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AgentStatusService {
 	
 	private final AgentStatusMapper agentStatusMapper;
@@ -24,6 +23,11 @@ public class AgentStatusService {
 	@Cacheable(cacheNames = "agentStatusCategories")
 	public List<AgentStatusCategoriesResponse> searchAgentStatusCategories(String cdType) {
 		return agentStatusMapper.searchAgentStatusCategories(cdType);
+	}
+	
+	
+	public void updateAgentStatus(UpdateAgentStatus updateAgentStatus) {
+		agentStatusMapper.updateAgentStatus(updateAgentStatus);
 	}
 
 }

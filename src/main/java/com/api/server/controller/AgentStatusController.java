@@ -7,12 +7,14 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +25,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.api.server.model.agentstatus.AgentStatusCategoriesResponse;
 import com.api.server.model.agentstatus.CreateAgentStatus;
+import com.api.server.model.agentstatus.UpdateAgentStatus;
+import com.api.server.model.bookmark.DeleteBookmarks;
 import com.api.server.service.AgentStatusService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -108,9 +113,27 @@ public class AgentStatusController {
 	    	params2.put("obj", obj.getMemo());
 	    	restTemplate.getForEntity(pushUri+"?hashKey={hashKey}&obj={obj}", String.class, params2);
 	    }
-		
+	    
+	    //테이블 업데이트
+	    if (obj.getMemo() != null) {
+	    	UpdateAgentStatus updateAgentStatus = new UpdateAgentStatus();
+	    	BeanUtils.copyProperties(obj, updateAgentStatus);
+	    	agentStatusService.updateAgentStatus(updateAgentStatus);
+	    	
+	    }
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+	
+	
+	@ApiOperation("상담정보 저장")
+	@PutMapping()
+    public ResponseEntity<String> updateAgentStatus(UpdateAgentStatus updateAgentStatus) {
+		
+		agentStatusService.updateAgentStatus(updateAgentStatus);
+		return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
 	
 	
 	@ApiOperation("레디스 상담유형 카테고리")
@@ -148,5 +171,6 @@ public class AgentStatusController {
 		
 		return new ResponseEntity<>(info.getBody(), HttpStatus.OK);
     }
+	
 	
 }
